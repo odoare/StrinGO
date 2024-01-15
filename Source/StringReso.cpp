@@ -10,7 +10,6 @@
 
 #include "StringReso.h"
 
-
 StringReso::StringReso()
   {
     // Initialize class parameters with some default values
@@ -338,29 +337,3 @@ void StringReso::setDelaySamples(bool force)
     // std::cout << "delay 2 : " << delaySamples[2] << std::endl;
     // std::cout << "delay 3 : " << delaySamples[3] << std::endl;
 }
-
-
-//   StringsReso::StringsReso(int n)
-//   {
-//     for (int i=0;i<n;i++)
-//     {
-//       strings.push_back(StringReso());
-//     }
-//     numStrings = n;
-//     params = strings[0].getParams(); 
-//   }
-
-//   StringsReso::~StringsReso()
-//   {
-
-//   }
-
-//   void StringsReso::prepare(juce::dsp::ProcessSpec spec)
-//   {
-
-//   }
-
-//   void StringsReso::process(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
-//   {
-
-//   }
