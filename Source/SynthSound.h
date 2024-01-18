@@ -15,7 +15,7 @@
 class SynthSound : public juce::SynthesiserSound
 {
 public:
-  bool appliesToNote(int midiNoteNumber) override {return true;}
+  bool appliesToNote(int midiNoteNumber) override {return midiNoteNumber<85;}
   bool appliesToChannel(int midiChannel) override {return true;}
 
 };

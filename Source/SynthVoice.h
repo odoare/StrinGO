@@ -36,19 +36,25 @@ public:
  
   void renderNextBlock (juce::AudioBuffer< float > &buffer, int startSample, int numSamples) override;
 
-private:
+  void setNoiseFilterFreq(float freq);
 
+  StringReso stringReso;
   juce::ADSR adsr1, adsr2;
   juce::ADSR::Parameters adsr1Params, adsr2Params;
 
+private:
+
+  juce::dsp::ProcessSpec processSpec;
+
+  juce::dsp::IIR::Filter<float> noiseFilter;
+  float noiseFilterFreq  { 1000.f };
+
   juce::Random randomNoise;
 
-  juce::AudioBuffer<float> synthBuffer;
+  juce::AudioBuffer<float> inBuffer, synthBuffer;
 
   juce::dsp::Oscillator<float> osc { [](float x) {return std::sin(x); }};
   juce::dsp::Gain<float> gain;
-
-  StringReso stringReso;
 
   bool isPrepared { false };
 };
