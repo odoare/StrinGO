@@ -70,7 +70,7 @@ StringReso::~StringReso()
 
   }
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------
 void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
   {
     std::cout << "begin StringReso::prepare   ";
@@ -79,7 +79,7 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
 
     setParams(params, true);
 
-    maxFreq = processSpec.sampleRate/45.f;
+    // maxFreq = processSpec.sampleRate/45.f;
 
     // We set not isOn before to force the updating of other parameters
     bool son = params.isOn;
@@ -88,8 +88,6 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
 
     adsr1.setSampleRate(spec.sampleRate);
 
-    std::cout << "here 2 ?    ";
-    
     for (int string=0; string<NUMSTRINGS; string++)
     {
         float delaySamples[4];
@@ -109,92 +107,36 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
     std::cout << "end StringReso::prepare   " << std::endl;
   }
 
-
 void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<float>& outBuffer, int startSample, int numSamples)
 {
     // Input and output buffers should be mono
-        // for (int string=0; string<NUMSTRINGS; string++)
-        // {
-        //     if (params.isOn)
-        //     {
-        //         std::cout << "currentCoupling[" << string <<"] = "<<  currentCoupling[string] << std::endl;
-        //         std::cout << "currentFeedbackFreq[" << string <<"] = "<<  currentFeedbackFreq[string] << std::endl;
-        //         std::cout << "currentFeedbackGain[" << string <<"] = "<<  currentFeedbackGain[string] << std::endl;
-        //         std::cout << "currentLevel[" << string <<"] = "<<  currentLevel[string] << std::endl;
-        //         for (int i=0; i<4; i++)
-        //             {
-        //                 std::cout << "delay[" << string << "," << i << "] = " <<  smoothDelaySamples[i+string].getCurrentValue() << std::endl;                       
-        //             }
-        //         std::cout << "smoothCoupling[" << string <<"] = "<<  smoothCoupling[string].getCurrentValue() << std::endl;
-        //         std::cout << "smoothFeedbackFreq[" << string <<"] = "<<  smoothFeedbackFreq[string].getCurrentValue() << std::endl;
-        //         std::cout << "smoothFeedbackGain[" << string <<"] = "<<  smoothFeedbackGain[string].getCurrentValue() << std::endl;
-        //         std::cout << "smoothLevel[" << string <<"] = "<<  smoothLevel[string].getCurrentValue() << std::endl;
-        //     }
-        // }
     outBuffer.clear();
-    
-    // for (int channel = 0; channel < inBuffer.getNumChannels(); ++channel)
-    // {
-    //   auto* inChannelData = inBuffer.getReadPointer (channel);
-    //   auto* outChannelData = outBuffer.getWritePointer (channel);
-    //     // std::cout << channel << "/" << inBuffer.getNumChannels() << "    -     ";
-    //     // std::cout << smoothLevel[0].getCurrentValue() << " / " << smoothLevel[0].getTargetValue() << "     ";
-    //   for (int sample=startSample; sample<inBuffer.getNumSamples()-startSample; ++sample)
-    //   {
-    //     for (int string=0; string<NUMSTRINGS; string++)
-    //     {   
-    //         int dec = 4*string;
-    //         fbFilter[string].coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,smoothFeedbackFreq[string].getNextValue());
-    //         float loop = fbFilter[string].processSample(smoothFeedbackGain[string].getNextValue()*delayLine[3+dec].popSample(channel,smoothDelaySamples[3+dec].getNextValue()));
-    //         float in0 = loop + 0.5*inChannelData[sample] + currentCoupling[string]*previousOutput[string];
-    //         float in1 = - delayLine[0+dec].popSample(channel,smoothDelaySamples[0+dec].getNextValue()) + 0.5*inChannelData[sample] + currentCoupling[string]*previousOutput[string];
-    //         float in2 = delayLine[1+dec].popSample(channel,smoothDelaySamples[1+dec].getNextValue());
-    //         float in3 = - delayLine[2+dec].popSample(channel,smoothDelaySamples[2+dec].getNextValue());
 
-    //         delayLine[0+dec].pushSample(channel,in0);
-    //         delayLine[1+dec].pushSample(channel,in1);
-    //         delayLine[2+dec].pushSample(channel,in2);
-    //         delayLine[3+dec].pushSample(channel,in3);
-
-    //         previousOutput[suivant(NUMSTRINGS,string+1)] = in1+in2;
-
-    //         outChannelData[sample] += smoothLevel[string].getNextValue()*(in1+in2);
-            
-    //         //outChannelData[sample] += (in1+in2);
-
-    //     }
-    //   }
-    // }
+    float fbFreq[NUMSTRINGS], fbGain[NUMSTRINGS], level[NUMSTRINGS];
 
     for (int channel = 0; channel < inBuffer.getNumChannels(); ++channel)
     {
         auto* inChannelData = inBuffer.getReadPointer (channel);
         auto* outChannelData = outBuffer.getWritePointer (channel);
-        // std::cout << channel << "/" << inBuffer.getNumChannels() << "    -     ";
-        // std::cout << smoothLevel[0].getCurrentValue() << " / " << smoothLevel[0].getTargetValue() << "     ";
-        
+
         for (int sample=startSample; sample<inBuffer.getNumSamples()-startSample; ++sample)
         {
             float adsr1val = adsr1.getNextSample();
-            float fbFreq[NUMSTRINGS], fbGain[NUMSTRINGS], level[NUMSTRINGS];
             for (int string=0; string<NUMSTRINGS; string++)
             {
-                float fmin = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
-                float fmax = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
-                fbFreq[string] = juce::jmap<float>(adsr1val,fmin, fmax);
+                float coupling = smoothCoupling[string].getNextValue();
+                float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
+                float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
+                fbFreq[string] = juce::jmap<float>(adsr1val,fOff, fOn);
                 fbGain[string] = juce::jmap<float>(adsr1val,params.feedbackGainOff[string], params.feedbackGainOn[string]);
                 level[string] = juce::jmap<float>(adsr1val,params.levelOff[string], params.levelOn[string]);
-                // fbFreq[string] = currentFeedbackFreq[string];
-                // fbGain[string] = currentFeedbackGain[string];
-                // level[string] = currentLevel[string];
-                // std::cout << fbFreq[string] << "  ";
-                
+
                 int dec = 4*string;
 
                 fbFilter[string].coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,fbFreq[string]);
                 float loop = fbFilter[string].processSample(fbGain[string]*delayLine[3+dec].popSample(channel,smoothDelaySamples[3+dec].getNextValue()));
-                float in0 = loop + 0.5*inChannelData[sample] + currentCoupling[string]*previousOutput[string];
-                float in1 = - delayLine[0+dec].popSample(channel,smoothDelaySamples[0+dec].getNextValue()) + 0.5*inChannelData[sample] + currentCoupling[string]*previousOutput[string];
+                float in0 = loop + 0.5*inChannelData[sample] + coupling*previousOutput[string];
+                float in1 = - delayLine[0+dec].popSample(channel,smoothDelaySamples[0+dec].getNextValue()) + 0.5*inChannelData[sample] + coupling*previousOutput[string];
                 float in2 = delayLine[1+dec].popSample(channel,smoothDelaySamples[1+dec].getNextValue());
                 float in3 = - delayLine[2+dec].popSample(channel,smoothDelaySamples[2+dec].getNextValue());
 
@@ -206,11 +148,10 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
                 previousOutput[suivant(NUMSTRINGS,string+1)] = in1+in2;
 
                 outChannelData[sample] += level[string]*(in1+in2);
-                
             }
         }
-        }
-  }
+    }
+}
 
 void StringReso::setADSR1(juce::ADSR::Parameters adsrParams)
 {
@@ -227,7 +168,7 @@ void StringReso::setParams(StringReso::StringResoParams newParams, bool force)
     for (int string=0; string<NUMSTRINGS; string++)
     {
         setPortamentoTime(newParams.portamento);
-        setSmoothTime(params.smoothTime);
+        // setSmoothTime(params.smoothTime);
         setInPos(string, newParams.inPos[string], force);
         setOutPos(string, newParams.outPos[string], force);
         setFreqCoarseFactor(string, newParams.freqCoarseFactor[string], force);
@@ -246,24 +187,24 @@ void StringReso::setParams(StringReso::StringResoParams newParams, bool force)
 }
 
 //-----------------------------------------
-void StringReso::setSmoothTime(float time)
-{
-    if (!juce::approximatelyEqual<float>(time,params.smoothTime))
-    {
-        std::cout << "         begin StringReso::setSmoothTimeInSamples  time =  " << time << std::endl;
+// void StringReso::setSmoothTime(float time)
+// {
+//     if (!juce::approximatelyEqual<float>(time,params.smoothTime))
+//     {
+//         std::cout << "         begin StringReso::setSmoothTimeInSamples  time =  " << time << std::endl;
 
-        params.smoothTime = time;
+//         params.smoothTime = time;
 
-        for (int i=0; i<NUMSTRINGS; i++)
-        {
-            smoothFeedbackFreq[i].reset(processSpec.sampleRate,time);
-            smoothFeedbackGain[i].reset(processSpec.sampleRate,time);
-            smoothLevel[i].reset(processSpec.sampleRate,time);
-            smoothCoupling[i].reset(processSpec.sampleRate,time);
-        }
-        std::cout << "         end StringReso::setSmoothTimeInSamples  " << std::endl;
-    }
-}
+//         for (int i=0; i<NUMSTRINGS; i++)
+//         {
+//             smoothFeedbackFreq[i].reset(processSpec.sampleRate,time);
+//             smoothFeedbackGain[i].reset(processSpec.sampleRate,time);
+//             smoothLevel[i].reset(processSpec.sampleRate,time);
+//             smoothCoupling[i].reset(processSpec.sampleRate,time);
+//         }
+//         std::cout << "         end StringReso::setSmoothTimeInSamples  " << std::endl;
+//     }
+// }
 
 //-----------------------------------------
 void StringReso::setPortamentoTime(float time)
@@ -305,142 +246,142 @@ void StringReso::setIsOn(bool on, bool force)
             std::cout << "     set note on params    " << std::endl;
             adsr1.noteOn();
             adsrn.noteOn();
-            for (int i=0; i<NUMSTRINGS; i++)
-            {
-                setFeedbackGain(i, params.feedbackGainOn[i], force);
-                setFeedbackFreq(i, params.feedbackFreqOn[i], force);
-                setLevel(i, params.levelOn[i], force);
-            }
+            // for (int i=0; i<NUMSTRINGS; i++)
+            // {
+            //     setFeedbackGain(i, params.feedbackGainOn[i], force);
+            //     setFeedbackFreq(i, params.feedbackFreqOn[i], force);
+            //     setLevel(i, params.levelOn[i], force);
+            // }
         }
         else
         {
             std::cout << "     set note off params   " << std::endl;
             adsr1.noteOff();
             adsrn.noteOff();
-            for (int i=0; i<NUMSTRINGS; i++)
-            {
-                setFeedbackGain(i, params.feedbackGainOff[i], force);
-                setFeedbackFreq(i, params.feedbackFreqOff[i], force);
-                setLevel(i, params.levelOff[i], force);
-            }
+            // for (int i=0; i<NUMSTRINGS; i++)
+            // {
+            //     setFeedbackGain(i, params.feedbackGainOff[i], force);
+            //     setFeedbackFreq(i, params.feedbackFreqOff[i], force);
+            //     setLevel(i, params.levelOff[i], force);
+            // }
         }
     }
     std::cout << "     end StringReso::setIsOn    " << std::endl;
 }
 
-void StringReso::setFeedbackGain(int string, float gain, bool force)
-{
-    if (gain!=currentFeedbackGain[string])
-    {
-        std::cout << "         setting feedback gain of string " << string << " as " << gain;
-        currentFeedbackGain[string] = gain;
-        if (force)
-            {
-            std::cout << "(no smooth)" << std::endl;
-            smoothFeedbackGain[string].setCurrentAndTargetValue(gain);
-            }
-        else
-            {
-            std::cout << "(smooth)" << std::endl;
-            smoothFeedbackGain[string].setTargetValue(gain);
-            }
-    }
-}
+// void StringReso::setFeedbackGain(int string, float gain, bool force)
+// {
+//     if (gain!=currentFeedbackGain[string])
+//     {
+//         std::cout << "         setting feedback gain of string " << string << " as " << gain;
+//         currentFeedbackGain[string] = gain;
+//         if (force)
+//             {
+//             std::cout << "(no smooth)" << std::endl;
+//             smoothFeedbackGain[string].setCurrentAndTargetValue(gain);
+//             }
+//         else
+//             {
+//             std::cout << "(smooth)" << std::endl;
+//             smoothFeedbackGain[string].setTargetValue(gain);
+//             }
+//     }
+// }
 
 
 void StringReso::setFeedbackGainOn(int string, float gain, bool force)
 {
-    if (gain!=params.feedbackGainOn[string])
-    {
+    // if (gain!=params.feedbackGainOn[string])
+    // {
         params.feedbackGainOn[string] = gain;
-        if (params.isOn) setFeedbackGain(string, gain, force);
-    }
+    //     if (params.isOn) setFeedbackGain(string, gain, force);
+    // }
 }
 
 void StringReso::setFeedbackGainOff(int string, float gain, bool force)
 {
-    if (gain!=params.feedbackGainOff[string])
-    {
+    // if (gain!=params.feedbackGainOff[string])
+    // {
         params.feedbackGainOff[string] = gain;
-        if (!params.isOn) setFeedbackGain(string, gain, force);
-    }
+    //     if (!params.isOn) setFeedbackGain(string, gain, force);
+    // }
 }
 
 void StringReso::setFeedbackFreqOn(int string, float freq, bool force)
 {
-    if (freq!=params.feedbackFreqOn[string])
-    {
+    // if (freq!=params.feedbackFreqOn[string])
+    // {
         params.feedbackFreqOn[string] = freq;
-        if (params.isOn) setFeedbackFreq(string, freq, force);
-    }
+    //     if (params.isOn) setFeedbackFreq(string, freq, force);
+    // }
 }
 
 
 
 void StringReso::setFeedbackFreqOff(int string, float freq, bool force)
 {
-    if (freq!=params.feedbackFreqOff[string])
-    {
+    // if (freq!=params.feedbackFreqOff[string])
+    // {
         params.feedbackFreqOff[string] = freq;
-        if (!params.isOn) setFeedbackFreq(string, freq, force);
-    }
+    //     if (!params.isOn) setFeedbackFreq(string, freq, force);
+    // }
 }
 
-void StringReso::setFeedbackFreq(int string, float freq, bool force)
-{
-    if (freq!=currentFeedbackFreq[string])
-    {
-        std::cout << "         setting feedback freq of string " << string << " as " << freq;
-        currentFeedbackFreq[string] = freq;
-        if (force)
-            {
-            std::cout << "(no smooth)" << std::endl;
-            smoothFeedbackFreq[string].setCurrentAndTargetValue(juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*freq/params.stringPeriodInSamples));
-            }
-        else
-            {
-            std::cout << "(smooth)" << std::endl;
-            smoothFeedbackFreq[string].setTargetValue(juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*freq/params.stringPeriodInSamples));
-            }
-    }
-}
+// void StringReso::setFeedbackFreq(int string, float freq, bool force)
+// {
+//     if (freq!=currentFeedbackFreq[string])
+//     {
+//         std::cout << "         setting feedback freq of string " << string << " as " << freq;
+//         currentFeedbackFreq[string] = freq;
+//         if (force)
+//             {
+//             std::cout << "(no smooth)" << std::endl;
+//             smoothFeedbackFreq[string].setCurrentAndTargetValue(juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*freq/params.stringPeriodInSamples));
+//             }
+//         else
+//             {
+//             std::cout << "(smooth)" << std::endl;
+//             smoothFeedbackFreq[string].setTargetValue(juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*freq/params.stringPeriodInSamples));
+//             }
+//     }
+// }
 
 void StringReso::setLevelOn(int string, float lvl, bool force)
 {
-    if (lvl!=params.levelOn[string])
-    {
+    // if (lvl!=params.levelOn[string])
+    // {
         params.levelOn[string] = lvl;
-        if (params.isOn) setLevel(string, lvl, force);
-    }
+    //     if (params.isOn) setLevel(string, lvl, force);
+    // }
 }
 
 void StringReso::setLevelOff(int string, float lvl, bool force)
 {
-    if (lvl!=params.levelOff[string])
-    {
+    // if (lvl!=params.levelOff[string])
+    // {
         params.levelOff[string] = lvl;
-        if (!params.isOn) setLevel(string, lvl, force);
-    }
+    //     if (!params.isOn) setLevel(string, lvl, force);
+    // }
 }
 
-void StringReso::setLevel(int string, float lvl, bool force)
-{
-    if (lvl!=currentLevel[string])
-    {
-        std::cout << "         setting level of string " << string << " as " << lvl;
-        currentLevel[string] = lvl;
-        if (force)
-            {
-            std::cout << " (no smooth)" << std::endl;
-            smoothLevel[string].setCurrentAndTargetValue(lvl);
-            }
-        else
-            {
-            std::cout << " (smooth)" << std::endl;
-            smoothLevel[string].setTargetValue(lvl);
-            }
-    }
-}
+// void StringReso::setLevel(int string, float lvl, bool force)
+// {
+//     if (lvl!=currentLevel[string])
+//     {
+//         std::cout << "         setting level of string " << string << " as " << lvl;
+//         currentLevel[string] = lvl;
+//         if (force)
+//             {
+//             std::cout << " (no smooth)" << std::endl;
+//             smoothLevel[string].setCurrentAndTargetValue(lvl);
+//             }
+//         else
+//             {
+//             std::cout << " (smooth)" << std::endl;
+//             smoothLevel[string].setTargetValue(lvl);
+//             }
+//     }
+// }
 
 void StringReso::setFreqCoarseFactor(int string, float fac, bool force)
 {
@@ -535,17 +476,15 @@ void StringReso::setDelaySamples(int string, bool force)
         }
 
     // We update the feedback filter frequency
-    if (params.isOn)
-        {
-            setFeedbackFreq(string, params.feedbackFreqOn[string], force);
-        }
-    else
-        {
-            setFeedbackFreq(string, params.feedbackFreqOff[string], force);
-        }
+    // if (params.isOn)
+    //     {
+    //         setFeedbackFreq(string, params.feedbackFreqOn[string], force);
+    //     }
+    // else
+    //     {
+    //         setFeedbackFreq(string, params.feedbackFreqOff[string], force);
+    //     }
 
-
-    
     // std::cout << "string  " << string << std::endl;
     // std::cout << "delay 0 : " << delaySamples[0] << std::endl;
     // std::cout << "delay 1 : " << delaySamples[1] << std::endl;

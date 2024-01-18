@@ -62,8 +62,6 @@ public:
   void setPortamentoTime(float time);
 
   void setADSR1(juce::ADSR::Parameters adsrParams);
-  void setADSRN(juce::ADSR::Parameters adsrParams);
-  
 
   //--------------------------
   StringResoParams getParams();
@@ -71,7 +69,6 @@ public:
   void setParams(StringResoParams newParams, bool force = false);
 
   void setIsOn(bool on, bool force = false);
-
 
   void setFeedbackGain(int string, float gain, bool force = false);
   void setFeedbackGainOn(int string, float gain, bool force = false);
@@ -96,7 +93,7 @@ public:
 
   void setCoupling(int string, float fac, bool force=false);
 
-  float maxFreq;
+  // float maxFreq;
   juce::dsp::ProcessSpec processSpec;
 
   juce::ADSR adsr1, adsrn;

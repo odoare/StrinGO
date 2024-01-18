@@ -20,19 +20,14 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::Synthesise
 {
   float noteFreq = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
   std::cout << "begin start_Note " << midiNoteNumber << " at frequency " << noteFreq << "Hz" << std::endl;
-  // if (noteFreq < stringReso.maxFreq)
-  // {
-    // osc.setFrequency (juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber), true);
-    adsr1.noteOn();
-    adsr2.noteOn();
-    stringReso.setStringFreq(noteFreq);
-    stringReso.setIsOn(true);
-    stringReso.getParams();
-    noiseFilterFreq = noteFreq*5.f;
-    noiseFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(stringReso.processSpec.sampleRate,noiseFilterFreq);
+  adsr1.noteOn();
+  adsr2.noteOn();
+  stringReso.setStringFreq(noteFreq);
+  stringReso.setIsOn(true);
+  // noiseFilterFreq = noteFreq*5.f;
+  // noiseFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(stringReso.processSpec.sampleRate,noiseFilterFreq);
 
     std::cout << "end start_Note" << std::endl;
-  // }
 }
 
 void SynthVoice::stopNote (float velocity, bool allowTailOff)
@@ -42,7 +37,6 @@ void SynthVoice::stopNote (float velocity, bool allowTailOff)
   adsr1.noteOff();
   adsr2.noteOff();
   stringReso.setIsOn(false);
-  stringReso.getParams();
 
   // if (!allowTailOff || !adsr1.isActive())
   //   clearCurrentNote();

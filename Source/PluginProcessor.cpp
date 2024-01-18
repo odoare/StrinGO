@@ -172,7 +172,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         voice->stringReso.setFreqCoarseFactor(1,apvts.getRawParameterValue("Freq Coarse 2")->load());
         voice->stringReso.setFreqFineFactor(1,apvts.getRawParameterValue("Freq Fine 2")->load());
 
-        voice->stringReso.setSmoothTime(apvts.getRawParameterValue("Smooth time")->load());
+        // voice->stringReso.setSmoothTime(apvts.getRawParameterValue("Smooth time")->load());
         voice->stringReso.setPortamentoTime(apvts.getRawParameterValue("Porta time")->load());
 
         voice->adsr2Params.attack = apvts.getRawParameterValue("AN")->load();
