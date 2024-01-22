@@ -13,6 +13,12 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "StringReso.h"
+#include "CracksGenerator.h"
+// #include "SimpleSampler.h"
+
+#define INVPI 0.318309886183791
+
+//#define DEBUG
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -37,24 +43,39 @@ public:
   void renderNextBlock (juce::AudioBuffer< float > &buffer, int startSample, int numSamples) override;
 
   void setNoiseFilterFreq(float freq);
+  void setNoiseLevel(float lvl);
+
+  void setSamplerLevel(float lvl);
+  void setSamplerFilterFreqFactor(float freqFactor);
+
+  void setCrackDensity(int d);
+  void setCrackFilterFreq(float freq);
+  void setCrackLevel(float lvl);
 
   StringReso stringReso;
-  juce::ADSR adsr1, adsr2;
-  juce::ADSR::Parameters adsr1Params, adsr2Params;
+  juce::ADSR adsr1, adsr2, adsrN, adsrC;//, adsrO;
+  juce::ADSR::Parameters adsr1Params, adsr2Params, adsrNParams, adsrCParams, adsrOParams;
 
 private:
 
   juce::dsp::ProcessSpec processSpec;
 
-  juce::dsp::IIR::Filter<float> noiseFilter;
-  float noiseFilterFreq  { 1000.f };
-
   juce::Random randomNoise;
 
-  juce::AudioBuffer<float> inBuffer, synthBuffer;
+  juce::dsp::IIR::Filter<float> noiseFilter;
+  float noiseFilterFreq  { 1000.f };
+  float noiseLevel { 1.0f };
 
-  juce::dsp::Oscillator<float> osc { [](float x) {return std::sin(x); }};
-  juce::dsp::Gain<float> gain;
+  // OneShotSampler sampler;
+  // float samplerLevel { 1.0 };
+  // float samplerFilterFreqFactor {5.0} ;
+
+  CracksGenerator cracksGenerator;
+  juce::dsp::IIR::Filter<float> crackFilter;
+  float crackFilterFreq  { 1000.f };
+  float crackLevel { 1.0 };
+
+  juce::AudioBuffer<float> inBuffer, synthBuffer;
 
   bool isPrepared { false };
 };

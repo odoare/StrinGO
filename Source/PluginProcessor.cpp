@@ -157,37 +157,58 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
        {
         for (int string=0; string<NUMSTRINGS; string++)
         {
-            voice->stringReso.setFeedbackGainOn(string,apvts.getRawParameterValue("Fb Gain on 1")->load());
-            voice->stringReso.setFeedbackFreqOn(string,apvts.getRawParameterValue("Fb Freq on 1")->load());
-            voice->stringReso.setLevelOn(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level on 1")->load()));
-            voice->stringReso.setFeedbackGainOff(string,apvts.getRawParameterValue("Fb Gain off 1")->load());
-            voice->stringReso.setFeedbackFreqOff(string,apvts.getRawParameterValue("Fb Freq off 1")->load());
-            voice->stringReso.setLevelOff(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level off 1")->load()));
-            voice->stringReso.setInPos(string,apvts.getRawParameterValue("In Pos 1")->load());
-            voice->stringReso.setOutPos(string,apvts.getRawParameterValue("Out Pos 1")->load());   
-            voice->stringReso.setCoupling(string,apvts.getRawParameterValue("Coupling")->load());         
+            voice->stringReso.setFeedbackGainOn(string,apvts.getRawParameterValue("Fb Gain on")->load());
+            voice->stringReso.setFeedbackFreqOn(string,apvts.getRawParameterValue("Fb Freq on")->load());
+            voice->stringReso.setLevelOn(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level on")->load()));
+            voice->stringReso.setFeedbackGainOff(string,apvts.getRawParameterValue("Fb Gain off")->load());
+            voice->stringReso.setFeedbackFreqOff(string,apvts.getRawParameterValue("Fb Freq off")->load());
+            voice->stringReso.setLevelOff(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level off")->load()));
+            voice->stringReso.setInPos(string,apvts.getRawParameterValue("In Pos")->load());
+            voice->stringReso.setOutPos(string,apvts.getRawParameterValue("Out Pos")->load());   
+            voice->stringReso.setCoupling(string,apvts.getRawParameterValue("Coupling")->load());
+            voice->stringReso.setSamplerLevel(string, juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Sampler Level")->load()));
+            voice->stringReso.sampler[string].setWaveByNumber(apvts.getRawParameterValue("Attack Sample")->load());
+            voice->stringReso.sampler[string].setFilterFreq(apvts.getRawParameterValue("Sampler Lowpass")->load());
         }
+        
         voice->stringReso.setFreqCoarseFactor(0,apvts.getRawParameterValue("Freq Coarse 1")->load());
         voice->stringReso.setFreqFineFactor(0,apvts.getRawParameterValue("Freq Fine 1")->load());
         voice->stringReso.setFreqCoarseFactor(1,apvts.getRawParameterValue("Freq Coarse 2")->load());
         voice->stringReso.setFreqFineFactor(1,apvts.getRawParameterValue("Freq Fine 2")->load());
 
-        // voice->stringReso.setSmoothTime(apvts.getRawParameterValue("Smooth time")->load());
         voice->stringReso.setPortamentoTime(apvts.getRawParameterValue("Porta time")->load());
 
-        voice->adsr2Params.attack = apvts.getRawParameterValue("AN")->load();
-        voice->adsr2Params.decay = apvts.getRawParameterValue("DN")->load();
-        voice->adsr2Params.sustain = apvts.getRawParameterValue("SN")->load();
-        voice->adsr2Params.release = apvts.getRawParameterValue("RN")->load();
-        voice->adsr2.setParameters(voice->adsr2Params);
+        voice->adsrNParams.attack = apvts.getRawParameterValue("AN")->load();
+        voice->adsrNParams.decay = apvts.getRawParameterValue("DN")->load();
+        voice->adsrNParams.sustain = apvts.getRawParameterValue("SN")->load();
+        voice->adsrNParams.release = apvts.getRawParameterValue("RN")->load();
+        voice->adsrN.setParameters(voice->adsrNParams);
 
-        voice->stringReso.adsr1Params.attack = apvts.getRawParameterValue("A1")->load();
-        voice->stringReso.adsr1Params.decay = apvts.getRawParameterValue("D1")->load();
-        voice->stringReso.adsr1Params.sustain = apvts.getRawParameterValue("S1")->load();
-        voice->stringReso.adsr1Params.release = apvts.getRawParameterValue("R1")->load();
+        // voice->adsrOParams.attack = apvts.getRawParameterValue("AO")->load();
+        // voice->adsrOParams.decay = apvts.getRawParameterValue("DO")->load();
+        // voice->adsrOParams.sustain = apvts.getRawParameterValue("SO")->load();
+        // voice->adsrOParams.release = apvts.getRawParameterValue("RO")->load();
+        // voice->adsrO.setParameters(voice->adsrOParams);
+
+        voice->adsrCParams.attack = apvts.getRawParameterValue("AC")->load();
+        voice->adsrCParams.decay = apvts.getRawParameterValue("DC")->load();
+        voice->adsrCParams.sustain = apvts.getRawParameterValue("SC")->load();
+        voice->adsrCParams.release = apvts.getRawParameterValue("RC")->load();
+        voice->adsrC.setParameters(voice->adsrCParams);
+
+        voice->stringReso.adsr1Params.attack = apvts.getRawParameterValue("A")->load();
+        voice->stringReso.adsr1Params.decay = apvts.getRawParameterValue("D")->load();
+        voice->stringReso.adsr1Params.sustain = apvts.getRawParameterValue("S")->load();
+        voice->stringReso.adsr1Params.release = apvts.getRawParameterValue("R")->load();
         voice->stringReso.adsr1.setParameters(voice->stringReso.adsr1Params);
 
         voice->setNoiseFilterFreq(apvts.getRawParameterValue("Noise Freq")->load());
+        voice->setNoiseLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Noise Level")->load()));
+        // voice->setOscFilterFreq(apvts.getRawParameterValue("Osc Freq")->load());
+        // voice->setOscLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Osc Level")->load()));
+        voice->setCrackDensity(int(apvts.getRawParameterValue("Crack Density")->load()));
+        voice->setCrackFilterFreq(apvts.getRawParameterValue("Crack Freq")->load());
+        voice->setCrackLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Crack Level")->load()));
 
        } 
     }
@@ -235,21 +256,13 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::createParameters()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
-    layout.add(std::make_unique<juce::AudioParameterChoice>("OSC","OSC",juce::StringArray{"Sine","Saw","Square"}, 0));
     
-    layout.add(std::make_unique<juce::AudioParameterFloat>("AN","AN",juce::NormalisableRange<float>(0.001f,2.f,1e-3f,1.f),0.1f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("DN","DN",juce::NormalisableRange<float>(0.001f,2.f,1e-3f,1.f),1.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("SN","SN",juce::NormalisableRange<float>(0.0f,1.f,1e-3f,1.f),1.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("RN","RN",juce::NormalisableRange<float>(0.001f,10.f,1e-3f,1.f),0.5f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("A","A",juce::NormalisableRange<float>(0.001f,2.f,1e-3f,1.f),0.1f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("D","D",juce::NormalisableRange<float>(0.001f,2.f,1e-3f,1.f),1.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("S","S",juce::NormalisableRange<float>(0.0f,1.f,1e-3f,1.f),1.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("R","R",juce::NormalisableRange<float>(0.001f,10.f,1e-3f,1.f),0.5f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("A1","A1",juce::NormalisableRange<float>(0.001f,2.f,1e-3f,1.f),0.1f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("D1","D1",juce::NormalisableRange<float>(0.001f,2.f,1e-3f,1.f),1.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("S1","S1",juce::NormalisableRange<float>(0.0f,1.f,1e-3f,1.f),1.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("R1","R1",juce::NormalisableRange<float>(0.001f,10.f,1e-3f,1.f),0.5f));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Porta time","Porta time",juce::NormalisableRange<float>(0.001f,1.f,1e-3f,1.f),0.1f));
-    // layout.add(std::make_unique<juce::AudioParameterFloat>("Smooth time","Smooth time",juce::NormalisableRange<float>(0.001f,1.f,1e-3f,1.f),1.f));
-    // layout.add(std::make_unique<juce::AudioParameterFloat>("Coupling","Coupling",juce::NormalisableRange<float>(0.001f,1.f,1e-3f,1.f),1.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Porta time","Porta time",juce::NormalisableRange<float>(0.0001f,1.f,1e-3f,1.f),0.1f));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Coarse 1","Freq Coarse 1",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Fine 1","Freq Fine 1",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
@@ -257,33 +270,54 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Coarse 2","Freq Coarse 2",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Fine 2","Freq Fine 2",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("In Pos 1","In Pos 1",juce::NormalisableRange<float>(0.05f,0.45f,1e-3f,1.f),0.1f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Out Pos 1","Out Pos 1",juce::NormalisableRange<float>(0.55f,0.95f,1e-3f,1.f),0.9f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("In Pos","In Pos",juce::NormalisableRange<float>(0.05f,0.45f,1e-3f,1.f),0.1f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Out Pos","Out Pos",juce::NormalisableRange<float>(0.55f,0.95f,1e-3f,1.f),0.9f));
     // layout.add(std::make_unique<juce::AudioParameterFloat>("In Pos 2","In Pos 2",juce::NormalisableRange<float>(0.0f,1.f,1e-3f,1.f),1.f));
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Out Pos 2","Out Pos 2",juce::NormalisableRange<float>(0.001f,3.f,1e-3f,1.f),0.5f));
 
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Freq on 1","Fb Freq on 1",juce::NormalisableRange<float>(0.1f,100.f,1e-1f,1.f),40.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Gain on 1","Fb Gain on 1",juce::NormalisableRange<float>(0.f,1.f,1e-3f,1.f),0.95f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Level on 1","Level on 1",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Freq on","Fb Freq on",juce::NormalisableRange<float>(1.f,100.f,1e-1f,1.f),40.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Gain on","Fb Gain on",juce::NormalisableRange<float>(0.f,1.f,1e-3f,5.f),0.95f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Level on","Level on",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
 
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Freq on 2","Fb Freq on 2",juce::NormalisableRange<float>(0.1f,100.f,1e-1f,1.f),40.f));
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Gain on 2","Fb Gain on 2",juce::NormalisableRange<float>(0.f,1.f,1e-3f,1.f),0.95f));
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Level on 2","Level on 2",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Freq off 1","Fb Freq off 1",juce::NormalisableRange<float>(0.1f,100.f,1e-1f,1.f),40.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Gain off 1","Fb Gain off 1",juce::NormalisableRange<float>(0.f,1.f,1e-3f,1.f),0.95f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Level off 1","Level off 1",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Freq off","Fb Freq off",juce::NormalisableRange<float>(1.f,100.f,1e-1f,1.f),40.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Gain off","Fb Gain off",juce::NormalisableRange<float>(0.f,1.f,1e-3f,5.f),0.95f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Level off","Level off",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
 
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Freq off 2","Fb Freq off 2",juce::NormalisableRange<float>(0.0f,1.f,1e-3f,1.f),1.f));
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Gain off 2","Fb Gain off 2",juce::NormalisableRange<float>(0.001f,3.f,1e-3f,1.f),0.5f));
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Level off 2","Level off 2",juce::NormalisableRange<float>(0.001f,3.f,1e-3f,1.f),0.5f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Noise Freq","Noise Freq",juce::NormalisableRange<float>(20.f,20000.f,1.f,1.f),2000.f));
-
     layout.add(std::make_unique<juce::AudioParameterFloat>("Coupling","Coupling",juce::NormalisableRange<float>(0.f,1.f,1e-3f,1.f),0.05f));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Crack Density","Crack Density",juce::NormalisableRange<float>(0.f,10000.f,1.f,1.f),60.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Crack Freq","Crack Freq",juce::NormalisableRange<float>(20.f,20000.f,1.f,1.f),2000.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Crack Level","Crack Level",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("AC","AC",juce::NormalisableRange<float>(0.001f,5.f,1e-3f,1.f),0.1f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("DC","DC",juce::NormalisableRange<float>(0.001f,5.f,1e-3f,1.f),1.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("SC","SC",juce::NormalisableRange<float>(0.0f,1.f,1e-3f,1.f),1.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("RC","RC",juce::NormalisableRange<float>(0.001f,10.f,1e-3f,1.f),0.5f));
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Noise Freq","Noise Freq",juce::NormalisableRange<float>(20.f,20000.f,1.f,1.f),2000.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Noise Level","Noise Level",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("AN","AN",juce::NormalisableRange<float>(0.001f,5.f,1e-3f,1.f),0.1f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("DN","DN",juce::NormalisableRange<float>(0.001f,5.f,1e-3f,1.f),1.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("SN","SN",juce::NormalisableRange<float>(0.0f,1.f,1e-3f,1.f),1.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("RN","RN",juce::NormalisableRange<float>(0.001f,10.f,1e-3f,1.f),0.5f));
+
+    // layout.add(std::make_unique<juce::AudioParameterFloat>("Osc Freq","Osc Freq",juce::NormalisableRange<float>(20.f,20000.f,1.f,1.f),2000.f));
+    // layout.add(std::make_unique<juce::AudioParameterFloat>("Osc Level","Osc Level",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
+    // layout.add(std::make_unique<juce::AudioParameterFloat>("AO","AO",juce::NormalisableRange<float>(0.001f,5.f,1e-3f,1.f),0.1f));
+    // layout.add(std::make_unique<juce::AudioParameterFloat>("DO","DO",juce::NormalisableRange<float>(0.001f,5.f,1e-3f,1.f),1.f));
+    // layout.add(std::make_unique<juce::AudioParameterFloat>("SO","SO",juce::NormalisableRange<float>(0.0f,1.f,1e-3f,1.f),1.f));
+    // layout.add(std::make_unique<juce::AudioParameterFloat>("RO","RO",juce::NormalisableRange<float>(0.001f,10.f,1e-3f,1.f),0.5f));
+
+    layout.add(std::make_unique<juce::AudioParameterChoice>("Attack Sample","Attack Sample",juce::StringArray{"Sine","Saw","Square", "Tri", "Piano"}, 0));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Sampler Level","Sampler Level",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Sampler Lowpass","Sampler Lowpass",juce::NormalisableRange<float>(0.75f,20.f,1e-2f,1.f),5.f));
 
     return layout;
-
 }

@@ -11,6 +11,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "SimpleSampler.h"
 #include <iostream>
 
 #define NUMSTRINGS 2
@@ -25,10 +26,11 @@ public:
 
   typedef struct
   {
-    juce::ADSR::Parameters adsrParams1, adsrParamsn;
-    float decay1, decayn;
-    float sustain1, sustainn;
-    float release1, releasen;
+    juce::ADSR::Parameters adsrParams1;
+    float attack1;
+    float decay1;
+    float sustain1;
+    float release1;
     float portamento;
     float smoothTime;
     float stringPeriodInSamples;
@@ -93,17 +95,23 @@ public:
 
   void setCoupling(int string, float fac, bool force=false);
 
+  void setSamplerLevel(int string, float lvl);
+
   // float maxFreq;
   juce::dsp::ProcessSpec processSpec;
 
-  juce::ADSR adsr1, adsrn;
+  juce::ADSR adsr1;
   juce::ADSR::Parameters adsr1Params;
+
+  OneShotSampler sampler[NUMSTRINGS];
 
 private:
 
   //void setTargetDelaySamples();
 
   void setDelaySamples(int string, bool force = false);
+
+  void setSamplerFreq(int string);
 
   juce::dsp::DelayLine<float,juce::dsp::DelayLineInterpolationTypes::Lagrange3rd> delayLine[4*NUMSTRINGS];
   juce::dsp::IIR::Filter<float> fbFilter[NUMSTRINGS];
@@ -123,5 +131,4 @@ private:
 
   float previousOutput[NUMSTRINGS];
 
-  juce::dsp::Oscillator<float> lfo { [](float x) {return std::sin(x); }};
 };
