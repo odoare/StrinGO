@@ -45,6 +45,7 @@ public:
     float feedbackFreqOff[NUMSTRINGS];
     float levelOff[NUMSTRINGS];
     float coupling[NUMSTRINGS];
+    float velocityLevel;
     bool isOn;
   } StringResoParams;
 
@@ -97,7 +98,9 @@ public:
 
   void setSamplerLevel(int string, float lvl);
 
-  // float maxFreq;
+  void setVelocityLevel(float lvl);
+  void setVelocity(float vel);
+
   juce::dsp::ProcessSpec processSpec;
 
   juce::ADSR adsr1;
@@ -123,6 +126,8 @@ private:
                                                                 smoothCoupling[NUMSTRINGS];
 
   StringResoParams params;
+
+  float velocityLevelFactor;
 
   float currentFeedbackGain[NUMSTRINGS],
         currentFeedbackFreq[NUMSTRINGS],

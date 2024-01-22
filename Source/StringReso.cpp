@@ -51,6 +51,8 @@ StringReso::StringReso()
     params.coupling[0] = 0.f;//0.1f;
     params.coupling[1] = 0.f;//0.1f;
     params.isOn=false;
+    params.velocityLevel = 0.f;
+    
     for (int i=0; i<NUMSTRINGS; i++)
         {
             currentFeedbackFreq[i] = params.feedbackFreqOff[i];
@@ -146,7 +148,7 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
 
                 previousOutput[suivant(NUMSTRINGS,string+1)] = in1+in2;
 
-                outChannelData[sample] += level[string]*(in1+in2);
+                outChannelData[sample] += velocityLevelFactor*level[string]*(in1+in2);
             }
         }
     }
@@ -433,6 +435,19 @@ void StringReso::setDelaySamples(int string, bool force)
         }
 
 }
+
+void StringReso::setVelocityLevel(float lvl)
+{
+    params.velocityLevel = lvl;
+}
+
+void StringReso::setVelocity(float vel)
+{
+    velocityLevelFactor = juce::jmap<float>(float(vel), 1-params.velocityLevel, 1) ;
+    for (int string=0;string<NUMSTRINGS;string++)
+        sampler[string].setVelocity(vel);
+}
+
 
 void StringReso::setSamplerFreq(int string)
 {

@@ -43,6 +43,8 @@ public:
   void renderNextBlock (juce::AudioBuffer< float > &buffer, int startSample, int numSamples) override;
 
   void setNoiseFilterFreq(float freq);
+  void setNoiseFilterVelocityFreqInfluence(float factor);
+  void setVelocity(float vel);
   void setNoiseLevel(float lvl);
 
   void setSamplerLevel(float lvl);
@@ -65,6 +67,7 @@ private:
   juce::dsp::IIR::Filter<float> noiseFilter;
   float noiseFilterFreq  { 1000.f };
   float noiseLevel { 1.0f };
+  float noiseFilterVelocityFreqInfluence;
 
   // OneShotSampler sampler;
   // float samplerLevel { 1.0 };

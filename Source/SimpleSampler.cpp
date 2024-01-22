@@ -23,16 +23,13 @@ void OneShotSampler::prepare(juce::dsp::ProcessSpec spec)
   sampleRate = spec.sampleRate;
   referenceFrequency = sampleRate/ARRAYSIZE;
   increment = playingFrequency/(ARRAYSIZE*referenceFrequency);
-  setFilterFreq(filterFreqFactor);
+  setFilterFreqFactor(filterFreqFactor);
+  setFilterVelocityFreqFactor(filterVelocityFreqFactor);
 }
 
 void OneShotSampler::setWave(float *wav)
 {
-  for (int sample=0; sample<ARRAYSIZE; sample++)
-  {
-    wave[sample] = wav[sample];
-    // wave = wav;
-  }
+  wave = wav;
 }
 
 void OneShotSampler::setWaveByNumber(int waveNumber)
@@ -40,11 +37,7 @@ void OneShotSampler::setWaveByNumber(int waveNumber)
   if (waveNumber!=currentWaveNumber)
   {
     currentWaveNumber = waveNumber;
-    if (waveNumber==0) setWave(sine);
-    else if (waveNumber==1) setWave(saw);
-    else if (waveNumber==2) setWave(square);
-    else if (waveNumber==3) setWave(tri);
-      else if (waveNumber==4) setWave(piano);
+    setWave(getWave(waveNumber));
   }
 }
 
@@ -71,11 +64,22 @@ void OneShotSampler::stop()
   // std::cout << "Stopped" << std::endl;
 }
 
-void OneShotSampler::setFilterFreq(float freqFactor)
+void OneShotSampler::setFilterFreqFactor(float freqFactor)
 {
   filterFreqFactor = freqFactor;
-  filter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,playingFrequency * filterFreqFactor);
 }
+
+void OneShotSampler::setFilterVelocityFreqFactor(float factor)
+{
+  filterVelocityFreq = factor;
+}
+
+void OneShotSampler::setVelocity(float vel)
+{
+  filterVelocityFreqFactor = juce::jmap<float>(float(vel), 1-filterVelocityFreq, 1) ;
+  filter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,playingFrequency * filterFreqFactor * filterVelocityFreqFactor);
+}
+
 
 void OneShotSampler::setLevel(float lvl)
 {
@@ -92,9 +96,7 @@ void OneShotSampler::setPlayingFrequency(float freq)
 {
   playingFrequency = freq;
   increment = playingFrequency/(ARRAYSIZE*referenceFrequency);
-  setFilterFreq(filterFreqFactor);
-        // std::cout << "Fréquence : " << freq <<  std::endl;
-        // std::cout << "Incrément : " << increment <<  std::endl;
+  setFilterFreqFactor(filterFreqFactor);
 }
 
 float OneShotSampler::getSampleAtPos(float pos)
@@ -111,16 +113,8 @@ float OneShotSampler::processNextSample()
   if (isRunning)
   {
     float value = level*filter.processSample(getSampleAtPos(position));
-    //float value = level*getSampleAtPos(position);
-    // std::cout << increment << "<";
     position = position + increment;
     isRunning = (position<1.f);
-    //std::cout <<  position << " " ;
-    // if (position<0.f)
-    //   std::cout << stringNum << ">N "; 
-    // else 
-    //   std::cout << stringNum << ">" << position << " ";
-    // if (!isRunning) std::cout << "Position " << position << " STOP SAMPLER" << std::endl;
     return value;
   }
   else return 0.f;

@@ -17,11 +17,13 @@ class OneShotSampler
 {
 private:
   /* data */
-  float wave[ARRAYSIZE];
+  float* wave;
   float sampleRate;
   float referenceFrequency;
   float playingFrequency;
   float filterFreqFactor { 5.0 };
+  float filterVelocityFreq {0.f};
+  float filterVelocityFreqFactor {1.f};
   float level { 1.0 };
   int currentWaveNumber;
 
@@ -37,7 +39,11 @@ public:
   void setWaveByNumber(int waveNumber);
   void start();
   void stop();
-  void setFilterFreq(float freq);
+  void setFilterFreqFactor(float freq);
+  void setFilterVelocityFreqFactor(float freq);
+
+  void setVelocity(float vel);
+
   void setLevel(float lvl);
   void setReferenceFrequency(float freq);
   void setPlayingFrequency(float freq);

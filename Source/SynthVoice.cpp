@@ -35,7 +35,10 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::Synthesise
 
   // osc.setFrequency(noteFreq);
   
+  setVelocity(velocity);
+
   stringReso.setStringFreq(noteFreq);
+  stringReso.setVelocity(velocity);
   stringReso.setIsOn(true);
 
   #ifdef DEBUG
@@ -92,22 +95,11 @@ void SynthVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outp
   adsr1.setSampleRate (sampleRate);
   adsr2.setSampleRate (sampleRate);
   adsrN.setSampleRate (sampleRate);
-  // adsrO.setSampleRate (sampleRate);
   adsrC.setSampleRate (sampleRate);
   
   processSpec.maximumBlockSize = samplesPerBlock;
   processSpec.sampleRate = sampleRate;
   processSpec.numChannels = outputChannels;
-
-  // osc.prepare(processSpec);
-  // gain.prepare(processSpec);
-
-  // osc.setFrequency(220.f);
-  // gain.setGainLinear(0.01f);
-
-  // sampler.setWave(saw);
-  // sampler.setReferenceFrequency(processSpec.sampleRate/ARRAYSIZE);
-  // sampler.prepare(processSpec);
 
   stringReso.prepare(processSpec, 10.f);
 
@@ -127,6 +119,17 @@ void SynthVoice::setNoiseFilterFreq(float freq)
     noiseFilterFreq = freq;
     noiseFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseFilterFreq);
   }
+}
+
+void SynthVoice::setNoiseFilterVelocityFreqInfluence(float factor)
+{
+  noiseFilterVelocityFreqInfluence = factor;
+}
+
+void SynthVoice::setVelocity(float vel)
+{
+  float filterVelocityFreqFactor = juce::jmap<float>(float(vel), 1-noiseFilterVelocityFreqInfluence, 1) ;
+  noiseFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseFilterFreq*filterVelocityFreqFactor);
 }
 
 void SynthVoice::setNoiseLevel(float lvl)
