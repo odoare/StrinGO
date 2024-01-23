@@ -56,7 +56,6 @@ void SynthVoice::stopNote (float velocity, bool allowTailOff)
   adsr1.noteOff();
   adsr2.noteOff();
   adsrN.noteOff();
-  // adsrO.noteOff();
   adsrC.noteOff();
 
   //sampler.stop();    // if (position<0.f)
@@ -137,29 +136,6 @@ void SynthVoice::setNoiseLevel(float lvl)
   noiseLevel = lvl;
 }
 
-// void SynthVoice::setSamplerLevel(float lvl)
-// {
-//   sampler.setLevel(lvl);
-// }
-
-// void SynthVoice::setSamplerFilterFreqFactor(float freqFactor)
-// {
-//   sampler.setFilterFreq(freqFactor);
-// }
-
-// void SynthVoice::setOscFilterFreq(float freq)
-// {
-//   if (freq!=noiseFilterFreq)
-//   {
-//     oscFilterFreq = freq;
-//     oscFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,oscFilterFreq);
-//   }
-// }
-
-// void SynthVoice::setOscLevel(float lvl)
-// {
-//   oscLevel = lvl;
-// }
 
 void SynthVoice::setCrackDensity(int d)
 {
@@ -180,7 +156,6 @@ void SynthVoice::setCrackLevel(float lvl)
   crackLevel = lvl;
 }
 
-
 void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startSample, int numSamples)
 {
   jassert(isPrepared);
@@ -200,13 +175,10 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startS
     for (int sample=0; sample<numSamples; ++sample)
       channelData[sample] = adsrN.getNextSample() * noiseFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f))
         + adsrC.getNextSample() * crackFilter.processSample(crackLevel*cracksGenerator.nextSample());
-        // + sampler.processNextSample();
-        // + adsrO.getNextSample() * oscFilter.processSample(oscLevel*osc.processSample(0.0f));
   }
-  //adsrN.applyEnvelopeToBuffer(inBuffer, 0, inBuffer.getNumSamples());
   
   stringReso.process(inBuffer, synthBuffer, 0, numSamples);
-  //adsr1.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());
+
   for (int channel=0; channel<buffer.getNumChannels(); ++channel)
   {
     buffer.addFrom(channel,startSample, synthBuffer, 0, 0, numSamples);

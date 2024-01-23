@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    OneShotSampler.cpp
+    SimpleSampler.cpp
     Created: 19 Jan 2024 12:56:27pm
     Author:  od
 
@@ -10,15 +10,15 @@
 
 #include "SimpleSampler.h"
 
-OneShotSampler::OneShotSampler()
+SimpleSampler::SimpleSampler()
 {
 }
 
-OneShotSampler::~OneShotSampler()
+SimpleSampler::~SimpleSampler()
 {
 }
 
-void OneShotSampler::prepare(juce::dsp::ProcessSpec spec)
+void SimpleSampler::prepare(juce::dsp::ProcessSpec spec)
 {
   sampleRate = spec.sampleRate;
   referenceFrequency = sampleRate/ARRAYSIZE;
@@ -27,12 +27,12 @@ void OneShotSampler::prepare(juce::dsp::ProcessSpec spec)
   setFilterVelocityFreqFactor(filterVelocityFreqFactor);
 }
 
-void OneShotSampler::setWave(float *wav)
+void SimpleSampler::setWave(float *wav)
 {
   wave = wav;
 }
 
-void OneShotSampler::setWaveByNumber(int waveNumber)
+void SimpleSampler::setWaveByNumber(int waveNumber)
 {
   if (waveNumber!=currentWaveNumber)
   {
@@ -41,7 +41,7 @@ void OneShotSampler::setWaveByNumber(int waveNumber)
   }
 }
 
-void OneShotSampler::start()
+void SimpleSampler::start()
 {
 
   position = 0.f;
@@ -57,49 +57,55 @@ void OneShotSampler::start()
   //           << std::endl;
 }
 
-void OneShotSampler::stop()
+void SimpleSampler::stop()
 {
   isRunning = false;
   position = 0.f;
   // std::cout << "Stopped" << std::endl;
 }
 
-void OneShotSampler::setFilterFreqFactor(float freqFactor)
+void SimpleSampler::setFilterFreqFactor(float freqFactor)
 {
   filterFreqFactor = freqFactor;
 }
 
-void OneShotSampler::setFilterVelocityFreqFactor(float factor)
+void SimpleSampler::setFilterVelocityFreqFactor(float factor)
 {
   filterVelocityFreq = factor;
 }
 
-void OneShotSampler::setVelocity(float vel)
+void SimpleSampler::setVelocity(float vel)
 {
   filterVelocityFreqFactor = juce::jmap<float>(float(vel), 1-filterVelocityFreq, 1) ;
   filter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,playingFrequency * filterFreqFactor * filterVelocityFreqFactor);
 }
 
 
-void OneShotSampler::setLevel(float lvl)
+void SimpleSampler::setLevel(float lvl)
 {
   level = lvl;
 }
 
-void OneShotSampler::setReferenceFrequency(float freq)
+void SimpleSampler::setReferenceFrequency(float freq)
 {
   referenceFrequency = freq;
   increment = playingFrequency/(ARRAYSIZE*referenceFrequency);
 }
 
-void OneShotSampler::setPlayingFrequency(float freq)
+void SimpleSampler::setPlayingFrequency(float freq)
 {
   playingFrequency = freq;
   increment = playingFrequency/(ARRAYSIZE*referenceFrequency);
   setFilterFreqFactor(filterFreqFactor);
 }
 
-float OneShotSampler::getSampleAtPos(float pos)
+void SimpleSampler::setLooping(bool l)
+{
+  loop = l;
+  std::cout << loop << std::endl;
+}
+
+float SimpleSampler::getSampleAtPos(float pos)
 {
   float sampleNumber = (ARRAYSIZE-1)*pos;
   int sampleNumber0 = floor(sampleNumber);
@@ -108,39 +114,18 @@ float OneShotSampler::getSampleAtPos(float pos)
   // return 0;
 }
 
-float OneShotSampler::processNextSample()
+float SimpleSampler::processNextSample()
 {
   if (isRunning)
   {
     float value = level*filter.processSample(getSampleAtPos(position));
     position = position + increment;
-    isRunning = (position<1.f);
+    if (position>=1.f)
+      {
+        position = 0.f;
+        isRunning = loop;
+      }
     return value;
   }
   else return 0.f;
 }
-
-/*
-
-Waveform::Waveform()
-{
-}
-
-Waveform::~Waveform()
-{
-}
-
-float Waveform::getSampleAtPos(float pos)
-{
-  float sampleNumber = (ARRAYSIZE-1)*pos;
-  int sampleNumber0 = floor(sampleNumber);
-  float samplePos0 = sampleNumber - floor(sampleNumber);
-  return juce::jmap<float>(samplePos0,wave[sampleNumber0],wave[sampleNumber0+1]);
-}
-
-void Waveform::setWave(Wave& wav)
-{
-  //for (int i=0; i<ARRAYSIZE; i++) wave[i]=wav[i];
-  wave = wav;
-}
-*/

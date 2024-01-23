@@ -12,7 +12,7 @@
 
 int suivant(int N, int i)
 {
-  if (i>N)
+  if (i>=N)
     return 0;
   else return i;
 }
@@ -123,14 +123,13 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
             float adsr1val = adsr1.getNextSample();
             for (int string=0; string<NUMSTRINGS; string++)
             {
-                //std::cout << "str " << string << " ";
                 input[string] = inChannelData[sample] + sampler[string].processNextSample();
                 float coupling = smoothCoupling[string].getNextValue();
                 float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
                 float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
                 fbFreq[string] = juce::jmap<float>(adsr1val,fOff, fOn);
                 fbGain[string] = juce::jmap<float>(adsr1val,params.feedbackGainOff[string], params.feedbackGainOn[string]);
-                level[string] = juce::jmap<float>(adsr1val,params.levelOff[string], params.levelOn[string]);
+                level[string] = params.level[string]*juce::jmap<float>(adsr1val,params.levelOff[string], params.levelOn[string]);
 
                 int dec = 4*string;
 
@@ -236,8 +235,6 @@ StringReso::StringResoParams StringReso::getParams()
 
 void StringReso::setIsOn(bool on, bool force)
 {
-    // std::cout << "     begin StringReso::setIsOn    " << std::endl;
-
     if (on!=params.isOn)
     {
         params.isOn = on;
@@ -270,73 +267,38 @@ void StringReso::setSamplerLevel(int string, float lvl)
 
 void StringReso::setFeedbackGainOn(int string, float gain, bool force)
 {
-    // if (gain!=params.feedbackGainOn[string])
-    // {
-        params.feedbackGainOn[string] = gain;
-    //     if (params.isOn) setFeedbackGain(string, gain, force);
-    // }
+    params.feedbackGainOn[string] = gain;
 }
 
 void StringReso::setFeedbackGainOff(int string, float gain, bool force)
 {
-    // if (gain!=params.feedbackGainOff[string])
-    // {
-        params.feedbackGainOff[string] = gain;
-    //     if (!params.isOn) setFeedbackGain(string, gain, force);
-    // }
+    params.feedbackGainOff[string] = gain;
 }
 
 void StringReso::setFeedbackFreqOn(int string, float freq, bool force)
 {
-    // if (freq!=params.feedbackFreqOn[string])
-    // {
-        params.feedbackFreqOn[string] = freq;
-    //     if (params.isOn) setFeedbackFreq(string, freq, force);
-    // }
+    params.feedbackFreqOn[string] = freq;
 }
-
-
 
 void StringReso::setFeedbackFreqOff(int string, float freq, bool force)
 {
-    // if (freq!=params.feedbackFreqOff[string])
-    // {
-        params.feedbackFreqOff[string] = freq;
-    //     if (!params.isOn) setFeedbackFreq(string, freq, force);
-    // }
+    params.feedbackFreqOff[string] = freq;
 }
 
 void StringReso::setLevelOn(int string, float lvl, bool force)
 {
-    // if (lvl!=params.levelOn[string])
-    // {
-        params.levelOn[string] = lvl;
-    //     if (params.isOn) setLevel(string, lvl, force);
-    // }
+    params.levelOn[string] = lvl;
 }
 
 void StringReso::setLevelOff(int string, float lvl, bool force)
 {
-    // if (lvl!=params.levelOff[string])
-    // {
-        params.levelOff[string] = lvl;
-    //     if (!params.isOn) setLevel(string, lvl, force);
-    // }
-}    // We update the feedback filter frequency
-    // if (params.isOn)
-    //     {
-    //         setFeedbackFreq(string, params.feedbackFreqOn[string], force);
-    //     }
-    // else
-    //     {
-    //         setFeedbackFreq(string, params.feedbackFreqOff[string], force);
-    //     }
+    params.levelOff[string] = lvl;
+}   
 
-    // std::cout << "string  " << string << std::endl;
-    // std::cout << "delay 0 : " << delaySamples[0] << std::endl;
-    // std::cout << "delay 1 : " << delaySamples[1] << std::endl;
-    // std::cout << "delay 2 : " << delaySamples[2] << std::endl;
-    // std::cout << "delay 3 : " << delaySamples[3] << std::endl;
+void StringReso::setLevel(int string, float lvl, bool force)
+{
+    params.level[string] = lvl;
+}
 
 void StringReso::setFreqCoarseFactor(int string, float fac, bool force)
 {

@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    OneShotSampler.h
+    SimpleSampler.h
     Created: 19 Jan 2024 12:56:27pm
     Author:  od
 
@@ -13,7 +13,7 @@
 #include "SampleArrays.h"
 #include <iostream>
 
-class OneShotSampler
+class SimpleSampler
 {
 private:
   /* data */
@@ -25,6 +25,7 @@ private:
   float filterVelocityFreq {0.f};
   float filterVelocityFreqFactor {1.f};
   float level { 1.0 };
+  bool loop { false };
   int currentWaveNumber;
 
   float getSampleAtPos(float pos);
@@ -32,8 +33,8 @@ private:
   juce::dsp::IIR::Filter<float> filter;
 
 public:
-  OneShotSampler();
-  ~OneShotSampler();
+  SimpleSampler();
+  ~SimpleSampler();
   void prepare(juce::dsp::ProcessSpec spec);
   void setWave(float *wav);
   void setWaveByNumber(int waveNumber);
@@ -41,12 +42,11 @@ public:
   void stop();
   void setFilterFreqFactor(float freq);
   void setFilterVelocityFreqFactor(float freq);
-
   void setVelocity(float vel);
-
   void setLevel(float lvl);
   void setReferenceFrequency(float freq);
   void setPlayingFrequency(float freq);
+  void setLooping(bool l);
   float processNextSample();
   int stringNum;
 

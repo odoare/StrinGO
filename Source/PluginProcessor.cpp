@@ -148,8 +148,8 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-    //     buffer.clear (i, 0, buffer.getNumSamples());
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear (i, 0, buffer.getNumSamples());
 
     for (int i=0; i<synth.getNumVoices(); ++i)
     {
@@ -165,31 +165,39 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
             voice->stringReso.setLevelOff(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level off")->load()));
             voice->stringReso.setInPos(string,apvts.getRawParameterValue("In Pos")->load());
             voice->stringReso.setOutPos(string,apvts.getRawParameterValue("Out Pos")->load());   
-            voice->stringReso.setCoupling(string,apvts.getRawParameterValue("Coupling")->load());
             voice->stringReso.setSamplerLevel(string, juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Sampler Level")->load()));
             voice->stringReso.sampler[string].setWaveByNumber(apvts.getRawParameterValue("Attack Sample")->load());
             voice->stringReso.sampler[string].setFilterFreqFactor(apvts.getRawParameterValue("Sampler Lowpass")->load());
             voice->stringReso.sampler[string].setFilterVelocityFreqFactor(apvts.getRawParameterValue("Velocity Sample Filter")->load());
+            voice->stringReso.sampler[string].setLooping(apvts.getRawParameterValue("Loop Sample")->load());
         }
         
         voice->stringReso.setFreqCoarseFactor(0,apvts.getRawParameterValue("Freq Coarse 1")->load());
         voice->stringReso.setFreqFineFactor(0,apvts.getRawParameterValue("Freq Fine 1")->load());
         voice->stringReso.setFreqCoarseFactor(1,apvts.getRawParameterValue("Freq Coarse 2")->load());
         voice->stringReso.setFreqFineFactor(1,apvts.getRawParameterValue("Freq Fine 2")->load());
-
         voice->stringReso.setPortamentoTime(apvts.getRawParameterValue("Porta time")->load());
+
+        voice->stringReso.setLevel(0,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level 1")->load()));
+        voice->stringReso.setLevel(1,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level 2")->load()));
+        
+        float c = apvts.getRawParameterValue("Coupling")->load();
+        if (c>0.f)
+        {
+            voice->stringReso.setCoupling(0,0.f);
+            voice->stringReso.setCoupling(1,c);
+        }
+        else
+        {
+            voice->stringReso.setCoupling(0,c);
+            voice->stringReso.setCoupling(1,0);
+        }
 
         voice->adsrNParams.attack = apvts.getRawParameterValue("AN")->load();
         voice->adsrNParams.decay = apvts.getRawParameterValue("DN")->load();
         voice->adsrNParams.sustain = apvts.getRawParameterValue("SN")->load();
         voice->adsrNParams.release = apvts.getRawParameterValue("RN")->load();
         voice->adsrN.setParameters(voice->adsrNParams);
-
-        // voice->adsrOParams.attack = apvts.getRawParameterValue("AO")->load();
-        // voice->adsrOParams.decay = apvts.getRawParameterValue("DO")->load();
-        // voice->adsrOParams.sustain = apvts.getRawParameterValue("SO")->load();
-        // voice->adsrOParams.release = apvts.getRawParameterValue("RO")->load();
-        // voice->adsrO.setParameters(voice->adsrOParams);
 
         voice->adsrCParams.attack = apvts.getRawParameterValue("AC")->load();
         voice->adsrCParams.decay = apvts.getRawParameterValue("DC")->load();
@@ -205,8 +213,6 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
 
         voice->setNoiseFilterFreq(apvts.getRawParameterValue("Noise Freq")->load());
         voice->setNoiseLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Noise Level")->load()));
-        // voice->setOscFilterFreq(apvts.getRawParameterValue("Osc Freq")->load());
-        // voice->setOscLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Osc Level")->load()));
         voice->setCrackDensity(int(apvts.getRawParameterValue("Crack Density")->load()));
         voice->setCrackFilterFreq(apvts.getRawParameterValue("Crack Freq")->load());
         voice->setCrackLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Crack Level")->load()));
@@ -215,9 +221,20 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
        } 
     }
 
-    //buffer.clear();
+    outputGain = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Gain")->load());
+    outputLevel = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Level")->load());
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    // TANH saturation of the output buffer
+    for (int channel = 0; channel < totalNumOutputChannels; ++channel)
+    {
+        auto* channelData = buffer.getWritePointer (channel);
+        for (int sample=0; sample<buffer.getNumSamples(); ++sample)
+        {
+            channelData[sample] = outputLevel * tanh(outputGain * channelData[sample]);
+        }
+    }
 }
 
 //==============================================================================
@@ -266,9 +283,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Porta time","Porta time",juce::NormalisableRange<float>(0.0001f,1.f,1e-3f,1.f),0.1f));
     
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Level 1","Level 1",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Coarse 1","Freq Coarse 1",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Fine 1","Freq Fine 1",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Level 2","Level 2",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Coarse 2","Freq Coarse 2",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Fine 2","Freq Fine 2",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
 
@@ -293,7 +312,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Fb Gain off 2","Fb Gain off 2",juce::NormalisableRange<float>(0.001f,3.f,1e-3f,1.f),0.5f));
     // layout.add(std::make_unique<juce::AudioParameterFloat>("Level off 2","Level off 2",juce::NormalisableRange<float>(0.001f,3.f,1e-3f,1.f),0.5f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Coupling","Coupling",juce::NormalisableRange<float>(0.f,1.f,1e-3f,1.f),0.05f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Coupling","Coupling",juce::NormalisableRange<float>(-0.5f,0.5f,1e-3f,1.f),0.0f));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Crack Density","Crack Density",juce::NormalisableRange<float>(0.f,10000.f,1.f,1.f),60.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Crack Freq","Crack Freq",juce::NormalisableRange<float>(20.f,20000.f,1.f,1.f),2000.f));
@@ -318,6 +337,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     // layout.add(std::make_unique<juce::AudioParameterFloat>("RO","RO",juce::NormalisableRange<float>(0.001f,10.f,1e-3f,1.f),0.5f));
 
     layout.add(std::make_unique<juce::AudioParameterChoice>("Attack Sample","Attack Sample",juce::StringArray{"Sine","Saw","Square", "Tri", "Piano"}, 0));
+    layout.add(std::make_unique<juce::AudioParameterBool>("Loop Sample","Loop Sample", false));
+    
     layout.add(std::make_unique<juce::AudioParameterFloat>("Sampler Level","Sampler Level",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),-3.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Sampler Lowpass","Sampler Lowpass",juce::NormalisableRange<float>(0.75f,20.f,1e-2f,1.f),5.f));
 
@@ -325,5 +346,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterFloat>("Velocity Sample Filter","Velocity Sample Filter",juce::NormalisableRange<float>(0.f,1.f,1e-2f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Velocity Noise Filter","Velocity Noise Filter",juce::NormalisableRange<float>(0.f,1.f,1e-2f,1.f),0.f));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Output Gain","Output Gain",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),-3.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Output Level","Output Level",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),0.f));
+    
     return layout;
 }

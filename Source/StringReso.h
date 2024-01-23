@@ -34,6 +34,7 @@ public:
     float portamento;
     float smoothTime;
     float stringPeriodInSamples;
+    float level[NUMSTRINGS];
     float freqCoarseFactor[NUMSTRINGS];
     float freqFineFactor[NUMSTRINGS];
     float inPos[NUMSTRINGS];
@@ -83,7 +84,7 @@ public:
 
   void setLevelOn(int string, float freq, bool force=false);
   void setLevelOff(int string, float freq, bool force=false);
-  void setLevel(int string, float freq, bool force=false);
+  void setLevel(int string, float lvl, bool force=false);
 
   void setStringPeriodInSamples(float period, bool force = false);
   void setStringFreq(float freq, bool force = false);
@@ -106,7 +107,7 @@ public:
   juce::ADSR adsr1;
   juce::ADSR::Parameters adsr1Params;
 
-  OneShotSampler sampler[NUMSTRINGS];
+  SimpleSampler sampler[NUMSTRINGS];
 
 private:
 
