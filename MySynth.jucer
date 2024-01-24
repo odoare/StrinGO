@@ -19,15 +19,15 @@
       <FILE id="HrAB4r" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="XJiXjs" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
       <FILE id="J9MLpR" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
-      <FILE id="veBRnW" name="CracksGenerator.cpp" compile="1" resource="0"
-            file="Source/CracksGenerator.cpp"/>
       <FILE id="t0c58f" name="CracksGenerator.h" compile="0" resource="0"
             file="Source/CracksGenerator.h"/>
+      <FILE id="veBRnW" name="CracksGenerator.cpp" compile="1" resource="0"
+            file="Source/CracksGenerator.cpp"/>
+      <FILE id="ZYDkCI" name="SampleArrays.h" compile="0" resource="0" file="Source/SampleArrays.h"/>
+      <FILE id="dIK27I" name="SimpleSampler.h" compile="0" resource="0" file="Source/SimpleSampler.h"/>
+      <FILE id="S8KWqx" name="SimpleSampler.cpp" compile="1" resource="0"
+            file="Source/SimpleSampler.cpp"/>
     </GROUP>
-    <FILE id="ZYDkCI" name="SampleArrays.h" compile="0" resource="0" file="Source/SampleArrays.h"/>
-    <FILE id="S8KWqx" name="SimpleSampler.cpp" compile="1" resource="0"
-          file="Source/SimpleSampler.cpp"/>
-    <FILE id="dIK27I" name="SimpleSampler.h" compile="0" resource="0" file="Source/SimpleSampler.h"/>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
