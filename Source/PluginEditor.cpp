@@ -189,14 +189,14 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     addAndConnectLabel(velocityNoiseFreq, velocityNoiseFreqLabel);
     velocityNoiseFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Noise Filter",velocityNoiseFreq);
 
-    setSize (1200, 800);
+    setSize (900, 600);
 }
 
 MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor()
 {
 }
 
-//==============================================================================
+//========================================  ======================================
 void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
 {
     static const float border = 0.01;
@@ -217,19 +217,19 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     g.setGradientFill(grad);
     g.fillAll();
 
-    g.setColour(SAMPLERCOLOR.darker());
+    g.setColour(SAMPLERCOLOR.darker().darker());
     juce::Rectangle<int> samplerRect(uxb+0.75*step*ux,uyb+9*uy,7.25*step*ux,1.2*step*uy);
     g.drawRect(samplerRect);
     juce::Rectangle<int> samplerBand(uxb+0.75*step*ux,uyb+9*uy,0.25*step*ux,1.2*step*uy);
     g.fillRect(samplerBand);
 
-    g.setColour(CRACKSCOLOR.darker());
+    g.setColour(CRACKSCOLOR.darker().darker());
     juce::Rectangle<int> cracksRect(uxb+0.75*step*ux,uyb+14*uy,7.25*step*ux,1.2*step*uy);
     g.drawRect(cracksRect);
     juce::Rectangle<int> cracksBand(uxb+0.75*step*ux,uyb+14*uy,0.25*step*ux,1.2*step*uy);
     g.fillRect(cracksBand);
 
-    g.setColour(NOISECOLOR.darker());
+    g.setColour(NOISECOLOR.darker().darker());
     juce::Rectangle<int> noiseRect(uxb+0.75*step*ux,uyb+19*uy,7.25*step*ux,1.2*step*uy);
     g.drawRect(noiseRect);
     juce::Rectangle<int> noiseBand(uxb+0.75*step*ux,uyb+19*uy,0.25*step*ux,1.2*step*uy);
@@ -332,7 +332,6 @@ void MySynthAudioProcessorEditor::addController(juce::Slider& slider,
 {
   slider.setSliderStyle(style);
   slider.setTextBoxStyle(juce::Slider::TextBoxBelow,true,80,15);
-  slider.setPopupDisplayEnabled(true,true,nullptr,2000);
   slider.setTextBoxIsEditable(true);
   slider.setColour(juce::Slider::thumbColourId, fillCol);
   slider.setColour(juce::Slider::rotarySliderFillColourId, fillCol);

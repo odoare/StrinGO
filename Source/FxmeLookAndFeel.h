@@ -29,9 +29,9 @@ public:
     g.setColour(juce::Colours::black);
     // g.setColour(juce::Colour::fromFloatRGBA (0.15f, 0.15f, 0.2f, 1.0f));
     //g.drawRect(dialArea);
-    g.fillEllipse(dialArea.reduced(8));
+    g.fillEllipse(dialArea.reduced(6));
     g.setColour(slider.findColour(juce::Slider::thumbColourId).darker());
-    g.drawEllipse(dialArea.reduced(10),2.0f);
+    g.drawEllipse(dialArea.reduced(6),2.0f);
     
     // g.drawText(slider.getValue());
 
@@ -44,11 +44,11 @@ public:
     g.setColour(slider.findColour(juce::Slider::thumbColourId).darker().darker().darker());
     juce::Path arc1;
     arc1.addArc(centreX-diameter/2, centreY-diameter/2, diameter, diameter, rotaryStartAngle, rotaryEndAngle, true);
-    g.strokePath(arc1, juce::PathStrokeType(6.0f));
+    g.strokePath(arc1, juce::PathStrokeType(5.0f));
     g.setColour(slider.findColour(juce::Slider::thumbColourId));
     juce::Path arc2;
     arc2.addArc(centreX-diameter/2, centreY-diameter/2, diameter, diameter, rotaryStartAngle, angle, true);
-    g.strokePath(arc2, juce::PathStrokeType(6.0f));
+    g.strokePath(arc2, juce::PathStrokeType(5.0f));
     // juce::DropShadow shadow(juce::Colours::white,30,point);
     // shadow.drawForRectangle(g,rect);
   };
@@ -56,10 +56,14 @@ public:
   juce::Slider::SliderLayout getSliderLayout (juce::Slider& slider) override
   {
     auto localBounds = slider.getLocalBounds().reduced(5).toFloat();
+
     juce::Slider::SliderLayout layout;
     layout.sliderBounds = slider.getLocalBounds().reduced(5);
-    layout.textBoxBounds = slider.getLocalBounds().reduced(5).withSizeKeepingCentre (localBounds.getWidth() * 0.7f,
-                                                                localBounds.getHeight() * 0.25f);
+
+    // Text blow the knob
+    layout.textBoxBounds = slider.getLocalBounds().withHeight(localBounds.getHeight()*0.25);
+    layout.textBoxBounds.translate(0,localBounds.getHeight()*0.9f);
+
     return layout;
   }
 
@@ -68,7 +72,7 @@ public:
     g.setColour(juce::Colours::white);
     
     auto labelArea{label.getLocalBounds().toFloat()};
-    g.setFont(labelArea.getHeight() * 0.8f);
+    g.setFont(labelArea.getHeight() * 0.7f);
     auto center = labelArea.getCentre();
     auto bottom = labelArea.getBottom();
 
