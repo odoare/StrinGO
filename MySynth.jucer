@@ -27,6 +27,8 @@
       <FILE id="dIK27I" name="SimpleSampler.h" compile="0" resource="0" file="Source/SimpleSampler.h"/>
       <FILE id="S8KWqx" name="SimpleSampler.cpp" compile="1" resource="0"
             file="Source/SimpleSampler.cpp"/>
+      <FILE id="vqSaMO" name="FxmeLookAndFeel.h" compile="0" resource="0"
+            file="Source/FxmeLookAndFeel.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "FxmeLookAndFeel.h"
 
 //==============================================================================
 /**
@@ -27,6 +28,8 @@ public:
 private:
 
     MySynthAudioProcessor& audioProcessor;
+
+    FxmeLookAndFeel fxmeLookAndFeel;
 
     juce::Slider gain;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
@@ -182,7 +185,10 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityNoiseFreqAttachment;
     juce::Label velocityNoiseFreqLabel{"string2FreqFineLabel", "Vel->Noise freq"};
 
+    juce::Label emptyLabel{"emptyLabel", ""};
+    
     void addController(juce::Slider &slider, juce::Slider::SliderStyle style, juce::Colour fillCol, juce::Colour outlineCol);
+    void addController2(juce::Slider &slider, juce::Slider::SliderStyle style, juce::Colour fillCol, juce::Colour outlineCol, juce::String text);
     void addAndConnectLabel(juce::Slider &slider, juce::Label &label);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MySynthAudioProcessorEditor)
