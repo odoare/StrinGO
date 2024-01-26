@@ -27,30 +27,26 @@ public:
 
     juce::Rectangle<float> dialArea(rx,ry,diameter,diameter);
     g.setColour(juce::Colours::black);
-    // g.setColour(juce::Colour::fromFloatRGBA (0.15f, 0.15f, 0.2f, 1.0f));
-    //g.drawRect(dialArea);
     g.fillEllipse(dialArea.reduced(6));
     g.setColour(slider.findColour(juce::Slider::thumbColourId).darker());
     g.drawEllipse(dialArea.reduced(6),2.0f);
     
-    // g.drawText(slider.getValue());
-
-    g.setColour(slider.findColour(juce::Slider::thumbColourId));
+    g.setColour(slider.findColour(juce::Slider::thumbColourId).brighter(0.5f));
     juce::Path dialTick;
     juce::Rectangle<int> rect(0.f,-radius,5.0f,radius*0.4);
     dialTick.addRectangle(rect);
     g.fillPath(dialTick,juce::AffineTransform::rotation(angle).translated(centreX,centreY));
 
-    g.setColour(slider.findColour(juce::Slider::thumbColourId).darker().darker().darker());
+    g.setColour(slider.findColour(juce::Slider::thumbColourId).darker(3.f));
     juce::Path arc1;
     arc1.addArc(centreX-diameter/2, centreY-diameter/2, diameter, diameter, rotaryStartAngle, rotaryEndAngle, true);
     g.strokePath(arc1, juce::PathStrokeType(5.0f));
     g.setColour(slider.findColour(juce::Slider::thumbColourId));
-    juce::Path arc2;
+    juce::Path arc2, arc3;
     arc2.addArc(centreX-diameter/2, centreY-diameter/2, diameter, diameter, rotaryStartAngle, angle, true);
-    g.strokePath(arc2, juce::PathStrokeType(5.0f));
-    // juce::DropShadow shadow(juce::Colours::white,30,point);
-    // shadow.drawForRectangle(g,rect);
+    juce::PathStrokeType path{5.0f, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded};
+    g.strokePath(arc2, path);
+    
   };
 
   juce::Slider::SliderLayout getSliderLayout (juce::Slider& slider) override
@@ -77,33 +73,12 @@ public:
     auto bottom = labelArea.getBottom();
 
     juce::String labelToDisplay = juce::String(label.getText());
-    //juce::String labelToDisplay = sliderText;
     
     g.drawSingleLineText(labelToDisplay,
                           juce::roundToInt(center.x + g.getCurrentFont().getHorizontalScale()),
                           juce::roundToInt(center.y + g.getCurrentFont().getDescent()),
                           juce::Justification::horizontallyCentred);
-
-    // g.drawSingleLineText(labelToDisplay,
-    //                       juce::roundToInt(center.x + g.getCurrentFont().getHorizontalScale()),
-    //                       juce::roundToInt(bottom),
-    //                       juce::Justification::horizontallyCentred);
-        
+ 
     }
 
-
-
-    void setColour(juce::Colour newCol)
-    {
-      sliderColour = newCol;
-    }
-
-    void setText(juce::String newText)
-    {
-      sliderText = newText;
-    }
-
-private:
-  juce::Colour sliderColour;
-  juce::String sliderText;
 };

@@ -13,6 +13,8 @@
 #define NOISECOLOR juce::Colours::green
 #define CRACKSCOLOR juce::Colours::blue
 #define MASTERCOLOR juce::Colours::yellow
+#define VELOCITYCOLOR juce::Colours::magenta
+#define STRINGCOLOR juce::Colours::cyan
 
 //==============================================================================
 MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor& p)
@@ -21,10 +23,9 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     addController(gain, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, MASTERCOLOR,juce::Colours::black);
     addAndConnectLabel(gain, gainLabel);
     gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Output Gain",gain);
-    // gain.setPopupDisplayEnabled(true,true,nullptr,1000);
 
     addController(level, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, MASTERCOLOR,juce::Colours::black);
-    // addAndConnectLabel(level, levelLabel);
+    addAndConnectLabel(level, levelLabel);
     levelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Output Level",level);
 
     addController(porta, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, MASTERCOLOR,juce::Colours::black);
@@ -32,72 +33,73 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     portaAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Porta time",porta);
 
     // Waveguides
-    addController(stringsFBGainOn, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsFBGainOn, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsFBGainOn, stringsFBGainOnLabel);
     stringsFBGainOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Gain on",stringsFBGainOn);
-    addController(stringsFBFreqOn, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsFBFreqOn, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsFBFreqOn, stringsFBFreqOnLabel);
     stringsFBFreqOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Freq on",stringsFBFreqOn);
-    addController(stringsLevelOn, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsLevelOn, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsLevelOn, stringsLevelOnLabel);
     stringsLevelOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level on",stringsLevelOn);
 
-    addController(stringsFBGainOff, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsFBGainOff, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsFBGainOff, stringsFBGainOffLabel);
     stringsFBGainOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Gain off",stringsFBGainOff);
-    addController(stringsFBFreqOff, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsFBFreqOff, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsFBFreqOff, stringsFBFreqOffLabel);
     stringsFBFreqOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Freq off",stringsFBFreqOff);
-    addController(stringsLevelOff, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsLevelOff, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsLevelOff, stringsLevelOffLabel);
     stringsLevelOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level off",stringsLevelOff);
 
-    addController(stringsInPos, juce::Slider::SliderStyle::LinearHorizontal, juce::Colours::teal,juce::Colours::black);
-    addAndConnectLabel(stringsInPos, stringsInPosLabel);
+    addController(stringsInPos, juce::Slider::SliderStyle::LinearHorizontal, STRINGCOLOR,juce::Colours::black);
+    // addAndConnectLabel(stringsInPos, stringsInPosLabel);
     stringsInPosAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"In Pos",stringsInPos);
-    stringsInPos.setTextBoxStyle(juce::Slider::TextBoxLeft,true,50,20);
+    stringsInPos.setTextBoxStyle(juce::Slider::NoTextBox,true,50,20);
     stringsInPos.setTextBoxIsEditable(true);
 
-    addController(stringsOutPos, juce::Slider::SliderStyle::LinearHorizontal, juce::Colours::teal,juce::Colours::black);
-    addAndConnectLabel(stringsOutPos, stringsOutPosLabel);
+    addController(stringsOutPos, juce::Slider::SliderStyle::LinearHorizontal, STRINGCOLOR,juce::Colours::black);
+    // addAndConnectLabel(stringsOutPos, stringsOutPosLabel);
     stringsOutPosAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Out Pos",stringsOutPos);
-    addController(stringsCoupling, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
-    addAndConnectLabel(stringsCoupling, stringsCouplingLabel);
-    stringsCouplingAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Coupling",stringsCoupling);
-    stringsOutPos.setTextBoxStyle(juce::Slider::TextBoxLeft,true,50,20);
+    stringsOutPos.setTextBoxStyle(juce::Slider::NoTextBox,true,50,20);
     stringsOutPos.setTextBoxIsEditable(true);
 
-    addController(string1Level, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsCoupling, juce::Slider::SliderStyle::LinearVertical, STRINGCOLOR,juce::Colours::black);
+    // addAndConnectLabel(stringsCoupling, stringsCouplingLabel);
+    stringsCouplingAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Coupling",stringsCoupling);
+
+    addController(string1Level, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(string1Level, string1LevelLabel);
     string1LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level 1",string1Level);
-    addController(string1FreqCoarse, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(string1FreqCoarse, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(string1FreqCoarse, string1FreqCoarseLabel);
     string1FreqCoarseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Freq Coarse 1",string1FreqCoarse);
-    addController(string1FreqFine, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(string1FreqFine, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(string1FreqFine, string1FreqFineLabel);
     string1FreqFineAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Freq Fine 1",string1FreqFine);
        
-    addController(string2Level, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(string2Level, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(string2Level, string2LevelLabel);
     string2LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level 2",string2Level);
-    addController(string2FreqCoarse, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(string2FreqCoarse, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(string2FreqCoarse, string2FreqCoarseLabel);
     string2FreqCoarseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Freq Coarse 2",string2FreqCoarse);
-    addController(string2FreqFine, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(string2FreqFine, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(string2FreqFine, string2FreqFineLabel);
     string2FreqFineAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Freq Fine 2",string2FreqFine);
 
     // String waveguide enveloppe
-    addController(stringsAttack, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsAttack, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsAttack, stringsAttackLabel);
     stringsAttackAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"A",stringsAttack);
-    addController(stringsDecay, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsDecay, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsDecay, stringsDecayLabel);
     stringsDecayAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"D",stringsDecay);
-    addController(stringsSustain, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsSustain, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsSustain, stringsSustainLabel);
     stringsSustainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"S",stringsSustain);
-    addController(stringsRelease, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(stringsRelease, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, STRINGCOLOR,juce::Colours::black);
     addAndConnectLabel(stringsRelease, stringsReleaseLabel);
     stringsReleaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"R",stringsRelease);
     
@@ -129,7 +131,6 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     waveLabel.attachToComponent(&waveComboBox,false);
     addAndMakeVisible(waveComboBox);
     addAndMakeVisible(waveLabel);
-    // waveComboBox.onChange = updateFunc;
 
     addAndMakeVisible(loopButton);
     loopButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"Loop Sample",loopButton);
@@ -179,17 +180,18 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     addAndConnectLabel(crackLevel, crackLevelLabel);
     crackLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Crack Level",crackLevel);
 
-    addController(velocityLevel, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(velocityLevel, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, VELOCITYCOLOR,juce::Colours::black);
     addAndConnectLabel(velocityLevel, velocityLevelLabel);
     velocityLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Volume",velocityLevel);
-    addController(velocitySampleFreq, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(velocitySampleFreq, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, VELOCITYCOLOR,juce::Colours::black);
     addAndConnectLabel(velocitySampleFreq, velocitySampleFreqLabel);
     velocitySampleFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Sample Filter",velocitySampleFreq);
-    addController(velocityNoiseFreq, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Colours::teal,juce::Colours::black);
+    addController(velocityNoiseFreq, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, VELOCITYCOLOR,juce::Colours::black);
     addAndConnectLabel(velocityNoiseFreq, velocityNoiseFreqLabel);
     velocityNoiseFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Noise Filter",velocityNoiseFreq);
 
     setSize (900, 600);
+    setResizable(true,true);
 }
 
 MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor()
@@ -202,7 +204,7 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     static const float border = 0.01;
     float uxb = border*getWidth();
     float uyb = border*getHeight();
-    auto ux = (1-2*border)*getWidth()/46;
+    auto ux = (1-2*border)*getWidth()/48;
     auto uy = (1-2*border)*getHeight()/24;
     const float step = 4.f;
 
@@ -212,28 +214,34 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     auto height = float (getWidth() * getHeight()) / length;
     // auto bluegreengrey = juce::Colour::fromFloatRGBA(0.17f,0.22f,0.27f,1.0f);
     auto bluegreengrey = juce::Colour::fromFloatRGBA (0.15f, 0.15f, 0.25f, 1.0f);
-    juce::ColourGradient grad (bluegreengrey.darker().darker().darker().darker(), perpendicular * height,
-                           bluegreengrey.darker(), perpendicular * -height, false);
+    juce::ColourGradient grad (bluegreengrey.darker().darker().darker(), perpendicular * height,
+                           bluegreengrey, perpendicular * -height, false);
     g.setGradientFill(grad);
     g.fillAll();
 
-    g.setColour(SAMPLERCOLOR.darker().darker());
-    juce::Rectangle<int> samplerRect(uxb+0.75*step*ux,uyb+9*uy,7.25*step*ux,1.2*step*uy);
+    g.setColour(SAMPLERCOLOR.darker(1.5f));
+    juce::Rectangle<int> samplerRect(uxb+0.5*step*ux,uyb+9*uy,7.5*step*ux,1.2*step*uy);
     g.drawRect(samplerRect);
-    juce::Rectangle<int> samplerBand(uxb+0.75*step*ux,uyb+9*uy,0.25*step*ux,1.2*step*uy);
+    juce::Rectangle<int> samplerBand(uxb+0.5*step*ux,uyb+9*uy,0.5*step*ux,1.2*step*uy);
     g.fillRect(samplerBand);
 
-    g.setColour(CRACKSCOLOR.darker().darker());
-    juce::Rectangle<int> cracksRect(uxb+0.75*step*ux,uyb+14*uy,7.25*step*ux,1.2*step*uy);
+    g.setColour(CRACKSCOLOR.darker(1.5f));
+    juce::Rectangle<int> cracksRect(uxb+0.5*step*ux,uyb+14*uy,7.5*step*ux,1.2*step*uy);
     g.drawRect(cracksRect);
-    juce::Rectangle<int> cracksBand(uxb+0.75*step*ux,uyb+14*uy,0.25*step*ux,1.2*step*uy);
+    juce::Rectangle<int> cracksBand(uxb+0.5*step*ux,uyb+14*uy,0.5*step*ux,1.2*step*uy);
     g.fillRect(cracksBand);
 
-    g.setColour(NOISECOLOR.darker().darker());
-    juce::Rectangle<int> noiseRect(uxb+0.75*step*ux,uyb+19*uy,7.25*step*ux,1.2*step*uy);
+    g.setColour(NOISECOLOR.darker(1.5f));
+    juce::Rectangle<int> noiseRect(uxb+0.5*step*ux,uyb+19*uy,7.5*step*ux,1.2*step*uy);
     g.drawRect(noiseRect);
-    juce::Rectangle<int> noiseBand(uxb+0.75*step*ux,uyb+19*uy,0.25*step*ux,1.2*step*uy);
+    juce::Rectangle<int> noiseBand(uxb+0.5*step*ux,uyb+19*uy,0.5*step*ux,1.2*step*uy);
     g.fillRect(noiseBand);
+
+    g.setColour(STRINGCOLOR.darker(1.5f));
+    juce::Rectangle<int> stringRect(uxb+0.5*step*ux,uyb+0*uy,7.5*step*ux,2.2*step*uy);
+    g.drawRect(stringRect);
+    juce::Rectangle<int> stringBand(uxb+0.5*step*ux,uyb+0*uy,0.5*step*ux,2.2*step*uy);
+    g.fillRect(stringBand);
 
 }
 
@@ -242,42 +250,44 @@ void MySynthAudioProcessorEditor::resized()
     static const float border = 0.01;
     const float uxb = border*getWidth();
     const float uyb = border*getHeight();
-    const auto ux = (1-2*border)*getWidth()/46;
+    const auto ux = (1-2*border)*getWidth()/48;
     const auto uy = (1-2*border)*getHeight()/24;
     const float step = 4.f;
+    const float stepy = 5.f;
     const float size = 3.5f;
 
-    float ex = uxb+8.5*step*ux;
+    float ex = uxb+9*step*ux;
     float ey = uyb+20*uy;    
     gain.setBounds(ex+step*ux,ey,size*ux,size*uy);
     level.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
     porta.setBounds(ex,ey,size*ux,size*uy);
 
-    ex = uxb+5*step*ux;
+    ex = uxb+9*step*ux;
     ey = uyb+5*uy;
-    stringsInPos.setBounds(ex,ey+uy,2*size*ux,uy);
-    stringsOutPos.setBounds(ex,ey+3*uy,2*size*ux,uy);
-    stringsCoupling.setBounds(ex+8*ux,ey,size*ux,size*uy);
+    stringsInPos.setBounds(ex,ey+uy,3*size*ux,uy);
+    stringsOutPos.setBounds(ex,ey+3*uy,3*size*ux,uy);
 
-    ex = uxb+8.5*step*ux;
+    stringsCoupling.setBounds(uxb+8.25*step*ux,uyb+uy,size*ux/2,3.5*size*uy);
+
+    ex = uxb+9*step*ux;
     ey = uyb+1*uy;
     string1Level.setBounds(ex,ey,size*ux,size*uy);
     string1FreqCoarse.setBounds(ex+step*ux,ey,size*ux,size*uy);
     string1FreqFine.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
 
-    ex = uxb+8.5*step*ux;
-    ey = uyb+(step+2)*uy;
+    ex = uxb+9*step*ux;
+    ey = uyb+(2.25*stepy)*uy;
     string2Level.setBounds(ex,ey,size*ux,size*uy);
     string2FreqCoarse.setBounds(ex+step*ux,ey,size*ux,size*uy);
     string2FreqFine.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
 
-    ex = uxb+8.5*step*ux;
-    ey = uyb+(2.5*step+1)*uy;
+    ex = uxb+9*step*ux;
+    ey = uyb+16*uy;
     velocityLevel.setBounds(ex,ey,size*ux,size*uy);
     velocitySampleFreq.setBounds(ex+step*ux,ey,size*ux,size*uy);
     velocityNoiseFreq.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
 
-    ex = uxb+step*ux;
+    ex = uxb+1.5*step*ux;
     ey = uyb+1*uy;
     stringsFBFreqOff.setBounds(ex,ey,size*ux,size*uy);
     stringsFBGainOff.setBounds(ex+step*ux,ey,size*ux,size*uy);
@@ -286,7 +296,7 @@ void MySynthAudioProcessorEditor::resized()
     stringsFBGainOn.setBounds(ex+4*step*ux,ey,size*ux,size*uy);
     stringsLevelOn.setBounds(ex+5*step*ux,ey,size*ux,size*uy);
 
-    ex = uxb+step*ux;
+    ex = uxb+2.5*step*ux;
     ey = uyb+5*uy;
     stringsAttack.setBounds(ex,ey,size*ux,size*uy);
     stringsDecay.setBounds(ex+step*ux,ey,size*ux,size*uy);
@@ -321,7 +331,7 @@ void MySynthAudioProcessorEditor::resized()
     noiseSustain.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
     noiseRelease.setBounds(ex+3*step*ux,ey,size*ux,size*uy);
     noiseLevel.setBounds(ex+4*step*ux,ey,size*ux,size*uy);
-    noiseFreq.setBounds(ex+6*step*ux,ey,size*ux,size*uy);
+    noiseFreq.setBounds(ex+5*step*ux,ey,size*ux,size*uy);
     
 }
 
@@ -338,8 +348,6 @@ void MySynthAudioProcessorEditor::addController(juce::Slider& slider,
   slider.setColour(juce::Slider::trackColourId, outlineCol);
   slider.setColour(juce::Slider::backgroundColourId, outlineCol);
   slider.setColour(juce::Slider::rotarySliderOutlineColourId, outlineCol);
-  // fxmeLookAndFeel.setColour(fillCol);
-  // fxmeLookAndFeel.setText(text);
   slider.setLookAndFeel(&fxmeLookAndFeel);
   addAndMakeVisible(slider);
 }
@@ -347,18 +355,10 @@ void MySynthAudioProcessorEditor::addController(juce::Slider& slider,
 void MySynthAudioProcessorEditor::addAndConnectLabel(juce::Slider& slider,
                                                 juce::Label& label)
 {
-  addAndMakeVisible(label);
   label.setJustificationType(juce::Justification::centred);
   label.attachToComponent(&slider,false);
-}
-
-void MySynthAudioProcessorEditor::addController2(juce::Slider &slider, juce::Slider::SliderStyle style, juce::Colour fillCol, juce::Colour outlineCol, juce::String text)
-{
-  slider.setSliderStyle(style);
-  slider.setTextBoxStyle(juce::Slider::TextBoxBelow,true,100,20);
-  slider.setPopupDisplayEnabled(true,true,nullptr,2000);
-  fxmeLookAndFeel.setColour(fillCol);
-  fxmeLookAndFeel.setText(text);
-  slider.setLookAndFeel(&fxmeLookAndFeel);
-  addAndMakeVisible(slider);
-}
+  juce::AffineTransform t;
+  auto labelArea{label.getLocalBounds().toFloat()};
+  label.setTransform(t.translated(0,labelArea.getHeight()/2.f));
+  addAndMakeVisible(label);
+ }

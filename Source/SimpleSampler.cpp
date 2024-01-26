@@ -102,7 +102,7 @@ void SimpleSampler::setPlayingFrequency(float freq)
 void SimpleSampler::setLooping(bool l)
 {
   loop = l;
-  std::cout << loop << std::endl;
+  //std::cout << loop << std::endl;
 }
 
 float SimpleSampler::getSampleAtPos(float pos)
