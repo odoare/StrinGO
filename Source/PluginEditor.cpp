@@ -16,6 +16,8 @@
 #define VELOCITYCOLOR juce::Colours::magenta
 #define STRINGCOLOR juce::Colours::cyan
 
+
+
 //==============================================================================
 MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
@@ -198,15 +200,24 @@ MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor()
 {
 }
 
+#define NX 12
+#define NY 6
+#define SX 0.8
+#define SY 0.8
+#define DELTAX 0.1f
+#define DELTAY 0.1f
+
+
+
 //========================================  ======================================
 void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
 {
     static const float border = 0.01;
     float uxb = border*getWidth();
     float uyb = border*getHeight();
-    auto ux = (1-2*border)*getWidth()/48;
-    auto uy = (1-2*border)*getHeight()/24;
-    const float step = 4.f;
+    auto ux = (1-2*border)*getWidth()/NX;
+    auto uy = (1-2*border)*getHeight()/NY;
+    const float step = 1.f;
 
     auto diagonale = (getLocalBounds().getTopLeft() - getLocalBounds().getBottomRight()).toFloat();
     auto length = diagonale.getDistanceFromOrigin();
@@ -243,6 +254,18 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     juce::Rectangle<int> stringBand(uxb+0.5*step*ux,uyb+0*uy,0.5*step*ux,2.2*step*uy);
     g.fillRect(stringBand);
 
+    // g.setColour(STRINGCOLOR.darker(1.5f));
+    // juce::Rectangle<int> stringRect2(uxb+9*ux,uyb,3*ux,1.25*uy);
+    // g.drawRect(stringRect2);
+    // juce::Rectangle<int> stringBand2(uxb+9*ux,uyb,3*ux,0.25*uy);
+    // g.fillRect(stringBand2);
+    // g.setColour(juce::Colours::white);    
+    // g.drawText("Waveguide 1", stringBand2, juce::Justification::centred);
+    drawBoxWithTitleOnTop(g,"Waveguide 1",STRINGCOLOR,uxb+9*ux,uyb,3*ux,1.25*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"Waveguide 2",STRINGCOLOR,uxb+9*ux,uyb+2.25*uy,3*ux,1.25*uy,0.25*uy);
+
+
+
 }
 
 void MySynthAudioProcessorEditor::resized()
@@ -250,42 +273,42 @@ void MySynthAudioProcessorEditor::resized()
     static const float border = 0.01;
     const float uxb = border*getWidth();
     const float uyb = border*getHeight();
-    const auto ux = (1-2*border)*getWidth()/48;
-    const auto uy = (1-2*border)*getHeight()/24;
-    const float step = 4.f;
-    const float stepy = 5.f;
-    const float size = 3.5f;
+    const auto ux = (1-2*border)*getWidth()/NX;
+    const auto uy = (1-2*border)*getHeight()/NY;
+    const float step = 1.f;
+    const float stepy = 1.f;
+    const float size = 0.8f;
 
-    float ex = uxb+9*step*ux;
-    float ey = uyb+20*uy;    
-    gain.setBounds(ex+step*ux,ey,size*ux,size*uy);
-    level.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
-    porta.setBounds(ex,ey,size*ux,size*uy);
+    float ex = uxb+9*ux;
+    float ey = uyb+5*uy;
+    porta.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    gain.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    level.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
-    ex = uxb+9*step*ux;
-    ey = uyb+5*uy;
-    stringsInPos.setBounds(ex,ey+uy,3*size*ux,uy);
-    stringsOutPos.setBounds(ex,ey+3*uy,3*size*ux,uy);
-
-    stringsCoupling.setBounds(uxb+8.25*step*ux,uyb+uy,size*ux/2,3.5*size*uy);
-
-    ex = uxb+9*step*ux;
-    ey = uyb+1*uy;
-    string1Level.setBounds(ex,ey,size*ux,size*uy);
-    string1FreqCoarse.setBounds(ex+step*ux,ey,size*ux,size*uy);
-    string1FreqFine.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
-
-    ex = uxb+9*step*ux;
-    ey = uyb+(2.25*stepy)*uy;
-    string2Level.setBounds(ex,ey,size*ux,size*uy);
-    string2FreqCoarse.setBounds(ex+step*ux,ey,size*ux,size*uy);
-    string2FreqFine.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
-
-    ex = uxb+9*step*ux;
-    ey = uyb+16*uy;
+    ex = uxb+9*ux;
+    ey = uyb+3.75*uy;
     velocityLevel.setBounds(ex,ey,size*ux,size*uy);
     velocitySampleFreq.setBounds(ex+step*ux,ey,size*ux,size*uy);
     velocityNoiseFreq.setBounds(ex+2*step*ux,ey,size*ux,size*uy);
+
+    ex = uxb+9*ux;
+    ey = uyb+1.25*uy;
+    stringsInPos.setBounds(ex,ey,3*ux,uy);
+    stringsOutPos.setBounds(ex,ey+0.3*uy,3*ux,uy);
+    stringsCoupling.setBounds(uxb+8.25*step*ux,uyb+uy,size*ux/2,3.5*size*uy);
+
+    ex = uxb+9*ux;
+    ey = uyb+0.25*uy;
+    string1Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string1FreqCoarse.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string1FreqFine.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+
+    ex = uxb+9*step*ux;
+    ey = uyb+2.5*uy;
+    string2Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string2FreqCoarse.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string2FreqFine.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+
 
     ex = uxb+1.5*step*ux;
     ey = uyb+1*uy;
@@ -359,6 +382,24 @@ void MySynthAudioProcessorEditor::addAndConnectLabel(juce::Slider& slider,
   label.attachToComponent(&slider,false);
   juce::AffineTransform t;
   auto labelArea{label.getLocalBounds().toFloat()};
-  label.setTransform(t.translated(0,labelArea.getHeight()/2.f));
+  label.setTransform(t.translated(0,labelArea.getHeight()*0.75f));
   addAndMakeVisible(label);
+ }
+
+ void MySynthAudioProcessorEditor::drawBoxWithTitleOnTop(juce::Graphics &g,
+                                                          const juce::String title,
+                                                          const juce::Colour baseColour,
+                                                          const float x,
+                                                          const float y,
+                                                          const float wx,
+                                                          const float wy,
+                                                          const float bandHeight)
+ {
+  g.setColour(STRINGCOLOR.darker(1.5f));
+  juce::Rectangle<int> stringRect2(x,y,wx,wy);
+  g.drawRect(stringRect2);
+  juce::Rectangle<int> stringBand2(x,y,wx,bandHeight);
+  g.fillRect(stringBand2);
+  g.setColour(juce::Colours::white);    
+  g.drawText(title, stringBand2, juce::Justification::centred);
  }

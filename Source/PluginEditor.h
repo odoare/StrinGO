@@ -188,8 +188,15 @@ private:
     juce::Label emptyLabel{"emptyLabel", ""};
     
     void addController(juce::Slider &slider, juce::Slider::SliderStyle style, juce::Colour fillCol, juce::Colour outlineCol);
-    void addController2(juce::Slider &slider, juce::Slider::SliderStyle style, juce::Colour fillCol, juce::Colour outlineCol, juce::String text);
     void addAndConnectLabel(juce::Slider &slider, juce::Label &label);
+    void drawBoxWithTitleOnTop(juce::Graphics& g,
+                                const juce::String title,
+                                const juce::Colour baseColour,
+                                const float x,
+                                const float y,
+                                const float wx,
+                                const float wy,
+                                const float bandHeight);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MySynthAudioProcessorEditor)
 };
