@@ -104,31 +104,47 @@ void SynthVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outp
 
   cracksGenerator.prepare(processSpec);
 
-  noiseFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,noiseFilterFreq);
+  noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,noiseLPFilterFreq);
+  noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(sampleRate,noiseLPFilterFreq);
 
   isPrepared = true;
 
   // std::cout << "End SynthVoice::prepareToPLay   " << std::endl;
 }
 
-void SynthVoice::setNoiseFilterFreq(float freq)
+void SynthVoice::setNoiseLPFilterFreq(float freq)
 {
-  if (freq!=noiseFilterFreq)
+  if (freq!=noiseLPFilterFreq)
   {
-    noiseFilterFreq = freq;
-    noiseFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseFilterFreq);
+    noiseLPFilterFreq = freq;
+    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseLPFilterFreq);
   }
 }
 
-void SynthVoice::setNoiseFilterVelocityFreqInfluence(float factor)
+void SynthVoice::setNoiseLPFilterFreqVelocityInfluence(float factor)
 {
-  noiseFilterVelocityFreqInfluence = factor;
+  noiseLPFilterFreqVelocityInfluence = factor;
 }
+
+void SynthVoice::setNoiseHPFilterFreq(float freq)
+{
+  if (freq!=noiseHPFilterFreq)
+  {
+    noiseHPFilterFreq = freq;
+    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(processSpec.sampleRate,noiseHPFilterFreq);
+  }
+}
+
+void SynthVoice::setNoiseHPFilterFreqVelocityInfluence(float factor)
+{
+  noiseHPFilterFreqVelocityInfluence = factor;
+}
+
 
 void SynthVoice::setVelocity(float vel)
 {
-  float filterVelocityFreqFactor = juce::jmap<float>(float(vel), 1-noiseFilterVelocityFreqInfluence, 1) ;
-  noiseFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseFilterFreq*filterVelocityFreqFactor);
+  float filterVelocityFreqFactor = juce::jmap<float>(float(vel), 1-noiseHPFilterFreqVelocityInfluence, 1) ;
+  noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseHPFilterFreq*filterVelocityFreqFactor);
 }
 
 void SynthVoice::setNoiseLevel(float lvl)
@@ -144,7 +160,7 @@ void SynthVoice::setCrackDensity(int d)
 
 void SynthVoice::setCrackFilterFreq(float freq)
 {
-  if (freq!=noiseFilterFreq)
+  if (freq!=crackFilterFreq)
   {
     crackFilterFreq = freq;
     crackFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,crackFilterFreq);
@@ -173,7 +189,7 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startS
   {
     auto* channelData = inBuffer.getWritePointer (channel);
     for (int sample=0; sample<numSamples; ++sample)
-      channelData[sample] = adsrN.getNextSample() * noiseFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f))
+      channelData[sample] = adsrN.getNextSample() * noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f))
         + adsrC.getNextSample() * crackFilter.processSample(crackLevel*cracksGenerator.nextSample());
   }
   

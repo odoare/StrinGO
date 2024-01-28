@@ -223,7 +223,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
 
         voice->setCrackLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Crack Level")->load()));
         voice->stringReso.setVelocityLevel(apvts.getRawParameterValue("Velocity Sample Level")->load());
-        voice->setNoiseFilterVelocityFreqInfluence(apvts.getRawParameterValue("Velocity Noise Freq")->load());
+        voice->setNoiseFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Noise Freq")->load());
        } 
     }
 
