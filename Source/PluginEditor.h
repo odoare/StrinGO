@@ -29,7 +29,7 @@ private:
 
     MySynthAudioProcessor& audioProcessor;
 
-    FxmeLookAndFeel fxmeLookAndFeel;
+    FxmeKnobLookAndFeel fxmeKnobLookAndFeel;
 
     juce::Slider gain;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
@@ -45,23 +45,23 @@ private:
 
     juce::Slider stringsFBGainOn;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> stringsFBGainOnAttachment;
-    juce::Label stringsFBGainOnLabel{"stringsFBGainOnLabel", "Strings FBGain On"};
+    juce::Label stringsFBGainOnLabel{"stringsFBGainOnLabel", "FB Gain"};
     juce::Slider stringsFBFreqOn;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> stringsFBFreqOnAttachment;
-    juce::Label stringsFBFreqOnLabel{"stringsFBFreqOnLabel", "Strings FBFreq On"};
+    juce::Label stringsFBFreqOnLabel{"stringsFBFreqOnLabel", "FB Freq"};
     juce::Slider stringsLevelOn;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> stringsLevelOnAttachment;
-    juce::Label stringsLevelOnLabel{"stringsLevelOnLabel", "Strings Level On"};
+    juce::Label stringsLevelOnLabel{"stringsLevelOnLabel", "Level"};
 
     juce::Slider stringsFBGainOff;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> stringsFBGainOffAttachment;
-    juce::Label stringsFBGainOffLabel{"stringsFBGainOffLabel", "Strings FBGain Off"};
+    juce::Label stringsFBGainOffLabel{"stringsFBGainOffLabel", "FB Gain"};
     juce::Slider stringsFBFreqOff;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> stringsFBFreqOffAttachment;
-    juce::Label stringsFBFreqOffLabel{"stringsFBFreqOffLabel", "Strings FBFreq Off"};
+    juce::Label stringsFBFreqOffLabel{"stringsFBFreqOffLabel", "FB Freq"};
     juce::Slider stringsLevelOff;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> stringsLevelOffAttachment;
-    juce::Label stringsLevelOffLabel{"stringsLevelOffLabel", "Strings Level Off"};
+    juce::Label stringsLevelOffLabel{"stringsLevelOffLabel", "Level"};
 
     juce::Slider stringsAttack;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> stringsAttackAttachment;
@@ -78,16 +78,16 @@ private:
 
     juce::Slider samplerAttack;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerAttackAttachment;
-    juce::Label samplerAttackLabel{"samplerAttackLabel", "AS"};
+    juce::Label samplerAttackLabel{"samplerAttackLabel", "A"};
     juce::Slider samplerDecay;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerDecayAttachment;
-    juce::Label samplerDecayLabel{"samplerDecayLabel", "DS"};
+    juce::Label samplerDecayLabel{"samplerDecayLabel", "D"};
     juce::Slider samplerSustain;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerSustainAttachment;
-    juce::Label samplerSustainLabel{"samplerAttackLabel", "SS"};
+    juce::Label samplerSustainLabel{"samplerAttackLabel", "S"};
     juce::Slider samplerRelease;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerReleaseAttachment;
-    juce::Label samplerReleaseLabel{"samplerReleaseLabel", "RS"};
+    juce::Label samplerReleaseLabel{"samplerReleaseLabel", "R"};
     juce::Slider samplerFreq;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerFreqAttachment;
     juce::Label samplerFreqLabel{"samplerFreqLabel", "Freq"};
@@ -113,9 +113,13 @@ private:
     juce::Slider noiseRelease;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> noiseReleaseAttachment;
     juce::Label noiseReleaseLabel{"noiseReleaseLabel", "R"};
-    juce::Slider noiseFreq;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> noiseFreqAttachment;
-    juce::Label noiseFreqLabel{"noiseFreqLabel", "Freq"};
+    juce::Slider noiseLPFreq;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> noiseLPFreqAttachment;
+    juce::Label noiseLPFreqLabel{"noiseLPFreqLabel", "LPFreq"};
+    juce::Slider noiseHPFreq;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> noiseHPFreqAttachment;
+    juce::Label noiseHPFreqLabel{"noiseHPFreqLabel", "HPFreq"};
+
     juce::Slider noiseLevel;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> noiseLevelAttachment;
     juce::Label noiseLevelLabel{"noiseLevelLabel", "Level"};
@@ -142,8 +146,6 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> crackLevelAttachment;
     juce::Label crackLevelLabel{"crackLevelLabel", "Level"};
     
-    
-
     juce::Slider stringsInPos;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> stringsInPosAttachment;
     juce::Label stringsInPosLabel{"inPosLabel", "Input Position"};
@@ -157,38 +159,62 @@ private:
 
     juce::Slider string1Level;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string1LevelAttachment;
-    juce::Label string1LevelLabel{"string1LevelLabel", "String 1 Level"};
+    juce::Label string1LevelLabel{"string1LevelLabel", "Level"};
     juce::Slider string1FreqCoarse;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string1FreqCoarseAttachment;
-    juce::Label string1FreqCoarseLabel{"string1FreqCoarseLabel", "String 1 FreqCoarse"};
+    juce::Label string1FreqCoarseLabel{"string1FreqCoarseLabel", "Coarse"};
     juce::Slider string1FreqFine;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string1FreqFineAttachment;
-    juce::Label string1FreqFineLabel{"string1FreqFineLabel", "String 1 FreqFine"};
+    juce::Label string1FreqFineLabel{"string1FreqFineLabel", "Fine"};
 
     juce::Slider string2Level;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string2LevelAttachment;
-    juce::Label string2LevelLabel{"string2LevelLabel", "String 1 Level"};
+    juce::Label string2LevelLabel{"string2LevelLabel", "Level"};
     juce::Slider string2FreqCoarse;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string2FreqCoarseAttachment;
-    juce::Label string2FreqCoarseLabel{"string2FreqCoarseLabel", "String 1 FreqCoarse"};
+    juce::Label string2FreqCoarseLabel{"string2FreqCoarseLabel", "Coarse"};
     juce::Slider string2FreqFine;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string2FreqFineAttachment;
-    juce::Label string2FreqFineLabel{"string2FreqFineLabel", "String 1 FreqFine"};
+    juce::Label string2FreqFineLabel{"string2FreqFineLabel", "Fine"};
 
-    juce::Slider velocityLevel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityLevelAttachment;
-    juce::Label velocityLevelLabel{"string2LevelLabel", "Vel->Level"};
+    juce::Slider velocitySampleLevel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocitySampleLevelAttachment;
+    juce::Label velocitySampleLevelLabel{"velocitySampleLevelLabel", "Level"};
     juce::Slider velocitySampleFreq;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocitySampleFreqAttachment;
-    juce::Label velocitySampleFreqLabel{"string2FreqCoarseLabel", "Vel->Sample freq"};
+    juce::Label velocitySampleFreqLabel{"velocitySampleFreqLabel", "Freq"};
+
+    juce::Slider velocityNoiseLevel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityNoiseLevelAttachment;
+    juce::Label velocityNoiseLevelLabel{"velocityNoiseLevelLabel", "Level"};
     juce::Slider velocityNoiseFreq;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityNoiseFreqAttachment;
-    juce::Label velocityNoiseFreqLabel{"string2FreqFineLabel", "Vel->Noise freq"};
+    juce::Label velocityNoiseFreqLabel{"velocityNoiseFreqLabel", "Freq"};
+
+    juce::Slider velocityCrackLevel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityCrackLevelAttachment;
+    juce::Label velocityCrackLevelLabel{"velocityCrackLevelLabel", "Level"};
+    juce::Slider velocityCrackFreq;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityCrackFreqAttachment;
+    juce::Label velocityCrackFreqLabel{"velocityCrackFreqLabel", "Freq"};
+
+
+    // juce::Slider velocityLevel;
+    // std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityLevelAttachment;
+    // juce::Label velocityLevelLabel{"string2LevelLabel", "Level"};
+    // juce::Slider velocitySampleFreq;
+    // std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocitySampleFreqAttachment;
+    // juce::Label velocitySampleFreqLabel{"string2FreqCoarseLabel", "Sample freq"};
+    // juce::Slider velocityNoiseFreq;
+    // std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityNoiseFreqAttachment;
+    // juce::Label velocityNoiseFreqLabel{"string2FreqFineLabel", "Noise freq"};
 
     juce::Label emptyLabel{"emptyLabel", ""};
     
-    void addController(juce::Slider &slider, juce::Slider::SliderStyle style, juce::Colour fillCol, juce::Colour outlineCol);
-    void addAndConnectLabel(juce::Slider &slider, juce::Label &label);
+    void addKnob(juce::Slider &slider, juce::Label &label, juce::Colour fillCol, juce::Colour outlineCol);
+    void addVSlider(juce::Slider &slider, juce::Label &label, juce::Colour fillCol, juce::Colour outlineCol);
+    void addHSlider(juce::Slider &slider, juce::Label &label, juce::Colour fillCol, juce::Colour outlineCol);
+    //void addAndConnectKnobLabel(juce::Slider &slider, juce::Label &label);
     void drawBoxWithTitleOnTop(juce::Graphics& g,
                                 const juce::String title,
                                 const juce::Colour baseColour,
@@ -197,6 +223,15 @@ private:
                                 const float wx,
                                 const float wy,
                                 const float bandHeight);
+
+    void drawBoxWithTitleOnLeft(juce::Graphics& g,
+                                const juce::String title,
+                                const juce::Colour baseColour,
+                                const float x,
+                                const float y,
+                                const float wx,
+                                const float wy,
+                                const float bandWidth);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MySynthAudioProcessorEditor)
 };

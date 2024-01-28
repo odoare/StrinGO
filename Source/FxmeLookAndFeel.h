@@ -1,10 +1,10 @@
 #pragma once
 #include <JuceHeader.h>
 
-class FxmeLookAndFeel : public juce::LookAndFeel_V4
+class FxmeKnobLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
-  FxmeLookAndFeel()
+  FxmeKnobLookAndFeel()
   {
   }
 
