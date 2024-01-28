@@ -168,7 +168,8 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
             voice->stringReso.setSamplerLevel(string, juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Sample Level")->load()));
             voice->stringReso.sampler[string].setWaveByNumber(apvts.getRawParameterValue("Attack Sample")->load());
             voice->stringReso.sampler[string].setFilterFreqFactor(apvts.getRawParameterValue("Sample LP Freq")->load());
-            voice->stringReso.sampler[string].setFilterVelocityFreqFactor(apvts.getRawParameterValue("Velocity Sample Freq")->load());
+            voice->stringReso.sampler[string].setFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Sample Freq")->load());
+            voice->stringReso.sampler[string].setLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Sample Level")->load());
             voice->stringReso.sampler[string].setLooping(apvts.getRawParameterValue("Loop Sample")->load());
         }
         
