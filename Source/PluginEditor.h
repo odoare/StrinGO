@@ -88,9 +88,9 @@ private:
     juce::Slider samplerRelease;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerReleaseAttachment;
     juce::Label samplerReleaseLabel{"samplerReleaseLabel", "R"};
-    juce::Slider samplerFreq;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerFreqAttachment;
-    juce::Label samplerFreqLabel{"samplerFreqLabel", "Freq"};
+    juce::Slider samplerLPFreq;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerLPFreqAttachment;
+    juce::Label samplerLPFreqLabel{"samplerFreqLabel", "LP Freq"};
     juce::Slider samplerLevel;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> samplerLevelAttachment;
     juce::Label samplerLevelLabel{"samplerLevelLabel", "Level"};
@@ -115,11 +115,10 @@ private:
     juce::Label noiseReleaseLabel{"noiseReleaseLabel", "R"};
     juce::Slider noiseLPFreq;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> noiseLPFreqAttachment;
-    juce::Label noiseLPFreqLabel{"noiseLPFreqLabel", "LPFreq"};
+    juce::Label noiseLPFreqLabel{"noiseLPFreqLabel", "LP Freq"};
     juce::Slider noiseHPFreq;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> noiseHPFreqAttachment;
-    juce::Label noiseHPFreqLabel{"noiseHPFreqLabel", "HPFreq"};
-
+    juce::Label noiseHPFreqLabel{"noiseHPFreqLabel", "HP Freq"};
     juce::Slider noiseLevel;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> noiseLevelAttachment;
     juce::Label noiseLevelLabel{"noiseLevelLabel", "Level"};
@@ -139,9 +138,9 @@ private:
     juce::Slider crackDensity;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> crackDensityAttachment;
     juce::Label crackDensityLabel{"crackDensityLabel", "Density"};
-    juce::Slider crackFreq;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> crackFreqAttachment;
-    juce::Label crackFreqLabel{"crackFreqLabel", "Freq"};
+    juce::Slider crackLPFreq;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> crackLPFreqAttachment;
+    juce::Label crackLPFreqLabel{"crackLPFreqLabel", "LP Freq"};
     juce::Slider crackLevel;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> crackLevelAttachment;
     juce::Label crackLevelLabel{"crackLevelLabel", "Level"};

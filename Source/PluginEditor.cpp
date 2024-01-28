@@ -29,22 +29,22 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     levelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Output Level",level);
 
     addKnob(porta, portaLabel, MASTERCOLOR,juce::Colours::black);
-    portaAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Porta time",porta);
+    portaAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Porta Time",porta);
 
     // Waveguides
     addKnob(stringsFBGainOn, stringsFBGainOnLabel, STRINGCOLOR, juce::Colours::black);
-    stringsFBGainOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Gain on",stringsFBGainOn);
+    stringsFBGainOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Gain On",stringsFBGainOn);
     addKnob(stringsFBFreqOn, stringsFBFreqOnLabel, STRINGCOLOR,juce::Colours::black);
-    stringsFBFreqOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Freq on",stringsFBFreqOn);
+    stringsFBFreqOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Freq On",stringsFBFreqOn);
     addKnob(stringsLevelOn, stringsLevelOnLabel, STRINGCOLOR,juce::Colours::black);
-    stringsLevelOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level on",stringsLevelOn);
+    stringsLevelOnAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level On",stringsLevelOn);
 
     addKnob(stringsFBGainOff, stringsFBGainOffLabel, STRINGCOLOR,juce::Colours::black);
-    stringsFBGainOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Gain off",stringsFBGainOff);
+    stringsFBGainOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Gain Off",stringsFBGainOff);
     addKnob(stringsFBFreqOff, stringsFBFreqOffLabel, STRINGCOLOR,juce::Colours::black);
-    stringsFBFreqOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Freq off",stringsFBFreqOff);
+    stringsFBFreqOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fb Freq Off",stringsFBFreqOff);
     addKnob(stringsLevelOff, stringsLevelOffLabel, STRINGCOLOR,juce::Colours::black);
-    stringsLevelOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level off",stringsLevelOff);
+    stringsLevelOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level Off",stringsLevelOff);
 
     addHSlider(stringsInPos, stringsInPosLabel, STRINGCOLOR,juce::Colours::black);
     // addAndConnectLabel(stringsInPos, stringsInPosLabel);
@@ -93,8 +93,8 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     samplerSustainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"SS",samplerSustain);
     addKnob(samplerRelease, samplerReleaseLabel, SAMPLERCOLOR,juce::Colours::black);
     samplerReleaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"RS",samplerRelease);
-    addKnob(samplerFreq, samplerFreqLabel, SAMPLERCOLOR,juce::Colours::black);
-    samplerFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Sample Freq",samplerFreq);
+    addKnob(samplerLPFreq, samplerLPFreqLabel, SAMPLERCOLOR,juce::Colours::black);
+    samplerLPFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Sample LP Freq",samplerLPFreq);
     addKnob(samplerLevel, samplerLevelLabel, SAMPLERCOLOR,juce::Colours::black);
     samplerLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Sample Level",samplerLevel);
 
@@ -139,8 +139,8 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     crackReleaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"RC",crackRelease);
     addKnob(crackDensity, crackDensityLabel, CRACKSCOLOR,juce::Colours::black);
     crackDensityAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Crack Density",crackDensity);
-    addKnob(crackFreq, crackFreqLabel, CRACKSCOLOR,juce::Colours::black);
-    crackFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Crack Freq",crackFreq);
+    addKnob(crackLPFreq, crackLPFreqLabel, CRACKSCOLOR,juce::Colours::black);
+    crackLPFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Crack LP Freq",crackLPFreq);
     addKnob(crackLevel, crackLevelLabel, CRACKSCOLOR,juce::Colours::black);
     crackLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Crack Level",crackLevel);
 
@@ -209,7 +209,7 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     drawBoxWithTitleOnLeft(g,"Cracks",CRACKSCOLOR,uxb+0.5*ux,uyb+2*uy,10*ux,uy,0.5*ux);
 
     drawBoxWithTitleOnLeft(g,"Exciters",TITLECOLOR,uxb,uyb,0.5*ux,3*uy, 0.5*ux);
-    drawBoxWithTitleOnLeft(g,"Strings",TITLECOLOR,uxb,uyb+3.25*uy,0.5*ux,3.5*uy, 0.5*ux);
+    drawBoxWithTitleOnLeft(g,"Strings",TITLECOLOR,uxb,uyb+3.25*uy,0.5*ux,3.25*uy, 0.5*ux);
 
     drawBoxWithTitleOnTop(g,"Properties when note off",STRINGCOLOR,uxb+0.5*ux,uyb+5.25*uy,3*ux,1.25*uy,0.25*uy);
     drawBoxWithTitleOnTop(g,"Properties when note on",STRINGCOLOR,uxb+3.5*ux,uyb+5.25*uy,3*ux,1.25*uy,0.25*uy);
@@ -302,7 +302,7 @@ void MySynthAudioProcessorEditor::resized()
     samplerDecay.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     samplerSustain.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     samplerRelease.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    samplerFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    samplerLPFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     samplerLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     waveComboBox.setBounds(ex+4*ux,ey+0.25*uy,ux,0.25*uy);
     loopButton.setBounds(ex+4.75*ux,ey+0.6*uy,size*ux,0.25*uy);
@@ -324,7 +324,7 @@ void MySynthAudioProcessorEditor::resized()
     crackSustain.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackRelease.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackDensity.setBounds(juce::Rectangle<int>(ex+4*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    crackFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    crackLPFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 }
 
