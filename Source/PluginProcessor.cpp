@@ -171,6 +171,10 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
             voice->stringReso.sampler[string].setFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Sample Freq")->load());
             voice->stringReso.sampler[string].setLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Sample Level")->load());
             voice->stringReso.sampler[string].setLooping(apvts.getRawParameterValue("Loop Sample")->load());
+            voice->stringReso.sampler[string].setAttack(apvts.getRawParameterValue("AS")->load());
+            voice->stringReso.sampler[string].setDecay(apvts.getRawParameterValue("DS")->load());
+            voice->stringReso.sampler[string].setSustain(apvts.getRawParameterValue("SS")->load());
+            voice->stringReso.sampler[string].setRelease(apvts.getRawParameterValue("RS")->load());
         }
         
         voice->stringReso.setFreqCoarseFactor(0,apvts.getRawParameterValue("Freq Coarse 1")->load());

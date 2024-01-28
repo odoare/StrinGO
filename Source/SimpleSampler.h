@@ -28,11 +28,13 @@ private:
   float levelVelocityFactor {1.f};
   float level { 1.0 };
   bool loop { false };
+  float attack{0.f}, decay{0.f}, sustain{1.f}, release{5.f};
   int currentWaveNumber;
 
   float getSampleAtPos(float pos);
 
   juce::dsp::IIR::Filter<float> filter;
+  juce::ADSR adsr;
 
 public:
   SimpleSampler();
@@ -50,6 +52,10 @@ public:
   void setReferenceFrequency(float freq);
   void setPlayingFrequency(float freq);
   void setLooping(bool l);
+  void setAttack(float a);
+  void setDecay(float d);
+  void setSustain(float s);
+  void setRelease(float r);
   float processNextSample();
   int stringNum;
 

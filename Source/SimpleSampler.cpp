@@ -25,6 +25,10 @@ void SimpleSampler::prepare(juce::dsp::ProcessSpec spec)
   increment = playingFrequency/(ARRAYSIZE*referenceFrequency);
   setFilterFreqFactor(filterFreqFactor);
   setFilterFreqVelocityInfluence(filterFreqVelocityInfluence);
+
+  juce::ADSR::Parameters para{attack,decay,sustain,release};
+  adsr.setParameters(para);
+  adsr.setSampleRate(spec.sampleRate);
 }
 
 void SimpleSampler::setWave(float *wav)
@@ -44,23 +48,33 @@ void SimpleSampler::setWaveByNumber(int waveNumber)
 void SimpleSampler::start()
 {
 
+  juce::ADSR::Parameters para{attack,decay,sustain,release};
+  adsr.setParameters(para);
+
   position = 0.f;
   filter.reset();
   isRunning = true;
 
-  // std::cout << "Start sampler     FREQ = "
-  //           << playingFrequency 
-  //           << "     Ref freq = " << referenceFrequency
-  //           << "     Level = " << level
-  //           << "     Increment = " << increment
-  //           << "     Position = " << position
-  //           << std::endl;
+  adsr.noteOn();
+
+  std::cout << "Start sampler     FREQ = "
+            << playingFrequency 
+            << "     Ref freq = " << referenceFrequency
+            << "     Level = " << level
+            << "     Increment = " << increment
+            << "     Position = " << position
+            << "     Attack = " << para.attack
+            << "     Decay = " << para.decay
+            << "     Sustain = " << para.sustain
+            << "     Release = " << para.release
+            << std::endl;
 }
 
 void SimpleSampler::stop()
 {
-  isRunning = false;
-  position = 0.f;
+  //isRunning = false;
+  //position = 0.f;
+  adsr.noteOff();
   // std::cout << "Stopped" << std::endl;
 }
 
@@ -110,6 +124,23 @@ void SimpleSampler::setLooping(bool l)
   //std::cout << loop << std::endl;
 }
 
+void SimpleSampler::setAttack(float a)
+{
+  attack = a;
+}
+void SimpleSampler::setDecay(float d)
+{
+  decay = d;
+}
+void SimpleSampler::setSustain(float s)
+{
+  sustain = s;
+}
+void SimpleSampler::setRelease(float r)
+{
+  release = r;
+}
+
 float SimpleSampler::getSampleAtPos(float pos)
 {
   float sampleNumber = (ARRAYSIZE-1)*pos;
@@ -123,7 +154,10 @@ float SimpleSampler::processNextSample()
 {
   if (isRunning)
   {
-    float value = level*levelVelocityFactor*filter.processSample(getSampleAtPos(position));
+    float value = level
+                    *levelVelocityFactor
+                    *adsr.getNextSample()
+                    *filter.processSample(getSampleAtPos(position));
     position = position + increment;
     if (position>=1.f)
       {
