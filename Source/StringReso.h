@@ -11,7 +11,14 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "SimpleSampler.h"
 #include <iostream>
+
+#define NUMSTRINGS 2
+#define SMOOTH_TIME 0.1f
+#define SEMITONE 1.059463094359295f
+
+int suivant(int N, int i);
 
 class StringReso
 {
@@ -19,17 +26,27 @@ public:
 
   typedef struct
   {
-    float attack;
-    float release;
+    juce::ADSR::Parameters adsrParams1;
+    float attack1;
+    float decay1;
+    float sustain1;
+    float release1;
     float portamento;
+    float smoothTime;
     float stringPeriodInSamples;
-    float inPos, outPos;
-    float feedbackGainOn;
-    float feedbackFreqOn;
-    float levelOn;
-    float feedbackGainOff;
-    float feedbackFreqOff;
-    float levelOff;
+    float level[NUMSTRINGS];
+    float freqCoarseFactor[NUMSTRINGS];
+    float freqFineFactor[NUMSTRINGS];
+    float inPos[NUMSTRINGS];
+    float outPos[NUMSTRINGS];
+    float feedbackGainOn[NUMSTRINGS];
+    float feedbackFreqOn[NUMSTRINGS];
+    float levelOn[NUMSTRINGS];
+    float feedbackGainOff[NUMSTRINGS];
+    float feedbackFreqOff[NUMSTRINGS];
+    float levelOff[NUMSTRINGS];
+    float coupling[NUMSTRINGS];
+    float velocityLevel;
     bool isOn;
   } StringResoParams;
 
@@ -41,118 +58,80 @@ public:
   void prepare(const juce::dsp::ProcessSpec spec, float minFreq);
 
   //----------------------------------------------------------------------------
-  //void process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<float>& outBuffer);
   void process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<float>& outBuffer, int startSample, int numSamples);
 
   //-----------------------------------------
-  void setAttackTimeInSamples(int numSamples);
-  void setReleaseTimeInSamples(int numSamples);
-  void setPortamentoTimeInSamples(int numSamples);
+  void setSmoothTime(float time);
+  void setPortamentoTime(float time);
+
+  void setADSR1(juce::ADSR::Parameters adsrParams);
 
   //--------------------------
   StringResoParams getParams();
 
+  void setParams(StringResoParams newParams, bool force = false);
+
   void setIsOn(bool on, bool force = false);
 
-  //void setTargetIsOn(bool on);
+  void setFeedbackGain(int string, float gain, bool force = false);
+  void setFeedbackGainOn(int string, float gain, bool force = false);
+  void setFeedbackGainOff(int string, float gain, bool force = false);
 
-  //void setTargetFeedbackGain(float gain);
+  void setFeedbackFreqOn(int string, float freq, bool force = false);
+  void setFeedbackFreqOff(int string, float freq, bool force = false);
+  void setFeedbackFreq(int string, float freq, bool force = false);
 
-  void setFeedbackGain(float gain, bool force = false);
-
-  //void setTargetFeedbackGainOn(float gain);
-
-  void setFeedbackGainOn(float gain, bool force = false);
-
-  //void setTargetFeedbackGainOff(float gain);
-
-  void setFeedbackGainOff(float gain, bool force = false);
-
-  //void setTargetFeedbackFreqOn(float freq);
-
-  void setFeedbackFreqOn(float freq, bool force = false);
-
-  //void setTargetFeedbackFreqOff(float freq);
-
-  void setFeedbackFreqOff(float freq, bool force = false);
-
-  //void setTargetFeedbackFreq(float freq);
-
-  void setFeedbackFreq(float freq, bool force = false);
-
-  void setLevelOn(float freq, bool force);
-  void setLevelOff(float freq, bool force);
-  void setLevel(float freq, bool force);
-
-  //void setTargetStringPeriodInSamples(float period);
+  void setLevelOn(int string, float freq, bool force=false);
+  void setLevelOff(int string, float freq, bool force=false);
+  void setLevel(int string, float lvl, bool force=false);
 
   void setStringPeriodInSamples(float period, bool force = false);
-
-  //void setTargetStringFreq(float freq);
-
   void setStringFreq(float freq, bool force = false);
 
-  //void setTargetInPos(float pos);
+  void setInPos(int string, float pos, bool force = false);
+  void setOutPos(int string, float pos, bool force = false);
 
-  void setInPos(float pos, bool force = false);
+  void setFreqCoarseFactor(int string, float fac, bool force=false);
+  void setFreqFineFactor(int string, float fac, bool force=false);
 
-  //void setTargetOutPos(float pos);
+  void setCoupling(int string, float fac, bool force=false);
 
-  void setOutPos(float pos, bool force = false);
+  void setSamplerLevel(int string, float lvl);
+
+  void setVelocityLevel(float lvl);
+  void setVelocity(float vel);
+
+  juce::dsp::ProcessSpec processSpec;
+
+  juce::ADSR adsr1;
+  juce::ADSR::Parameters adsr1Params;
+
+  SimpleSampler sampler[NUMSTRINGS];
 
 private:
 
-  //void setTargetDelaySamples();
+  void setDelaySamples(int string, bool force = false);
 
-  void setDelaySamples(bool force = false);
+  void setSamplerFreq(int string);
 
-  juce::dsp::ProcessSpec processSpec;
-  juce::dsp::DelayLine<float,juce::dsp::DelayLineInterpolationTypes::Lagrange3rd> delayLine[4];
-  juce::dsp::IIR::Filter<float> fbFilter;
-  juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothDelaySamples[4],
-                                                                smoothFeedbackFreq,
-                                                                smoothFeedbackGain,
-                                                                smoothLevel;
+  juce::dsp::DelayLine<float,juce::dsp::DelayLineInterpolationTypes::Lagrange3rd> delayLine[4*NUMSTRINGS];
+  juce::dsp::IIR::Filter<float> fbFilter[NUMSTRINGS];
+
+  juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothDelaySamples[4*NUMSTRINGS],
+                                                                smoothFeedbackFreq[NUMSTRINGS],
+                                                                smoothFeedbackGain[NUMSTRINGS],
+                                                                smoothLevel[NUMSTRINGS],
+                                                                smoothCoupling[NUMSTRINGS];
 
   StringResoParams params;
-  float currentFeedbackGain, currentFeedbackFreq, currentLevel;
+
+  float velocityLevelFactor;
+
+  float currentFeedbackGain[NUMSTRINGS],
+        currentFeedbackFreq[NUMSTRINGS],
+        currentLevel[NUMSTRINGS],
+        currentCoupling[NUMSTRINGS];
+
+  float previousOutput[NUMSTRINGS];
+
 };
-
-
-// ---------------------------------------------------------------------------------------------
-
-// class StringsReso
-// {
-
-// public:
-
-//   StringsReso(int n);
-
-//   ~StringsReso();
-
-//   void prepare(juce::dsp::ProcessSpec spec);
-
-//   void process(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
-
-//   // StringReso::Params paramsToParams(Params stringsResoParams, float periodInSamples)
-//   // {
-//   //   StringReso::Params params;
-//   //   params.smoothTime = stringsResoParams.smoothTime;
-//   //   params.inPos = stringsResoParams.inPos;
-//   //   params.outPos = stringsResoParams.outPos;
-//   //   params.feedbackGainOn = stringsResoParams.feedbackGainOn;
-//   //   params.feedbackFreqOn = stringsResoParams.feedbackFreqOn;
-//   //   params.feedbackGainOff = stringsResoParams.feedbackGainOff;
-//   //   params.feedbackFreqOff = stringsResoParams.feedbackFreqOff;
-//   //   params.stringPeriodInSamples = periodInSamples;
-//   //   return params;
-//   // }
-
-// private:
-//   StringReso::StringResoParams params;
-//   int numStrings;
-//   std::vector<StringReso> strings;
-//   std::vector<int> stringsIndices;
-  
-// };
-

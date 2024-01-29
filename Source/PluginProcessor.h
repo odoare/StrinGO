@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "SynthVoice.h"
+#include <iostream>
 
 //==============================================================================
 /**
@@ -61,6 +62,8 @@ public:
 private:
 
     juce::Synthesiser synth;
+
+    float outputGain, outputLevel;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MySynthAudioProcessor)
