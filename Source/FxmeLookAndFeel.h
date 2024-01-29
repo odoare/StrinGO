@@ -24,27 +24,28 @@ public:
     float rx = centreX - radius;
     float ry = centreY - radius;
     float angle = rotaryStartAngle + (sliderPos * (rotaryEndAngle-rotaryStartAngle));
+    float thickness = diameter/12;
 
     juce::Rectangle<float> dialArea(rx,ry,diameter,diameter);
     g.setColour(juce::Colours::black);
-    g.fillEllipse(dialArea.reduced(6));
+    g.fillEllipse(dialArea.reduced(thickness));
     g.setColour(slider.findColour(juce::Slider::thumbColourId).darker());
-    g.drawEllipse(dialArea.reduced(6),2.0f);
+    g.drawEllipse(dialArea.reduced(thickness),thickness/6);
     
     g.setColour(slider.findColour(juce::Slider::thumbColourId).brighter(0.5f));
     juce::Path dialTick;
-    juce::Rectangle<int> rect(0.f,-radius,5.0f,radius*0.4);
+    juce::Rectangle<int> rect(0.f,-radius,thickness,radius*0.4);
     dialTick.addRectangle(rect);
     g.fillPath(dialTick,juce::AffineTransform::rotation(angle).translated(centreX,centreY));
 
     g.setColour(slider.findColour(juce::Slider::thumbColourId).darker(3.f));
     juce::Path arc1;
     arc1.addArc(centreX-diameter/2, centreY-diameter/2, diameter, diameter, rotaryStartAngle, rotaryEndAngle, true);
-    g.strokePath(arc1, juce::PathStrokeType(5.0f));
+    g.strokePath(arc1, juce::PathStrokeType(thickness));
     g.setColour(slider.findColour(juce::Slider::thumbColourId));
     juce::Path arc2, arc3;
     arc2.addArc(centreX-diameter/2, centreY-diameter/2, diameter, diameter, rotaryStartAngle, angle, true);
-    juce::PathStrokeType path{5.0f, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded};
+    juce::PathStrokeType path{thickness, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded};
     g.strokePath(arc2, path);
     
   };
@@ -76,7 +77,7 @@ public:
     
     g.drawSingleLineText(labelToDisplay,
                           juce::roundToInt(center.x + g.getCurrentFont().getHorizontalScale()),
-                          juce::roundToInt(center.y + g.getCurrentFont().getDescent()),
+                          juce::roundToInt(center.y + 1.2*g.getCurrentFont().getDescent()),
                           juce::Justification::horizontallyCentred);
  
     }
