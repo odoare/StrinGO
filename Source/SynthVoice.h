@@ -14,11 +14,8 @@
 #include "SynthSound.h"
 #include "StringReso.h"
 #include "CracksGenerator.h"
-// #include "SimpleSampler.h"
 
 #define INVPI 0.318309886183791
-
-//#define DEBUG
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -46,15 +43,15 @@ public:
   void setNoiseLPFilterFreqVelocityInfluence(float factor);
   void setNoiseHPFilterFreq(float freq);
   void setNoiseHPFilterFreqVelocityInfluence(float factor);
-  void setVelocity(float vel);
   void setNoiseLevel(float lvl);
-
-  void setSamplerLevel(float lvl);
-  void setSamplerFilterFreqFactor(float freqFactor);
+  void setNoiseLevelVelocityInfluence(float val);
+  void setVelocity(float vel);
 
   void setCrackDensity(int d);
-  void setCrackFilterFreq(float freq);
+  void setCrackLPFilterFreq(float freq);
+  void setCrackLPFilterFreqVelocityInfluence(float val);
   void setCrackLevel(float lvl);
+  void setCrackLevelVelocityInfluence(float val);
 
   StringReso stringReso;
   juce::ADSR adsr1, adsr2, adsrN, adsrC;//, adsrO;
@@ -71,16 +68,21 @@ private:
   float noiseLPFilterFreq  { 1000.f };
   float noiseHPFilterFreq  { 1000.f };
   float noiseLevel { 1.0f };
-  float noiseLPFilterFreqVelocityInfluence;
-  float noiseHPFilterFreqVelocityInfluence;
-  float noiseLevelVelocityInfluence;
+  float noiseLPFilterFreqVelocityInfluence {0.f};
+  float noiseLPFilterFreqVelocityFactor {1.f};
+  float noiseHPFilterFreqVelocityInfluence {0.f};
+  float noiseHPFilterFreqVelocityFactor {1.f};  
+  float noiseLevelVelocityInfluence {0.f};
+  float noiseLevelVelocityFactor {1.f};
 
   CracksGenerator cracksGenerator;
-  juce::dsp::IIR::Filter<float> crackFilter;
-  float crackFilterFreq  { 1000.f };
+  juce::dsp::IIR::Filter<float> crackLPFilter;
+  float crackLPFilterFreq  { 1000.f };
   float crackLevel { 1.0 };
-  float crackFilterFreqVelocityInfluence;
-  float crackLevelVelocityInfluence;
+  float crackLPFilterFreqVelocityInfluence {0.f};
+  float crackLPFilterFreqVelocityFactor {1.f};
+  float crackLevelVelocityInfluence {0.f};
+  float crackLevelVelocityFactor {1.f};
 
   juce::AudioBuffer<float> inBuffer, synthBuffer;
 

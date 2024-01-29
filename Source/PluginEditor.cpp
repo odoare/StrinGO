@@ -47,17 +47,12 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     stringsLevelOffAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level Off",stringsLevelOff);
 
     addHSlider(stringsInPos, stringsInPosLabel, STRINGCOLOR,juce::Colours::black);
-    // addAndConnectLabel(stringsInPos, stringsInPosLabel);
     stringsInPosAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"In Pos",stringsInPos);
-    //stringsInPos.setTextBoxStyle(juce::Slider::NoTextBox,true,50,20);
 
     addHSlider(stringsOutPos, stringsOutPosLabel, STRINGCOLOR,juce::Colours::black);
-    // addAndConnectLabel(stringsOutPos, stringsOutPosLabel);
     stringsOutPosAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Out Pos",stringsOutPos);
-    //stringsOutPos.setTextBoxStyle(juce::Slider::NoTextBox,true,50,20);
 
     addHSlider(stringsCoupling, stringsCouplingLabel, STRINGCOLOR,juce::Colours::black);
-    // addAndConnectLabel(stringsCoupling, stringsCouplingLabel);
     stringsCouplingAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Coupling",stringsCoupling);
 
     addKnob(string1Level, string1LevelLabel, STRINGCOLOR,juce::Colours::black);
@@ -152,19 +147,12 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     addKnob(velocityNoiseLevel, velocityNoiseLevelLabel, NOISECOLOR,juce::Colours::black);
     velocityNoiseLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Noise Level",velocityNoiseLevel);
     addKnob(velocityNoiseFreq, velocityNoiseFreqLabel, NOISECOLOR,juce::Colours::black);
-    velocityNoiseLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Noise Freq",velocityNoiseFreq);
+    velocityNoiseFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Noise Freq",velocityNoiseFreq);
 
     addKnob(velocityCrackLevel, velocityCrackLevelLabel, CRACKSCOLOR,juce::Colours::black);
     velocityCrackLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Crack Level",velocityCrackLevel);
     addKnob(velocityCrackFreq, velocityCrackFreqLabel, CRACKSCOLOR,juce::Colours::black);
     velocityCrackFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Crack Freq",velocityCrackFreq);
-
-    // addKnob(velocityLevel, velocityLevelLabel, VELOCITYCOLOR,juce::Colours::black);
-    // velocityLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Volume",velocityLevel);
-    // addKnob(velocitySampleFreq, velocitySampleFreqLabel, VELOCITYCOLOR,juce::Colours::black);
-    // velocitySampleFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Sample Filter",velocitySampleFreq);
-    // addKnob(velocityNoiseFreq, velocityNoiseFreqLabel, VELOCITYCOLOR,juce::Colours::black);
-    // velocityNoiseFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Noise Filter",velocityNoiseFreq);
 
     setSize (1000, 650);
     setResizable(true,true);
@@ -181,8 +169,6 @@ MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor()
 #define DELTAX 0.1f
 #define DELTAY 0.1f
 
-
-
 //========================================  ======================================
 void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
 {
@@ -197,7 +183,6 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     auto length = diagonale.getDistanceFromOrigin();
     auto perpendicular = diagonale.rotatedAboutOrigin (juce::degreesToRadians (90.0f)) / length;
     auto height = float (getWidth() * getHeight()) / length;
-    // auto bluegreengrey = juce::Colour::fromFloatRGBA(0.17f,0.22f,0.27f,1.0f);
     auto bluegreengrey = juce::Colour::fromFloatRGBA (0.15f, 0.15f, 0.25f, 1.0f);
     juce::ColourGradient grad (bluegreengrey.darker().darker().darker(), perpendicular * height,
                            bluegreengrey, perpendicular * -height, false);

@@ -58,7 +58,6 @@ public:
   void prepare(const juce::dsp::ProcessSpec spec, float minFreq);
 
   //----------------------------------------------------------------------------
-  //void process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<float>& outBuffer);
   void process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<float>& outBuffer, int startSample, int numSamples);
 
   //-----------------------------------------
@@ -110,8 +109,6 @@ public:
   SimpleSampler sampler[NUMSTRINGS];
 
 private:
-
-  //void setTargetDelaySamples();
 
   void setDelaySamples(int string, bool force = false);
 

@@ -11,7 +11,6 @@
 #pragma once
 #include <JuceHeader.h>
 #include "SampleArrays.h"
-#include <iostream>
 
 class SimpleSampler
 {

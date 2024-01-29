@@ -10,6 +10,10 @@
 
 #include "SimpleSampler.h"
 
+#ifdef DEBUG
+  #include <iostream>
+#endif
+
 SimpleSampler::SimpleSampler()
 {
 }
@@ -57,25 +61,28 @@ void SimpleSampler::start()
 
   adsr.noteOn();
 
-  std::cout << "Start sampler     FREQ = "
-            << playingFrequency 
-            << "     Ref freq = " << referenceFrequency
-            << "     Level = " << level
-            << "     Increment = " << increment
-            << "     Position = " << position
-            << "     Attack = " << para.attack
-            << "     Decay = " << para.decay
-            << "     Sustain = " << para.sustain
-            << "     Release = " << para.release
-            << std::endl;
+  #ifdef DEBUG
+    std::cout << "Start sampler     FREQ = "
+              << playingFrequency 
+              << "     Ref freq = " << referenceFrequency
+              << "     Level = " << level
+              << "     Increment = " << increment
+              << "     Position = " << position
+              << "     Attack = " << para.attack
+              << "     Decay = " << para.decay
+              << "     Sustain = " << para.sustain
+              << "     Release = " << para.release
+              << std::endl;
+  #endif
 }
 
 void SimpleSampler::stop()
 {
-  //isRunning = false;
-  //position = 0.f;
   adsr.noteOff();
-  // std::cout << "Stopped" << std::endl;
+
+  #ifdef DEBUG
+    std::cout << "Stopped" << std::endl;
+  #endif
 }
 
 void SimpleSampler::setFilterFreqFactor(float freqFactor)

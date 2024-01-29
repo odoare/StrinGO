@@ -36,3 +36,8 @@ float CracksGenerator::nextSample()
   }
   else return 0.f;
 }
+
+void CracksGenerator::setDensity(int d)
+{
+  density = d;
+}

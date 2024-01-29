@@ -197,23 +197,12 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityCrackFreqAttachment;
     juce::Label velocityCrackFreqLabel{"velocityCrackFreqLabel", "Freq"};
 
-
-    // juce::Slider velocityLevel;
-    // std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityLevelAttachment;
-    // juce::Label velocityLevelLabel{"string2LevelLabel", "Level"};
-    // juce::Slider velocitySampleFreq;
-    // std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocitySampleFreqAttachment;
-    // juce::Label velocitySampleFreqLabel{"string2FreqCoarseLabel", "Sample freq"};
-    // juce::Slider velocityNoiseFreq;
-    // std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> velocityNoiseFreqAttachment;
-    // juce::Label velocityNoiseFreqLabel{"string2FreqFineLabel", "Noise freq"};
-
     juce::Label emptyLabel{"emptyLabel", ""};
     
     void addKnob(juce::Slider &slider, juce::Label &label, juce::Colour fillCol, juce::Colour outlineCol);
     void addVSlider(juce::Slider &slider, juce::Label &label, juce::Colour fillCol, juce::Colour outlineCol);
     void addHSlider(juce::Slider &slider, juce::Label &label, juce::Colour fillCol, juce::Colour outlineCol);
-    //void addAndConnectKnobLabel(juce::Slider &slider, juce::Label &label);
+
     void drawBoxWithTitleOnTop(juce::Graphics& g,
                                 const juce::String title,
                                 const juce::Colour baseColour,
