@@ -128,7 +128,6 @@ void SimpleSampler::setPlayingFrequency(float freq)
 void SimpleSampler::setLooping(bool l)
 {
   loop = l;
-  //std::cout << loop << std::endl;
 }
 
 void SimpleSampler::setAttack(float a)
@@ -154,7 +153,6 @@ float SimpleSampler::getSampleAtPos(float pos)
   int sampleNumber0 = floor(sampleNumber);
   float samplePos01 = sampleNumber - sampleNumber0;
   return juce::jmap<float>(samplePos01,wave[sampleNumber0],wave[sampleNumber0+1]);
-  // return 0;
 }
 
 float SimpleSampler::processNextSample()

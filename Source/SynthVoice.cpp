@@ -131,12 +131,12 @@ void SynthVoice::setVelocity(float vel)
   noiseLPFilterFreqVelocityFactor = juce::jmap<float>(float(vel), 1-noiseLPFilterFreqVelocityInfluence, 1) ;
   noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseLPFilterFreq*noiseLPFilterFreqVelocityFactor);
   noiseLevelVelocityFactor = juce::jmap<float>(float(vel), 1-noiseLevelVelocityInfluence, 1) ;
-  std::cout << "Noise Level Velocity Factor : " << noiseLevelVelocityInfluence << std::endl;
+  // std::cout << "Noise Level Velocity Factor : " << noiseLevelVelocityInfluence << std::endl;
 
   crackLPFilterFreqVelocityFactor = juce::jmap<float>(float(vel), 1-crackLPFilterFreqVelocityInfluence, 1) ;
   crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,crackLPFilterFreq*crackLPFilterFreqVelocityFactor);
   crackLevelVelocityFactor = juce::jmap<float>(float(vel), 1-crackLevelVelocityInfluence, 1) ;
-  std::cout << "Crack Level Velocity Factor : " << noiseLevelVelocityInfluence << std::endl;
+  // std::cout << "Crack Level Velocity Factor : " << noiseLevelVelocityInfluence << std::endl;
 
   stringReso.setVelocity(vel);
 }
@@ -197,7 +197,7 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startS
   {
     auto* channelData = inBuffer.getWritePointer (channel);
     for (int sample=0; sample<numSamples; ++sample)
-      channelData[sample] = adsrN.getNextSample() * noiseLevelVelocityFactor * noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f))
+      channelData[sample] = adsrN.getNextSample() * noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f)))
         + adsrC.getNextSample() * crackLevelVelocityFactor * crackLPFilter.processSample(crackLevel*cracksGenerator.nextSample());
   }
   

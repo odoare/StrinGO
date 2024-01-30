@@ -223,13 +223,10 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         voice->setCrackLPFilterFreq(apvts.getRawParameterValue("Crack LP Freq")->load());
         voice->setCrackLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Crack Level")->load()));
 
-        //voice->stringReso.setVelocityLevel(apvts.getRawParameterValue("Velocity Sample Level")->load());
         voice->setNoiseLPFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Noise Freq")->load());
         voice->setCrackLPFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Crack Freq")->load());
         voice->setNoiseLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Noise Level")->load());
-        std::cout << apvts.getRawParameterValue("Velocity Noise Level")->load() << std::endl;
         voice->setCrackLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Crack Level")->load());
-
        } 
     }
 

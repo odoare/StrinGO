@@ -19,7 +19,7 @@ int suivant(int N, int i)
 
 StringReso::StringReso()
   {
-    std::cout << "begin StringReso initialization   ";
+    // std::cout << "begin StringReso initialization   ";
     // Initialize class parameters with some default values
     params.adsrParams1.attack = 0.1f;
     params.adsrParams1.decay = 0.1f;
@@ -60,7 +60,7 @@ StringReso::StringReso()
             currentLevel[i]= params.levelOff[i];
             currentCoupling[i] = params.coupling[i];
         }
-    std::cout << "end StringReso initialization   " << std::endl;
+    // std::cout << "end StringReso initialization   " << std::endl;
     }
 
 StringReso::~StringReso()
@@ -71,7 +71,7 @@ StringReso::~StringReso()
 //----------------------------------------------------------------
 void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
   {
-    std::cout << "begin StringReso::prepare   ";
+    // std::cout << "begin StringReso::prepare   ";
 
     processSpec = spec;
     setParams(params, true);
@@ -160,7 +160,7 @@ void StringReso::setADSR1(juce::ADSR::Parameters adsrParams)
 
 void StringReso::setParams(StringReso::StringResoParams newParams, bool force)
 {
-    std::cout << "     begin StringReso::setParams   " << std::endl;
+    // std::cout << "     begin StringReso::setParams   " << std::endl;
 
     adsr1.setParameters(newParams.adsrParams1);
     
@@ -182,7 +182,7 @@ void StringReso::setParams(StringReso::StringResoParams newParams, bool force)
     }
     params = newParams;
 
-    std::cout << "     end StringReso::setParams   " << std::endl;
+    // std::cout << "     end StringReso::setParams   " << std::endl;
 }
 
 //-----------------------------------------
