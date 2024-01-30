@@ -30,8 +30,8 @@ void SimpleSampler::prepare(juce::dsp::ProcessSpec spec)
   setFilterFreqFactor(filterFreqFactor);
   setFilterFreqVelocityInfluence(filterFreqVelocityInfluence);
 
-  juce::ADSR::Parameters para{attack,decay,sustain,release};
-  adsr.setParameters(para);
+  //juce::ADSR::Parameters para{attack,decay,sustain,release};
+  adsr.setParameters(juce::ADSR::Parameters{attack,decay,sustain,release});
   adsr.setSampleRate(spec.sampleRate);
 }
 
@@ -52,8 +52,8 @@ void SimpleSampler::setWaveByNumber(int waveNumber)
 void SimpleSampler::start()
 {
 
-  juce::ADSR::Parameters para{attack,decay,sustain,release};
-  adsr.setParameters(para);
+  //juce::ADSR::Parameters para{attack,decay,sustain,release};
+  adsr.setParameters(juce::ADSR::Parameters{attack,decay,sustain,release});
 
   position = 0.f;
   filter.reset();
@@ -88,6 +88,7 @@ void SimpleSampler::stop()
 void SimpleSampler::setFilterFreqFactor(float freqFactor)
 {
   filterFreqFactor = freqFactor;
+  updateFilter();
 }
 
 void SimpleSampler::setFilterFreqVelocityInfluence(float val)
@@ -104,7 +105,7 @@ void SimpleSampler::setVelocity(float vel)
 {
   filterFreqVelocityFactor = juce::jmap<float>(float(vel), 1-filterFreqVelocityInfluence, 1) ;
   levelVelocityFactor = juce::jmap<float>(float(vel), 1-levelVelocityInfluence, 1) ;
-  filter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,playingFrequency * filterFreqFactor * filterFreqVelocityFactor);
+  updateFilter();
 }
 
 void SimpleSampler::setLevel(float lvl)
@@ -145,6 +146,11 @@ void SimpleSampler::setSustain(float s)
 void SimpleSampler::setRelease(float r)
 {
   release = r;
+}
+
+void SimpleSampler::updateFilter()
+{
+  filter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,playingFrequency * filterFreqFactor * filterFreqVelocityFactor);
 }
 
 float SimpleSampler::getSampleAtPos(float pos)

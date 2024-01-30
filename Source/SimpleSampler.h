@@ -55,6 +55,7 @@ public:
   void setDecay(float d);
   void setSustain(float s);
   void setRelease(float r);
+  void updateFilter();
   float processNextSample();
   int stringNum;
 
