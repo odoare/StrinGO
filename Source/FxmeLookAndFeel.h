@@ -34,7 +34,7 @@ public:
     
     g.setColour(slider.findColour(juce::Slider::thumbColourId).brighter(0.5f));
     juce::Path dialTick;
-    juce::Rectangle<int> rect(0.f,-radius,thickness,radius*0.4);
+    juce::Rectangle<int> rect(0.f,-radius+thickness,thickness,radius*0.4);
     dialTick.addRectangle(rect);
     g.fillPath(dialTick,juce::AffineTransform::rotation(angle).translated(centreX,centreY));
 
@@ -77,7 +77,7 @@ public:
     
     g.drawSingleLineText(labelToDisplay,
                           juce::roundToInt(center.x + g.getCurrentFont().getHorizontalScale()),
-                          juce::roundToInt(center.y + 1.2*g.getCurrentFont().getDescent()),
+                          juce::roundToInt(center.y + 1.4*g.getCurrentFont().getDescent()),
                           juce::Justification::horizontallyCentred);
  
     }

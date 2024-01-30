@@ -334,7 +334,7 @@ void MySynthAudioProcessorEditor::addKnob(juce::Slider& slider,
   label.attachToComponent(&slider,false);
   juce::AffineTransform t;
   auto labelArea{label.getLocalBounds().toFloat()};
-  label.setTransform(t.translated(0,labelArea.getHeight()*0.5f));
+  label.setTransform(t.translated(0,labelArea.getHeight()*0.45f));
   addAndMakeVisible(label);  
 }
 
