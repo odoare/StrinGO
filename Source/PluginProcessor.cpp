@@ -100,6 +100,11 @@ void MySynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     synth.setCurrentPlaybackSampleRate(sampleRate);
 
+    smoothOutpuGain.reset(0.01*sampleRate);
+    smoothOutputLevel.reset(0.01*sampleRate);
+    smoothOutpuGain.setCurrentAndTargetValue(0.f);
+    smoothOutputLevel.setCurrentAndTargetValue(0.f);
+    
     for (int i=0; i<synth.getNumVoices(); ++i)
     {
        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
@@ -230,8 +235,8 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
        } 
     }
 
-    outputGain = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Gain")->load());
-    outputLevel = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Level")->load());
+    smoothOutpuGain.setTargetValue(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Gain")->load()));
+    smoothOutputLevel.setTargetValue(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Level")->load()));
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
@@ -241,7 +246,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         auto* channelData = buffer.getWritePointer (channel);
         for (int sample=0; sample<buffer.getNumSamples(); ++sample)
         {
-            channelData[sample] = outputLevel * tanh(outputGain * channelData[sample]);
+            channelData[sample] = smoothOutputLevel.getNextValue() * tanh(smoothOutpuGain.getNextValue() * channelData[sample]);
         }
     }
 }
