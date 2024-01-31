@@ -7,6 +7,10 @@
               pluginCode="StGO" lv2Uri="http://www.fxmechanics.com/plugins/stringo">
   <MAINGROUP id="dLq9WS" name="StrinGO">
     <GROUP id="{D446EAB4-C456-0D9A-B6D2-A195773853D6}" name="Source">
+      <GROUP id="{52D558E0-E9AE-9F5D-94E4-2AC41697C7A0}" name="Assets">
+        <FILE id="Zs8X3J" name="logo686.png" compile="0" resource="1" file="Source/Assets/logo686.png"/>
+        <FILE id="q3Tkve" name="logo686.svg" compile="0" resource="1" file="Source/Assets/logo686.svg"/>
+      </GROUP>
       <FILE id="dWUuf4" name="StringReso.cpp" compile="1" resource="0" file="Source/StringReso.cpp"/>
       <FILE id="g6U4xZ" name="StringReso.h" compile="0" resource="0" file="Source/StringReso.h"/>
       <FILE id="wSQxJu" name="PluginProcessor.cpp" compile="1" resource="0"

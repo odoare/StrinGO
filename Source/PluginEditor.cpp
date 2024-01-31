@@ -22,6 +22,9 @@
 MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+
+    logo = juce::ImageCache::getFromMemory(BinaryData::logo686_png, BinaryData::logo686_pngSize);
+
     addVSlider(gain, gainLabel, MASTERCOLOR,juce::Colours::black);
     gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Output Gain",gain);
 
@@ -208,6 +211,9 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     drawBoxWithTitleOnLeft(g,"Velocity sensitivity",TITLECOLOR,uxb+8*ux,uyb,2.5*ux,3*uy,0.5*ux);
     drawBoxWithTitleOnTop(g,"Midi",MASTERCOLOR,uxb+10.5*ux,uyb,2*ux,1.25*uy,0.25*uy);
     drawBoxWithTitleOnTop(g,"Master",MASTERCOLOR,uxb+10.5*ux,uyb+1.25*uy,2*ux,5.25*uy,0.25*uy);
+
+    auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+6.5*uy-2*ux,2*ux,2*ux).reduced(10);
+    g.drawImage(logo, r);
 }
 
 // ----------------------------------------------------------------------------

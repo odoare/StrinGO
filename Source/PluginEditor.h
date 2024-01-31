@@ -31,6 +31,8 @@ private:
 
     FxmeKnobLookAndFeel fxmeKnobLookAndFeel;
 
+    juce::Image logo;
+
     juce::Slider gain;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
     juce::Label gainLabel{"gainLabel", "Gain"};
@@ -220,6 +222,8 @@ private:
                                 const float wx,
                                 const float wy,
                                 const float bandWidth);
+
+    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MySynthAudioProcessorEditor)
 };
