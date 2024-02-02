@@ -41,6 +41,10 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> levelAttachment;
     juce::Label levelLabel{"levelLabel", "Level"};
 
+    juce::Slider voices;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> voicesAttachment;
+    juce::Label voicesLabel{"voicesLabel", "Voices"};
+
     juce::Slider porta;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> portaAttachment;
     juce::Label portaLabel{"portaLabel", "Porta"};
@@ -222,8 +226,6 @@ private:
                                 const float wx,
                                 const float wy,
                                 const float bandWidth);
-
-    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MySynthAudioProcessorEditor)
 };

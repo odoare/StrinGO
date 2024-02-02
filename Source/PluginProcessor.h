@@ -63,8 +63,10 @@ private:
 
     juce::Synthesiser synth;
 
-    // float outputGain {1.0f}, outputLevel{1.0f};
     juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothOutpuGain, smoothOutputLevel;
+
+    double processSampleRate;
+    int processBlockLength;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MySynthAudioProcessor)

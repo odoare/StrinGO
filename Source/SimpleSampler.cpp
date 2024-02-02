@@ -40,9 +40,9 @@ void SimpleSampler::setWave(float *wav)
   wave = wav;
 }
 
-void SimpleSampler::setWaveByNumber(int waveNumber)
+void SimpleSampler::setWaveByNumber(int waveNumber, bool force)
 {
-  if (waveNumber!=currentWaveNumber)
+  if (waveNumber!=currentWaveNumber || force)
   {
     currentWaveNumber = waveNumber;
     setWave(getWave(waveNumber));

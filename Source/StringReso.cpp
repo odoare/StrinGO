@@ -99,7 +99,7 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
         fbFilter[string].coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,currentFeedbackFreq[string]);
         fbFilter[string].prepare(processSpec);
 
-        sampler[string].setWaveByNumber(0);
+        sampler[string].setWaveByNumber(0, true);
         sampler[string].prepare(processSpec);
         sampler[string].stringNum = string;
     }

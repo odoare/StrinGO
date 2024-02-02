@@ -9,9 +9,9 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-#define SAMPLERCOLOR juce::Colours::red
+#define SAMPLERCOLOR juce::Colours::blue
 #define NOISECOLOR juce::Colours::green
-#define CRACKSCOLOR juce::Colours::blue
+#define CRACKSCOLOR juce::Colours::red
 #define MASTERCOLOR juce::Colours::yellow
 #define VELOCITYCOLOR juce::Colours::magenta
 #define STRINGCOLOR juce::Colours::cyan
@@ -30,6 +30,9 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
 
     addVSlider(level, levelLabel, MASTERCOLOR,juce::Colours::black);
     levelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Output Level",level);
+
+    addKnob(voices, voicesLabel, MASTERCOLOR,juce::Colours::black);
+    voicesAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Voices",voices);
 
     addKnob(porta, portaLabel, MASTERCOLOR,juce::Colours::black);
     portaAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Porta Time",porta);
@@ -228,9 +231,10 @@ void MySynthAudioProcessorEditor::resized()
     const float stepy = 1.f;
     const float size = 0.8f;
 
-    float ex = uxb+11*ux;
+    float ex = uxb+10.5*ux;
     float ey = uyb+0.25*uy;
     porta.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    voices.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
     ex = uxb+10.5*ux;
     ey = uyb+1.75*uy;
