@@ -40,7 +40,7 @@ public:
   ~SimpleSampler();
   void prepare(juce::dsp::ProcessSpec spec);
   void setWave(float *wav);
-  void setWaveByNumber(int waveNumber);
+  void setWaveByNumber(int waveNumber, bool force=false);
   void start();
   void stop();
   void setFilterFreqFactor(float freq);
@@ -55,6 +55,7 @@ public:
   void setDecay(float d);
   void setSustain(float s);
   void setRelease(float r);
+  void updateFilter();
   float processNextSample();
   int stringNum;
 

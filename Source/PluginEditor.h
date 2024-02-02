@@ -31,6 +31,8 @@ private:
 
     FxmeKnobLookAndFeel fxmeKnobLookAndFeel;
 
+    juce::Image logo;
+
     juce::Slider gain;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
     juce::Label gainLabel{"gainLabel", "Gain"};
@@ -38,6 +40,10 @@ private:
     juce::Slider level;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> levelAttachment;
     juce::Label levelLabel{"levelLabel", "Level"};
+
+    juce::Slider voices;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> voicesAttachment;
+    juce::Label voicesLabel{"voicesLabel", "Voices"};
 
     juce::Slider porta;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> portaAttachment;
