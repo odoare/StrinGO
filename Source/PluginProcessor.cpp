@@ -169,21 +169,16 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 
         if (anv<nv)
             {
-                std::cout << "Add voice" << std::endl;
                 for (int i=0; i<nv-anv; i++)
+                {
                     synth.addVoice(new SynthVoice());
-                for (int i=0; i<synth.getNumVoices(); ++i)
-                    {
-                        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
-                            {
-                                voice->prepareToPlay (processSampleRate,processBlockLength, getTotalNumInputChannels());
-                                for (int string=0; string<NUMSTRINGS; string++)
-                                    {
-                                        voice->stringReso.sampler[string].setWaveByNumber(apvts.getRawParameterValue("Attack Sample")->load(),true);
-                                    }
-                            }
-                    }
-                std::cout << "Voice added" << std::endl;
+                    if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(anv+i)))
+                        {
+                            voice->prepareToPlay (processSampleRate,processBlockLength, getTotalNumInputChannels());
+                            for (int string=0; string<NUMSTRINGS; string++)
+                                    voice->stringReso.sampler[string].setWaveByNumber(apvts.getRawParameterValue("Attack Sample")->load(),true);
+                        }
+                }
             }
     }
 
