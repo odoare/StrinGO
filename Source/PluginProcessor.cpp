@@ -104,12 +104,14 @@ void MySynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     smoothOutputLevel.reset(0.01*sampleRate);
     smoothOutpuGain.setCurrentAndTargetValue(0.f);
     smoothOutputLevel.setCurrentAndTargetValue(0.f);
+
+    sharedInputBuffer.setSize(getTotalNumInputChannels(), samplesPerBlock, false, true, false);
     
     for (int i=0; i<synth.getNumVoices(); ++i)
     {
        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
        {
-        voice->prepareToPlay (sampleRate, samplesPerBlock, getTotalNumInputChannels());
+        voice->prepareToPlay (&sharedInputBuffer, sampleRate, samplesPerBlock, getTotalNumInputChannels());
        }
     }
 }
@@ -156,6 +158,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    // Voice number updating
     auto nv = apvts.getRawParameterValue("Voices")->load();
     auto anv = synth.getNumVoices();
     if (nv!=anv)
@@ -172,15 +175,20 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 for (int i=0; i<nv-anv; i++)
                 {
                     synth.addVoice(new SynthVoice());
+
+                    // Each new allocated voice has to be prepared
                     if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(anv+i)))
                         {
-                            voice->prepareToPlay (processSampleRate,processBlockLength, getTotalNumInputChannels());
+                            voice->prepareToPlay (&sharedInputBuffer, processSampleRate,processBlockLength, getTotalNumInputChannels());
                             for (int string=0; string<NUMSTRINGS; string++)
                                     voice->stringReso.sampler[string].setWaveByNumber(apvts.getRawParameterValue("Attack Sample")->load(),true);
                         }
                 }
             }
     }
+
+    sharedInputBuffer.makeCopyOf<float>(buffer,true);
+    buffer.clear();
 
     for (int i=0; i<synth.getNumVoices(); ++i)
     {

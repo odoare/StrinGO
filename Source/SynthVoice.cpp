@@ -73,12 +73,14 @@ void SynthVoice::controllerMoved (int controllerNumber, int newControllerValue)
 
 }
 
-void SynthVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
+void SynthVoice::prepareToPlay (juce::AudioBuffer<float> *sharedInputBuffer, double sampleRate, int samplesPerBlock, int outputChannels)
 {
 
   #ifdef DEBUG
     std::cout << "Begin SynthVoice::prepareToPLay   "; 
   #endif
+
+  sharedBuffer = sharedInputBuffer;
 
   adsr1.setSampleRate (sampleRate);
   adsr2.setSampleRate (sampleRate);
@@ -189,6 +191,7 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startS
   
   inBuffer.setSize(1, numSamples, false, false, true);
   inBuffer.clear();
+  //inBuffer.copyFrom(0,0,buffer,0,startSample,numSamples);
 
   synthBuffer.setSize(1, numSamples, false, false, true);
   synthBuffer.clear();
@@ -196,8 +199,9 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startS
   for (int channel=0; channel<inBuffer.getNumChannels(); ++channel)
   {
     auto* channelData = inBuffer.getWritePointer (channel);
+    auto* sharedData = sharedBuffer->getReadPointer(channel);
     for (int sample=0; sample<numSamples; ++sample)
-      channelData[sample] = adsrN.getNextSample() * noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f)))
+      channelData[sample] = sharedData[startSample+sample] + adsrN.getNextSample() * noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f)))
         + adsrC.getNextSample() * crackLevelVelocityFactor * crackLPFilter.processSample(crackLevel*cracksGenerator.nextSample());
   }
   

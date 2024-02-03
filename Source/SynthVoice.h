@@ -35,7 +35,7 @@ public:
   void controllerMoved (int controllerNumber, int newControllerValue) override;
  	// Called to let the voice know that a midi controller has been moved.
 
-  void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
+  void prepareToPlay (juce::AudioBuffer<float> *sharedInputBuffer, double sampleRate, int samplesPerBlock, int outputChannels);
  
   void renderNextBlock (juce::AudioBuffer< float > &buffer, int startSample, int numSamples) override;
 
@@ -85,6 +85,7 @@ private:
   float crackLevelVelocityFactor {1.f};
 
   juce::AudioBuffer<float> inBuffer, synthBuffer;
+  juce::AudioBuffer<float> *sharedBuffer;
 
   bool isPrepared { false };
 };
