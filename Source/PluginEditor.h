@@ -33,6 +33,14 @@ private:
 
     juce::Image logo;
 
+    juce::Slider inGain;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> inGainAttachment;
+    juce::Label inGainLabel{"inGainLabel", "In Gain"};
+
+    juce::Slider directOut;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> directOutAttachment;
+    juce::Label directOutLabel{"directOutLabel", "Direct Out"};
+
     juce::Slider gain;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
     juce::Label gainLabel{"gainLabel", "Gain"};

@@ -57,6 +57,8 @@ public:
   juce::ADSR adsr1, adsr2, adsrN, adsrC;//, adsrO;
   juce::ADSR::Parameters adsr1Params, adsr2Params, adsrNParams, adsrCParams, adsrOParams;
 
+  juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothInputGain;
+
 private:
 
   juce::dsp::ProcessSpec processSpec;

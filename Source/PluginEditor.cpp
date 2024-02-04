@@ -25,6 +25,12 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
 
     logo = juce::ImageCache::getFromMemory(BinaryData::logo686_png, BinaryData::logo686_pngSize);
 
+    addKnob(inGain, inGainLabel, MASTERCOLOR,juce::Colours::black);
+    inGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Input Gain",inGain);
+
+    addKnob(directOut, directOutLabel, MASTERCOLOR,juce::Colours::black);
+    directOutAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Direct Out",directOut);
+
     addVSlider(gain, gainLabel, MASTERCOLOR,juce::Colours::black);
     gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Output Gain",gain);
 
@@ -237,7 +243,12 @@ void MySynthAudioProcessorEditor::resized()
     voices.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
     ex = uxb+10.5*ux;
-    ey = uyb+1.75*uy;
+    ey = uyb+1.65*uy;
+    inGain.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    directOut.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+
+    ex = uxb+10.5*ux;
+    ey = uyb+2.85*uy;
     gain.setBounds(juce::Rectangle<int>(ex,ey,ux,2*uy).reduced(DELTAX*ux,DELTAY*uy));
     level.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,2*uy).reduced(DELTAX*ux,DELTAY*uy));
 

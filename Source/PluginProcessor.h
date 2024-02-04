@@ -63,7 +63,7 @@ private:
 
     juce::Synthesiser synth;
 
-    juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothOutpuGain, smoothOutputLevel;
+    juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothOutputGain, smoothOutputLevel, smoothDirectOut;
 
     double processSampleRate;
     int processBlockLength;

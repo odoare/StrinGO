@@ -98,6 +98,9 @@ void SynthVoice::prepareToPlay (juce::AudioBuffer<float> *sharedInputBuffer, dou
   noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,noiseLPFilterFreq);
   noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(sampleRate,noiseLPFilterFreq);
 
+  smoothInputGain.reset(0.01f*sampleRate);
+  smoothInputGain.setCurrentAndTargetValue(0.f);
+
   isPrepared = true;
 
   #ifdef DEBUG
@@ -201,7 +204,7 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startS
     auto* channelData = inBuffer.getWritePointer (channel);
     auto* sharedData = sharedBuffer->getReadPointer(channel);
     for (int sample=0; sample<numSamples; ++sample)
-      channelData[sample] = sharedData[startSample+sample] + adsrN.getNextSample() * noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f)))
+      channelData[sample] = smoothInputGain.getNextValue()*sharedData[startSample+sample] + adsrN.getNextSample() * noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f)))
         + adsrC.getNextSample() * crackLevelVelocityFactor * crackLPFilter.processSample(crackLevel*cracksGenerator.nextSample());
   }
   
