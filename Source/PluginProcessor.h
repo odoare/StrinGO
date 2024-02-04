@@ -63,10 +63,12 @@ private:
 
     juce::Synthesiser synth;
 
-    juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothOutpuGain, smoothOutputLevel;
+    juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothOutputGain, smoothOutputLevel, smoothDirectOut;
 
     double processSampleRate;
     int processBlockLength;
+
+    juce::AudioBuffer<float> sharedInputBuffer;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MySynthAudioProcessor)

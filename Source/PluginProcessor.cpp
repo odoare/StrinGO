@@ -100,16 +100,20 @@ void MySynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     processSampleRate = sampleRate;
     processBlockLength = samplesPerBlock;
 
-    smoothOutpuGain.reset(0.01*sampleRate);
+    smoothDirectOut.reset(0.01*sampleRate);
+    smoothDirectOut.setCurrentAndTargetValue(0.f);
+    smoothOutputGain.reset(0.01*sampleRate);
     smoothOutputLevel.reset(0.01*sampleRate);
-    smoothOutpuGain.setCurrentAndTargetValue(0.f);
+    smoothOutputGain.setCurrentAndTargetValue(0.f);
     smoothOutputLevel.setCurrentAndTargetValue(0.f);
+
+    sharedInputBuffer.setSize(getTotalNumInputChannels(), samplesPerBlock, false, true, false);
     
     for (int i=0; i<synth.getNumVoices(); ++i)
     {
        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
        {
-        voice->prepareToPlay (sampleRate, samplesPerBlock, getTotalNumInputChannels());
+        voice->prepareToPlay (&sharedInputBuffer, sampleRate, samplesPerBlock, getTotalNumInputChannels());
        }
     }
 }
@@ -156,6 +160,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    // Voice number updating
     auto nv = apvts.getRawParameterValue("Voices")->load();
     auto anv = synth.getNumVoices();
     if (nv!=anv)
@@ -172,15 +177,20 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 for (int i=0; i<nv-anv; i++)
                 {
                     synth.addVoice(new SynthVoice());
+
+                    // Each new allocated voice has to be prepared
                     if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(anv+i)))
                         {
-                            voice->prepareToPlay (processSampleRate,processBlockLength, getTotalNumInputChannels());
+                            voice->prepareToPlay (&sharedInputBuffer, processSampleRate,processBlockLength, getTotalNumInputChannels());
                             for (int string=0; string<NUMSTRINGS; string++)
                                     voice->stringReso.sampler[string].setWaveByNumber(apvts.getRawParameterValue("Attack Sample")->load(),true);
                         }
                 }
             }
     }
+
+    sharedInputBuffer.makeCopyOf<float>(buffer,true);
+    buffer.clear();
 
     for (int i=0; i<synth.getNumVoices(); ++i)
     {
@@ -258,10 +268,13 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         voice->setCrackLPFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Crack Freq")->load());
         voice->setNoiseLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Noise Level")->load());
         voice->setCrackLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Crack Level")->load());
+
+        voice->smoothInputGain.setTargetValue(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Input Gain")->load()));
        } 
     }
 
-    smoothOutpuGain.setTargetValue(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Gain")->load()));
+    smoothDirectOut.setTargetValue(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Direct Out")->load()));
+    smoothOutputGain.setTargetValue(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Gain")->load()));
     smoothOutputLevel.setTargetValue(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Output Level")->load()));
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
@@ -270,9 +283,10 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
+        auto* channelDataIn = sharedInputBuffer.getWritePointer (channel);
         for (int sample=0; sample<buffer.getNumSamples(); ++sample)
         {
-            channelData[sample] = smoothOutputLevel.getNextValue() * tanh(smoothOutpuGain.getNextValue() * channelData[sample]);
+            channelData[sample] = smoothDirectOut.getNextValue()*channelDataIn[sample] + smoothOutputLevel.getNextValue() * tanh(smoothOutputGain.getNextValue() * channelData[sample]);
         }
     }
 }
@@ -389,6 +403,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Output Gain","Output Gain",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),-3.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Output Level","Output Level",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),0.f));
-    
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Input Gain","Input Gain",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Direct Out","Direct Out",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),-60.f));
+
     return layout;
 }

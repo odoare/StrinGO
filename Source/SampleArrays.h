@@ -15,4 +15,5 @@ static float* getWave(int waveNumber)
     else if (waveNumber==2) return(square);
     else if (waveNumber==3) return(tri);
     else if (waveNumber==4) return(piano);
+    else return(sine);
 }

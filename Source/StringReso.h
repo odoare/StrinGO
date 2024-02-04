@@ -110,6 +110,8 @@ public:
 
 private:
 
+  // juce::AudioBuffer<float>& inputBuffer;
+
   void setDelaySamples(int string, bool force = false);
 
   void setSamplerFreq(int string);
