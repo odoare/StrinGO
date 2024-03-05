@@ -2,10 +2,11 @@
 
 <JUCERPROJECT id="fe5k40" name="StrinGO" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginCharacteristicsValue="pluginWantsMidiIn" pluginFormats="buildVST,buildVST3"
+              pluginCharacteristicsValue="pluginWantsMidiIn" pluginFormats="buildLV2,buildVST,buildVST3"
               companyName="FX Mechanics" version="0.1" pluginManufacturerCode="FXME"
-              pluginCode="StGO" lv2Uri="http://www.fxmechanics.com/plugins/stringo"
-              companyWebsite="www.fx-mechanics.com">
+              pluginCode="StGO" lv2Uri="http://www.fx-mechanics.com/plugins/stringo"
+              companyWebsite="www.fx-mechanics.com" aaxIdentifier="com.fx-mechanics.stringo"
+              pluginVST3Category="Instrument">
   <MAINGROUP id="dLq9WS" name="StrinGO">
     <GROUP id="{D446EAB4-C456-0D9A-B6D2-A195773853D6}" name="Source">
       <GROUP id="{52D558E0-E9AE-9F5D-94E4-2AC41697C7A0}" name="Assets">

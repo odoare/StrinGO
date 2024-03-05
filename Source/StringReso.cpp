@@ -26,7 +26,7 @@ StringReso::StringReso()
     params.adsrParams1.sustain = 1.f;
     params.adsrParams1.release = 1.f;
     params.portamento = SMOOTH_TIME;
-    params.smoothTime = SMOOTH_TIME;
+    //params.smoothTime = SMOOTH_TIME;
     params.stringPeriodInSamples = 100.f;
     params.freqCoarseFactor[0] = 0.f;
     params.freqCoarseFactor[1] = 7.f;

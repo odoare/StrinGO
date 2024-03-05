@@ -31,8 +31,7 @@ float CracksGenerator::nextSample()
   
   if (density>=value)
   {
-    lastValue = -lastValue;
-    return lastValue*rnd.nextFloat();
+    return 2*(rnd.nextFloat()-0.5f);
   }
   else return 0.f;
 }

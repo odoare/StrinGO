@@ -32,7 +32,7 @@ public:
     float sustain1;
     float release1;
     float portamento;
-    float smoothTime;
+    //float smoothTime;
     float stringPeriodInSamples;
     float level[NUMSTRINGS];
     float freqCoarseFactor[NUMSTRINGS];

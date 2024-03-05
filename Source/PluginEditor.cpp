@@ -17,7 +17,6 @@
 #define STRINGCOLOR juce::Colours::cyan
 #define TITLECOLOR juce::Colours::grey
 
-
 //==============================================================================
 MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
@@ -201,12 +200,12 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     g.setGradientFill(grad);
     g.fillAll();
 
-    drawBoxWithTitleOnLeft(g,"Wave",SAMPLERCOLOR,uxb+0.5*ux,uyb,10*ux,uy,0.5*ux);
+    drawBoxWithTitleOnLeft(g,"Sampler",SAMPLERCOLOR,uxb+0.5*ux,uyb,10*ux,uy,0.5*ux);
     drawBoxWithTitleOnLeft(g,"Noise",NOISECOLOR,uxb+0.5*ux,uyb+uy,10*ux,uy,0.5*ux);
     drawBoxWithTitleOnLeft(g,"Cracks",CRACKSCOLOR,uxb+0.5*ux,uyb+2*uy,10*ux,uy,0.5*ux);
 
     drawBoxWithTitleOnLeft(g,"Exciters",TITLECOLOR,uxb,uyb,0.5*ux,3*uy, 0.5*ux);
-    drawBoxWithTitleOnLeft(g,"Strings",TITLECOLOR,uxb,uyb+3.25*uy,0.5*ux,3.25*uy, 0.5*ux);
+    drawBoxWithTitleOnLeft(g,"Waveguides",TITLECOLOR,uxb,uyb+3.25*uy,0.5*ux,3.25*uy, 0.5*ux);
 
     drawBoxWithTitleOnTop(g,"Properties when note off",STRINGCOLOR,uxb+0.5*ux,uyb+5.25*uy,3*ux,1.25*uy,0.25*uy);
     drawBoxWithTitleOnTop(g,"Properties when note on",STRINGCOLOR,uxb+3.5*ux,uyb+5.25*uy,3*ux,1.25*uy,0.25*uy);

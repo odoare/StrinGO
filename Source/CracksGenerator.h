@@ -15,9 +15,6 @@
 class CracksGenerator
 {
 private:
-  // Counter incremented at each call of next sample to update crack probability
-  int normalizedDensity;
-  float lastValue = -1.f;
   juce::Random rnd;
 
   // Density of clicks as number of clicks per minute

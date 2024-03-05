@@ -54,8 +54,8 @@ public:
   void setCrackLevelVelocityInfluence(float val);
 
   StringReso stringReso;
-  juce::ADSR adsr1, adsr2, adsrN, adsrC;//, adsrO;
-  juce::ADSR::Parameters adsr1Params, adsr2Params, adsrNParams, adsrCParams, adsrOParams;
+  juce::ADSR adsrN, adsrC;
+  juce::ADSR::Parameters adsrNParams, adsrCParams;
 
   juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothInputGain;
 

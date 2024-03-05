@@ -27,8 +27,6 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::Synthesise
     std::cout << "begin start_Note " << midiNoteNumber << " at frequency " << noteFreq << "Hz" << std::endl;
   #endif
 
-  adsr1.noteOn();
-  adsr2.noteOn();
   adsrN.noteOn();
   adsrC.noteOn();
 
@@ -49,8 +47,6 @@ void SynthVoice::stopNote (float velocity, bool allowTailOff)
     std::cout << "begin stop_Note   " << std::endl;
   #endif
 
-  adsr1.noteOff();
-  adsr2.noteOff();
   adsrN.noteOff();
   adsrC.noteOff();  
   stringReso.setIsOn(false);
@@ -82,8 +78,6 @@ void SynthVoice::prepareToPlay (juce::AudioBuffer<float> *sharedInputBuffer, dou
 
   sharedBuffer = sharedInputBuffer;
 
-  adsr1.setSampleRate (sampleRate);
-  adsr2.setSampleRate (sampleRate);
   adsrN.setSampleRate (sampleRate);
   adsrC.setSampleRate (sampleRate);
   
