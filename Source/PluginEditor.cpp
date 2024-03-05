@@ -220,7 +220,7 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     drawBoxWithTitleOnTop(g,"Midi",MASTERCOLOR,uxb+10.5*ux,uyb,2*ux,1.25*uy,0.25*uy);
     drawBoxWithTitleOnTop(g,"Master",MASTERCOLOR,uxb+10.5*ux,uyb+1.25*uy,2*ux,5.25*uy,0.25*uy);
 
-    auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+6.5*uy-2*ux,2*ux,2*ux).reduced(10);
+    auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+6.75*uy-2*ux,2*ux,2*ux*227/269).reduced(10);
     g.drawImage(logo, r);
 }
 
