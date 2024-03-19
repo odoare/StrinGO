@@ -3,10 +3,10 @@
 <JUCERPROJECT id="fe5k40" name="StrinGO" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginFormats="buildVST,buildVST3" companyName="FX Mechanics"
-              version="0.1" pluginManufacturerCode="FXME" pluginCode="StGO"
+              version="0.0.1" pluginManufacturerCode="FXME" pluginCode="StGO"
               lv2Uri="http://www.fx-mechanics.com/plugins/stringo" companyWebsite="www.fx-mechanics.com"
               aaxIdentifier="com.fx-mechanics.stringo" pluginVST3Category="Instrument"
-              pluginCharacteristicsValue="pluginWantsMidiIn">
+              pluginCharacteristicsValue="pluginWantsMidiIn" pluginDesc="Synthesizer plugin based on coupled waveguides">
   <MAINGROUP id="dLq9WS" name="StrinGO">
     <GROUP id="{D446EAB4-C456-0D9A-B6D2-A195773853D6}" name="Source">
       <GROUP id="{52D558E0-E9AE-9F5D-94E4-2AC41697C7A0}" name="Assets">
@@ -53,7 +53,8 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"
+               JUCE_DSP_USE_STATIC_FFTW="1"/>
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
@@ -75,9 +76,10 @@
         <MODULEPATH id="juce_dsp" path="../../JUCE/JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" vstLegacyFolder="../../SDK/vstsdk2.4/public.sdk/source/vst2.x">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" vstLegacyFolder="../../SDK/vstsdk2.4/public.sdk/source/vst2.x"
+                extraLinkerFlags="/usr/lib/x86_64-linux-gnu/libfftw3*.a">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="0" name="Release" targetName="StrinGO"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="StrinGO" optimisation="6"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
