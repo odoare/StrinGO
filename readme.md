@@ -29,6 +29,4 @@ Each waveguide has individual level and pitch tunings (G).
 
 The waveguides' feedback loop gain and lowpass filter frequency depend on the voice state (on/off) (H). Transition between states is managed by an ADSR enveloppe (I).
 
-
-
 ![image info](./doc/signal_path.png)

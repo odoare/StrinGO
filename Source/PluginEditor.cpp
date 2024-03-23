@@ -220,6 +220,7 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     drawBoxWithTitleOnTop(g,"Midi",MASTERCOLOR,uxb+10.5*ux,uyb,2*ux,1.25*uy,0.25*uy);
     drawBoxWithTitleOnTop(g,"Master",MASTERCOLOR,uxb+10.5*ux,uyb+1.25*uy,2*ux,5.25*uy,0.25*uy);
 
+    g.drawText("StrinGO v0.0.1", juce::Rectangle<float>(uxb+10.50*ux,uyb+4.6*uy,2*ux,uy),juce::Justification::centred);
     auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+6.75*uy-2*ux,2*ux,2*ux*227/269).reduced(10);
     g.drawImage(logo, r);
 }
