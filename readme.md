@@ -30,3 +30,15 @@ Each waveguide has individual level and pitch tunings (G).
 The waveguides' feedback loop gain and lowpass filter frequency depend on the voice state (on/off) (H). Transition between states is managed by an ADSR enveloppe (I).
 
 ![image info](./doc/signal_path.png)
+
+## Future work
+
+- The main planned improvement will consist of a modulation matrix for LFOs, sequences, etc. This will greatly improve the sonic possibilities of the synth.
+
+- New waveforms for the sampler
+
+- Bridge/plate interactions between strings, soundboard radiation for some physically accurate and realistic sounds. This will probably end in a new plugin.
+
+## Contact
+
+olivier.doare@ensta-paris.fr
