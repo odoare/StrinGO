@@ -37,6 +37,12 @@ The waveguides' feedback loop gain and lowpass filter frequency depend on the vo
 
 ![image info](./doc/signal_path.png)
 
+## Development info
+
+StrinGO relies on the C++ framework JUCE. Refer to the JUCE website for development info: https://juce.com/
+
+If you want to compile the plugin by yourself it basically consists of loading the .jucer project with Projucer, saving it and compiling with the dedicated tool depending on your platform.
+
 ## Future work
 
 Here are the main improvements that are planned. This will probably end in a new plugin instead of just a version bump.
