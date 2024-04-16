@@ -4,8 +4,11 @@ _Synth based on two coupled waveguide delay lines._
 
 ![image info](./doc/StrinGO_screen.png)
 
+VST presets are found in the Presets/VST directory. This directory will be regularly updated with new presets.
 
 ## Info
+
+Refer to the schematic below for an illustrative signal path.
 
 StrinGO is based around two waveguides that are fed at input position by four different sources:
 
@@ -33,11 +36,15 @@ The waveguides' feedback loop gain and lowpass filter frequency depend on the vo
 
 ## Future work
 
+Here are the main improvements that are planned. This will probably end in a new plugin instead of just a version bump.
+
 - The main planned improvement will consist of a modulation matrix for LFOs, sequences, etc. This will greatly improve the sonic possibilities of the synth.
 
 - New waveforms for the sampler
 
-- Bridge/plate interactions between strings, soundboard radiation for some physically accurate and realistic sounds. This will probably end in a new plugin.
+- Bridge/plate interactions between strings, soundboard radiation for some physically accurate and realistic sounds.
+
+- Oversampling for better quality and stability of the waveguides.
 
 ## Contact
 
