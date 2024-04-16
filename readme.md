@@ -4,6 +4,9 @@ _Synth based on two coupled waveguide delay lines._
 
 ![image info](./doc/StrinGO_screen.png)
 
+Binary downloads for Linux and Windows can be found in the release section:
+https://github.com/odoare/StrinGO/releases
+
 VST presets are found in the Presets/VST directory. This directory will be regularly updated with new presets.
 
 ## Info
