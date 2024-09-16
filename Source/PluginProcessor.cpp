@@ -15,9 +15,9 @@ MySynthAudioProcessor::MySynthAudioProcessor()
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+                       .withInput  ("Input",  juce::AudioChannelSet::mono(), true)
                       #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+                       .withOutput ("Output", juce::AudioChannelSet::mono(), true)
                      #endif
                        )
 #endif
@@ -38,11 +38,7 @@ const juce::String MySynthAudioProcessor::getName() const
 
 bool MySynthAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
-    return true;
-   #else
-    return false;
-   #endif
+   return true;
 }
 
 bool MySynthAudioProcessor::producesMidi() const
@@ -102,9 +98,11 @@ void MySynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 
     smoothDirectOut.reset(0.01*sampleRate);
     smoothDirectOut.setCurrentAndTargetValue(0.f);
+
     smoothOutputGain.reset(0.01*sampleRate);
-    smoothOutputLevel.reset(0.01*sampleRate);
     smoothOutputGain.setCurrentAndTargetValue(0.f);
+
+    smoothOutputLevel.reset(0.01*sampleRate);
     smoothOutputLevel.setCurrentAndTargetValue(0.f);
 
     sharedInputBuffer.setSize(getTotalNumInputChannels(), samplesPerBlock, false, true, false);
@@ -124,31 +122,31 @@ void MySynthAudioProcessor::releaseResources()
     // spare memory, etc.
 }
 
-#ifndef JucePlugin_PreferredChannelConfigurations
+// #ifndef JucePlugin_PreferredChannelConfigurations
 bool MySynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
-    juce::ignoreUnused (layouts);
-    return true;
-  #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    // Some plugin hosts, such as certain GarageBand versions, will only
-    // load plugins that support stereo bus layouts.
+//   #if JucePlugin_IsMidiEffect
+//     juce::ignoreUnused (layouts);
+//     return true;
+//   #else
+//     // This is the place where you check if the layout is supported.
+//     // In this template code we only support mono or stereo.
+//     // Some plugin hosts, such as certain GarageBand versions, will only
+//     // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+     || layouts.getMainInputChannelSet() != juce::AudioChannelSet::mono())
         return false;
 
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-   #endif
+//     // This checks if the input layout matches the output layout
+//    #if ! JucePlugin_IsSynth
+//     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+//         return false;
+//    #endif
 
     return true;
-  #endif
+//   #endif
 }
-#endif
+// #endif
 
 void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {

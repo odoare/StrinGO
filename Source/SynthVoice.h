@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "StringReso.h"
-#include "CracksGenerator.h"
+#include "../lib/dsp/CracksGenerator.h"
 
 #define INVPI 0.318309886183791
 

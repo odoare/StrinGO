@@ -11,7 +11,7 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "SimpleSampler.h"
+#include "../lib/dsp/SimpleSampler.h"
 #include <iostream>
 
 #define NUMSTRINGS 2
@@ -32,7 +32,6 @@ public:
     float sustain1;
     float release1;
     float portamento;
-    //float smoothTime;
     float stringPeriodInSamples;
     float level[NUMSTRINGS];
     float freqCoarseFactor[NUMSTRINGS];
@@ -61,9 +60,7 @@ public:
   void process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<float>& outBuffer, int startSample, int numSamples);
 
   //-----------------------------------------
-  void setSmoothTime(float time);
   void setPortamentoTime(float time);
-
   void setADSR1(juce::ADSR::Parameters adsrParams);
 
   //--------------------------
@@ -73,17 +70,15 @@ public:
 
   void setIsOn(bool on, bool force = false);
 
-  void setFeedbackGain(int string, float gain, bool force = false);
-  void setFeedbackGainOn(int string, float gain, bool force = false);
-  void setFeedbackGainOff(int string, float gain, bool force = false);
+  void setFeedbackGainOn(int string, float gain);
+  void setFeedbackGainOff(int string, float gain);
 
-  void setFeedbackFreqOn(int string, float freq, bool force = false);
-  void setFeedbackFreqOff(int string, float freq, bool force = false);
-  void setFeedbackFreq(int string, float freq, bool force = false);
+  void setFeedbackFreqOn(int string, float freq);
+  void setFeedbackFreqOff(int string, float freq);
 
-  void setLevelOn(int string, float freq, bool force=false);
-  void setLevelOff(int string, float freq, bool force=false);
-  void setLevel(int string, float lvl, bool force=false);
+  void setLevelOn(int string, float freq);
+  void setLevelOff(int string, float freq);
+  void setLevel(int string, float lvl);
 
   void setStringPeriodInSamples(float period, bool force = false);
   void setStringFreq(float freq, bool force = false);

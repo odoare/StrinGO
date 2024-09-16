@@ -26,7 +26,6 @@ StringReso::StringReso()
     params.adsrParams1.sustain = 1.f;
     params.adsrParams1.release = 1.f;
     params.portamento = SMOOTH_TIME;
-    //params.smoothTime = SMOOTH_TIME;
     params.stringPeriodInSamples = 100.f;
     params.freqCoarseFactor[0] = 0.f;
     params.freqCoarseFactor[1] = 7.f;
@@ -167,43 +166,22 @@ void StringReso::setParams(StringReso::StringResoParams newParams, bool force)
     for (int string=0; string<NUMSTRINGS; string++)
     {
         setPortamentoTime(newParams.portamento);
-        // setSmoothTime(params.smoothTime);
         setInPos(string, newParams.inPos[string], force);
         setOutPos(string, newParams.outPos[string], force);
         setFreqCoarseFactor(string, newParams.freqCoarseFactor[string], force);
         setFreqFineFactor(string, newParams.freqFineFactor[string], force);
-        setFeedbackFreqOn(string, newParams.feedbackFreqOn[string], force);
-        setFeedbackFreqOff(string, newParams.feedbackFreqOff[string], force);
-        setFeedbackGainOn(string, newParams.feedbackGainOn[string], force);
-        setFeedbackGainOff(string, newParams.feedbackGainOff[string], force);
-        setLevelOn(string, newParams.levelOn[string], force);
-        setLevelOff(string, newParams.levelOff[string], force);
+        setFeedbackFreqOn(string, newParams.feedbackFreqOn[string]);
+        setFeedbackFreqOff(string, newParams.feedbackFreqOff[string]);
+        setFeedbackGainOn(string, newParams.feedbackGainOn[string]);
+        setFeedbackGainOff(string, newParams.feedbackGainOff[string]);
+        setLevelOn(string, newParams.levelOn[string]);
+        setLevelOff(string, newParams.levelOff[string]);
         setCoupling(string, newParams.coupling[string], force);    
     }
     params = newParams;
 
     // std::cout << "     end StringReso::setParams   " << std::endl;
 }
-
-//-----------------------------------------
-// void StringReso::setSmoothTime(float time)
-// {
-//     if (!juce::approximatelyEqual<float>(time,params.smoothTime))
-//     {
-//         std::cout << "         begin StringReso::setSmoothTimeInSamples  time =  " << time << std::endl;
-
-//         params.smoothTime = time;
-
-//         for (int i=0; i<NUMSTRINGS; i++)
-//         {
-//             smoothFeedbackFreq[i].reset(processSpec.sampleRate,time);
-//             smoothFeedbackGain[i].reset(processSpec.sampleRate,time);
-//             smoothLevel[i].reset(processSpec.sampleRate,time);
-//             smoothCoupling[i].reset(processSpec.sampleRate,time);
-//         }
-//         std::cout << "         end StringReso::setSmoothTimeInSamples  " << std::endl;
-//     }
-// }
 
 //-----------------------------------------
 void StringReso::setPortamentoTime(float time)
@@ -265,37 +243,37 @@ void StringReso::setSamplerLevel(int string, float lvl)
   sampler[string].setLevel(lvl);
 }
 
-void StringReso::setFeedbackGainOn(int string, float gain, bool force)
+void StringReso::setFeedbackGainOn(int string, float gain)
 {
     params.feedbackGainOn[string] = gain;
 }
 
-void StringReso::setFeedbackGainOff(int string, float gain, bool force)
+void StringReso::setFeedbackGainOff(int string, float gain)
 {
     params.feedbackGainOff[string] = gain;
 }
 
-void StringReso::setFeedbackFreqOn(int string, float freq, bool force)
+void StringReso::setFeedbackFreqOn(int string, float freq)
 {
     params.feedbackFreqOn[string] = freq;
 }
 
-void StringReso::setFeedbackFreqOff(int string, float freq, bool force)
+void StringReso::setFeedbackFreqOff(int string, float freq)
 {
     params.feedbackFreqOff[string] = freq;
 }
 
-void StringReso::setLevelOn(int string, float lvl, bool force)
+void StringReso::setLevelOn(int string, float lvl)
 {
     params.levelOn[string] = lvl;
 }
 
-void StringReso::setLevelOff(int string, float lvl, bool force)
+void StringReso::setLevelOff(int string, float lvl)
 {
     params.levelOff[string] = lvl;
 }   
 
-void StringReso::setLevel(int string, float lvl, bool force)
+void StringReso::setLevel(int string, float lvl)
 {
     params.level[string] = lvl;
 }
