@@ -216,14 +216,14 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
             voice->stringReso.sampler[string].setRelease(apvts.getRawParameterValue("RS")->load());
         }
         
-        voice->stringReso.setFreqCoarseFactor(0,apvts.getRawParameterValue("Freq Coarse 1")->load());
-        voice->stringReso.setFreqFineFactor(0,apvts.getRawParameterValue("Freq Fine 1")->load());
-        voice->stringReso.setFreqCoarseFactor(1,apvts.getRawParameterValue("Freq Coarse 2")->load());
-        voice->stringReso.setFreqFineFactor(1,apvts.getRawParameterValue("Freq Fine 2")->load());
+        voice->stringReso.setFreqCoarseFactor(0,apvts.getRawParameterValue("Coarse1")->load());
+        voice->stringReso.setFreqFineFactor(0,apvts.getRawParameterValue("Fine1")->load());
+        voice->stringReso.setFreqCoarseFactor(1,apvts.getRawParameterValue("Coarse2")->load());
+        voice->stringReso.setFreqFineFactor(1,apvts.getRawParameterValue("Fine2")->load());
         voice->stringReso.setPortamentoTime(apvts.getRawParameterValue("Porta Time")->load());
 
-        voice->stringReso.setLevel(0,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level 1")->load()));
-        voice->stringReso.setLevel(1,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level 2")->load()));
+        voice->stringReso.setLevel(0,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level1")->load()));
+        voice->stringReso.setLevel(1,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level2")->load()));
         
         float c = apvts.getRawParameterValue("Coupling")->load();
         if (c>0.f)
@@ -336,13 +336,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterInt>("Voices","Voices",1,6,1));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Porta Time","Porta Time",juce::NormalisableRange<float>(0.0001f,1.f,1e-3f,1.f),0.01f));
     
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Level 1","Level 1",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),0.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Coarse 1","Freq Coarse 1",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Fine 1","Freq Fine 1",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Level1","Level1",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Coarse1","Coarse1",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Fine1","Fine1",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Level 2","Level 2",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),0.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Coarse 2","Freq Coarse 2",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Freq Fine 2","Freq Fine 2",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Level2","Level2",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Coarse2","Coarse2",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Fine2","Fine2",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("In Pos","In Pos",juce::NormalisableRange<float>(0.05f,0.45f,1e-3f,1.f),0.1f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Out Pos","Out Pos",juce::NormalisableRange<float>(0.55f,0.95f,1e-3f,1.f),0.9f));

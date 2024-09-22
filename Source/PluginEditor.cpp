@@ -60,18 +60,18 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     stringsCouplingAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Coupling",stringsCoupling);
 
     addKnob(string1Level, string1LevelLabel, STRINGCOLOR,juce::Colours::black);
-    string1LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level 1",string1Level);
+    string1LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level1",string1Level);
     addKnob(string1FreqCoarse, string1FreqCoarseLabel, STRINGCOLOR,juce::Colours::black);
-    string1FreqCoarseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Freq Coarse 1",string1FreqCoarse);
+    string1FreqCoarseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Coarse1",string1FreqCoarse);
     addKnob(string1FreqFine, string1FreqFineLabel, STRINGCOLOR,juce::Colours::black);
-    string1FreqFineAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Freq Fine 1",string1FreqFine);
+    string1FreqFineAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fine1",string1FreqFine);
        
     addKnob(string2Level, string2LevelLabel, STRINGCOLOR,juce::Colours::black);
-    string2LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level 2",string2Level);
+    string2LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level2",string2Level);
     addKnob(string2FreqCoarse, string2FreqCoarseLabel, STRINGCOLOR,juce::Colours::black);
-    string2FreqCoarseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Freq Coarse 2",string2FreqCoarse);
+    string2FreqCoarseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Coarse2",string2FreqCoarse);
     addKnob(string2FreqFine, string2FreqFineLabel, STRINGCOLOR,juce::Colours::black);
-    string2FreqFineAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Freq Fine 2",string2FreqFine);
+    string2FreqFineAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Fine2",string2FreqFine);
 
     // String waveguide enveloppe
     addKnob(stringsAttack, stringsAttackLabel, STRINGCOLOR,juce::Colours::black);
