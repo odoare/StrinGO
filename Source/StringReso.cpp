@@ -17,48 +17,60 @@ int suivant(int N, int i)
   else return i;
 }
 
+std::string makeStringResoLfoParam(std::string param, int numlfo, int string)
+{
+    std::string s = "LFO";
+    s.append(std::to_string(numlfo));
+    s.append(" ");
+    s.append(param);
+    if (string>-1) s.append(std::to_string(string));
+    return s;
+}
+
 StringReso::StringReso()
-  {
-    // std::cout << "begin StringReso initialization   ";
-    // Initialize class parameters with some default values
-    params.adsrParams1.attack = 0.1f;
-    params.adsrParams1.decay = 0.1f;
-    params.adsrParams1.sustain = 1.f;
-    params.adsrParams1.release = 1.f;
-    params.portamento = SMOOTH_TIME;
-    params.stringPeriodInSamples = 100.f;
-    params.freqCoarseFactor[0] = 0.f;
-    params.freqCoarseFactor[1] = 7.f;
-    params.freqFineFactor[0] = -0.05f;
-    params.freqFineFactor[1] = 0.05f;
-    params.inPos[0] = 0.1f;
-    params.inPos[1] = 0.1f;
-    params.outPos[0] = 0.9f;
-    params.outPos[1] = 0.9f;
-    params.feedbackGainOn[0] = 0.99f;
-    params.feedbackGainOn[1] = 0.99f;
-    params.feedbackFreqOn[0] = 50.f;
-    params.feedbackFreqOn[1] = 50.f;
-    params.levelOn[0] = 1.f;
-    params.levelOn[1] = 1.f;
-    params.feedbackGainOff[0] = 0.5f;
-    params.feedbackGainOff[1] = 0.5f;
-    params.feedbackFreqOff[0] = 49.5f;
-    params.feedbackFreqOff[1] = 49.5f;
-    params.levelOff[0] = 0.2f;
-    params.levelOff[1] = 0.2f;
-    params.coupling[0] = 0.f;//0.1f;
-    params.coupling[1] = 0.f;//0.1f;
-    params.isOn=false;
-    params.velocityLevel = 0.f;
-    
-    for (int i=0; i<NUMSTRINGS; i++)
+    {
+        // std::cout << "begin StringReso initialization   ";
+        // Initialize class parameters with some default values
+        params.adsrParams1.attack = 0.1f;
+        params.adsrParams1.decay = 0.1f;
+        params.adsrParams1.sustain = 1.f;
+        params.adsrParams1.release = 1.f;
+        params.portamento = SMOOTH_TIME;
+        params.stringPeriodInSamples = 100.f;
+        params.isOn=false;
+        params.velocityLevel = 0.f;
+        for (int s=0;s<NUMSTRINGS;s++)
         {
-            currentFeedbackFreq[i] = params.feedbackFreqOff[i];
-            currentFeedbackGain[i] = params.feedbackGainOff[i];
-            currentLevel[i]= params.levelOff[i];
-            currentCoupling[i] = params.coupling[i];
+            params.freqCoarseFactor[s] = 0.f;
+            params.freqFineFactor[s] = -0.05f;
+            params.inPos[s] = 0.1f;
+            params.outPos[s] = 0.9f;
+            params.feedbackGainOn[s] = 0.99f;
+            params.feedbackFreqOn[s] = 50.f;
+            params.levelOn[s] = 1.f;
+            params.feedbackGainOff[s] = 0.5f;
+            params.feedbackFreqOff[s] = 49.5f;
+            params.levelOff[s] = 0.2f;
+            params.coupling[s] = 0.f;//0.1f;
+            currentFeedbackFreq[s] = params.feedbackFreqOff[s];
+            currentFeedbackGain[s] = params.feedbackGainOff[s];
+            currentLevel[s]= params.levelOff[s];
+            currentCoupling[s] = params.coupling[s];
         }
+        for (int l=0; l<NUMLFO; l++)
+        {
+            lfo[l].initialise([] (float x) { return std::sin (x); }, 100);
+            params.lfoParams[l].freq = 0.5f;
+            params.lfoParams[l].amp = 0.2f;
+            for (int s=0;s<NUMSTRINGS;s++)
+            {
+                params.lfoParams[l].level[s] = false;
+                params.lfoParams[l].fine[s] = false;
+                params.lfoParams[l].inPos[s] = false;
+                params.lfoParams[l].outPos[s] = false;
+            }
+        }
+
     // std::cout << "end StringReso initialization   " << std::endl;
     }
 
@@ -74,6 +86,12 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
 
     processSpec = spec;
     setParams(params, true);
+
+    for (int i=0;i<NUMLFO;i++)
+    {
+        lfo[i].prepare(spec);
+        lfo[i].setFrequency(params.lfoParams[i].freq);
+    }
 
     // We set not isOn before to force the updating of other parameters
     // bool son = params.isOn;
@@ -116,12 +134,36 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
     {
         auto* inChannelData = inBuffer.getReadPointer (channel);
         auto* outChannelData = outBuffer.getWritePointer (channel);
+        float adsr1val;
 
         for (int sample=startSample; sample<inBuffer.getNumSamples()-startSample; ++sample)
         {
+            if (channel==0)
+            {
+                adsr1val = adsr1.getNextSample();
+                for (int i=0;i<NUMLFO;i++)
+                {
+                    lfoVal[i] = lfo[i].processSample(0.f);
+                    //std::cout << "lfo " << i << "  freq : " << lfo[i].getFrequency() << "\n";
+                    //std::cout << "lfo " << i << "  value : " << lfoVal[i] << "\n";
+                }
+
+            }
+
             float adsr1val = adsr1.getNextSample();
             for (int string=0; string<NUMSTRINGS; string++)
             {
+
+                bool needsupdate = false;
+                for (int l=0;l<NUMLFO;l++)
+                {
+                    needsupdate = needsupdate
+                        || params.lfoParams[l].fine[string]
+                        || params.lfoParams[l].inPos[string]
+                        || params.lfoParams[l].outPos[string];
+                }
+                if  (sample%LFOSAMPLESUPDATE==0 & needsupdate) setDelaySamples(string);
+
                 input[string] = inChannelData[sample] + sampler[string].processNextSample();
                 float coupling = smoothCoupling[string].getNextValue();
                 float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
@@ -146,7 +188,22 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
 
                 previousOutput[suivant(NUMSTRINGS,string+1)] = in1+in2;
 
-                outChannelData[sample] += velocityLevelFactor*level[string]*(in1+in2);
+                float vallfos = 1.f;
+                for (int l=0; l<NUMLFO; l++)
+                {
+                    vallfos *= params.lfoParams[l].level[string] ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
+                }
+
+                // if (sample%LFOSAMPLESUPDATE==0 )
+                // {
+                //     std::cout << "levellfo 0 : " << params.lfoParams[0].level[string] << "\n";
+                //     std::cout << "vallfos : " << vallfos << "\n";
+                // }
+
+                outChannelData[sample] += velocityLevelFactor
+                                            *level[string]
+                                            *(in1+in2)
+                                            *vallfos;
             }
         }
     }
@@ -163,6 +220,11 @@ void StringReso::setParams(StringReso::StringResoParams newParams, bool force)
 
     adsr1.setParameters(newParams.adsrParams1);
     
+    for (int l=0;l<NUMLFO;l++)
+    {
+        lfo[l].setFrequency(newParams.lfoParams[l].freq);
+    }
+
     for (int string=0; string<NUMSTRINGS; string++)
     {
         setPortamentoTime(newParams.portamento);
@@ -293,6 +355,7 @@ void StringReso::setFreqFineFactor(int string, float fac, bool force)
     if (fac!=params.freqFineFactor[string])
     {
         params.freqFineFactor[string]=fac;
+        fineFreqDistToBoundary[string]=juce::jmin<float>(fac-FINEMIN,FINEMAX-fac);        
         setDelaySamples(string,force);
         setSamplerFreq(string);
     }
@@ -339,6 +402,7 @@ void StringReso::setInPos(int string, float pos, bool force)
     if (pos!=params.inPos[string])
     {
         params.inPos[string] = pos;
+        inPosDistToBoundary[string] = juce::jmin<float>(pos-INPOSMIN,INPOSMAX-pos);        
         setDelaySamples(string, force);
     }
 }
@@ -348,18 +412,32 @@ void StringReso::setOutPos(int string, float pos, bool force)
     if (pos!=params.outPos[string])
     {
         params.outPos[string] = pos;
+        outPosDistToBoundary[string] = juce::jmin<float>(pos-OUTPOSMIN,OUTPOSMAX-pos);        
         setDelaySamples(string, force);
     }
 }
 
 void StringReso::setDelaySamples(int string, bool force)
 {
-    float basePeriod = params.stringPeriodInSamples / powf(SEMITONE,params.freqCoarseFactor[string]+params.freqFineFactor[string]) ;
+    float flfofac=1.f, inlfofac=1.f, outlfofac=1.f;
+
+    for (int l=0;l<NUMLFO;l++)
+    {
+        float vv = 1.f + params.lfoParams[l].amp*lfoVal[l] ;
+        flfofac *= params.lfoParams[l].fine[string] ?  vv : 1.f; 
+        inlfofac *= params.lfoParams[l].inPos[string] ? vv : 1.f;
+        outlfofac *= params.lfoParams[l].outPos[string] ? vv : 1.f;
+    }
+    float fff = params.freqFineFactor[string] - fineFreqDistToBoundary[string] * (1.f-flfofac);
+    float inP = params.inPos[string] - inPosDistToBoundary[string] * (1.f-inlfofac);
+    float outP = params.outPos[string] - outPosDistToBoundary[string] * (1.f-outlfofac);
+
+    float basePeriod = params.stringPeriodInSamples / powf(SEMITONE,params.freqCoarseFactor[string]+fff);
     float delaySamples[4];
-    delaySamples[0] = params.inPos[string]*basePeriod;
-    delaySamples[1] = 0.5*(params.outPos[string]-params.inPos[string])*basePeriod;
+    delaySamples[0] = inP*basePeriod;
+    delaySamples[1] = 0.5*(outP-inP)*basePeriod;
     delaySamples[2] = delaySamples[1];
-    delaySamples[3] = (1-params.outPos[string])*basePeriod;
+    delaySamples[3] = (1-outP)*basePeriod;
 
     if (force)
         {
@@ -386,6 +464,38 @@ void StringReso::setVelocity(float vel)
     velocityLevelFactor = juce::jmap<float>(float(vel), 1-params.velocityLevel, 1) ;
     for (int string=0;string<NUMSTRINGS;string++)
         sampler[string].setVelocity(vel);
+}
+
+void StringReso::setLfoFreq(int num, float freq)
+{
+    params.lfoParams[num].freq = freq;
+    lfo[num].setFrequency(freq);
+    //std::cout << "lfo Freq " << num << " : " << params.lfoParams[num].freq << "\n";
+}
+
+void StringReso::setLfoAmp(int num, float val)
+{
+    params.lfoParams[num].amp = val;
+    //std::cout << "lfo Amp " << num << " : " << params.lfoParams[num].amp << "\n";
+}
+
+void StringReso::setLfoFine(int num, int string, bool onoff)
+{
+    params.lfoParams[num].fine[string] = onoff;
+    // std::cout << "LFO fine " << num << " - string " << string << " : " << onoff << "\n"; 
+}
+void StringReso::setLfoLevel(int num, int string, bool onoff)
+{
+    params.lfoParams[num].level[string] = onoff;
+    // std::cout << "LFO level " << num << " - string " << string << " : " << onoff << "\n"; 
+}
+void StringReso::setLfoInPos(int num, int string, bool onoff)
+{
+    params.lfoParams[num].inPos[string] = onoff;
+}
+void StringReso::setLfoOutPos(int num, int string, bool onoff)
+{
+    params.lfoParams[num].outPos[string] = onoff;
 }
 
 

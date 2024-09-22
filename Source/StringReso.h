@@ -18,11 +18,38 @@
 #define SMOOTH_TIME 0.1f
 #define SEMITONE 1.059463094359295f
 
+#define LFOSAMPLESUPDATE 100
+
+#define INPOSMAX 0.45f
+#define INPOSMIN 0.05f
+#define OUTPOSMAX 0.95f
+#define OUTPOSMIN 0.55f
+
+#define FINEMIN -1.f
+#define FINEMAX 1.f
+
+#define MAXCOUPLING 0.5f
+
+#define NUMLFO 1
+
+
 int suivant(int N, int i);
+
+std::string makeStringResoLfoParam(std::string param, int num, int string);
 
 class StringReso
 {
 public:
+
+  typedef struct
+  {
+    float freq;
+    float amp;
+    bool level[NUMSTRINGS];
+    bool fine[NUMSTRINGS];
+    bool inPos[NUMSTRINGS];
+    bool outPos[NUMSTRINGS];
+  } LfoParams;
 
   typedef struct
   {
@@ -47,6 +74,7 @@ public:
     float coupling[NUMSTRINGS];
     float velocityLevel;
     bool isOn;
+    LfoParams lfoParams[NUMLFO];    
   } StringResoParams;
 
   StringReso();
@@ -96,6 +124,13 @@ public:
   void setVelocityLevel(float lvl);
   void setVelocity(float vel);
 
+  void setLfoFreq(int num, float freq);
+  void setLfoAmp(int num, float val);
+  void setLfoFine(int num, int string, bool onoff);
+  void setLfoLevel(int num, int string, bool onoff);
+  void setLfoInPos(int num, int string, bool onoff);
+  void setLfoOutPos(int num, int string, bool onoff);
+
   juce::dsp::ProcessSpec processSpec;
 
   juce::ADSR adsr1;
@@ -114,6 +149,8 @@ private:
   juce::dsp::DelayLine<float,juce::dsp::DelayLineInterpolationTypes::Lagrange3rd> delayLine[4*NUMSTRINGS];
   juce::dsp::IIR::Filter<float> fbFilter[NUMSTRINGS];
 
+  juce::dsp::Oscillator<float> lfo[NUMLFO];  
+
   juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothDelaySamples[4*NUMSTRINGS],
                                                                 smoothFeedbackFreq[NUMSTRINGS],
                                                                 smoothFeedbackGain[NUMSTRINGS],
@@ -130,5 +167,10 @@ private:
         currentCoupling[NUMSTRINGS];
 
   float previousOutput[NUMSTRINGS];
+
+  float lfoVal[NUMLFO];
+
+  float inPosDistToBoundary[NUMSTRINGS]={0.}, outPosDistToBoundary[NUMSTRINGS]={0.};
+  float fineFreqDistToBoundary[NUMSTRINGS]={0.};
 
 };
