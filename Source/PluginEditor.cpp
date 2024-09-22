@@ -9,13 +9,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-#define SAMPLERCOLOR juce::Colours::blue
-#define NOISECOLOR juce::Colours::green
-#define CRACKSCOLOR juce::Colours::red
-#define MASTERCOLOR juce::Colours::yellow
-#define VELOCITYCOLOR juce::Colours::magenta
-#define STRINGCOLOR juce::Colours::cyan
-#define TITLECOLOR juce::Colours::grey
 
 //==============================================================================
 MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor& p)

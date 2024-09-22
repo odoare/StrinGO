@@ -12,6 +12,15 @@
 #include "PluginProcessor.h"
 #include "../lib/components/FxmeLookAndFeel.h"
 
+#define SAMPLERCOLOR juce::Colours::blue
+#define NOISECOLOR juce::Colours::green
+#define CRACKSCOLOR juce::Colours::red
+#define MASTERCOLOR juce::Colours::yellow
+#define VELOCITYCOLOR juce::Colours::magenta
+#define STRINGCOLOR juce::Colours::cyan
+#define TITLECOLOR juce::Colours::grey
+#define LFOCOLOR juce::Colours::violet
+
 //==============================================================================
 /**
 */
