@@ -158,7 +158,179 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     addKnob(velocityCrackFreq, velocityCrackFreqLabel, CRACKSCOLOR,juce::Colours::black);
     velocityCrackFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Velocity Crack Freq",velocityCrackFreq);
 
-    setSize (1000, 650);
+    // LFO 1
+    addKnob(lfo1Amp, lfo1AmpLabel, LFO1COLOR,juce::Colours::black);
+    lfo1AmpAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO1 Amp",lfo1Amp);
+    addKnob(lfo1Freq, lfo1FreqLabel, LFO1COLOR,juce::Colours::black);
+    lfo1FreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO1 Freq",lfo1Freq);
+
+    addAndMakeVisible(lfo1Level1Button);
+    lfo1Level1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Level1",lfo1Level1Button);
+    addAndMakeVisible(lfo1Level1Label);
+    lfo1Level1Label.attachToComponent(&lfo1Level1Button,false);
+    lfo1Level1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1Level1Button.setClickingTogglesState(true);
+    lfo1Level1Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1Coarse1Button);
+    lfo1Coarse1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Coarse1",lfo1Coarse1Button);
+    addAndMakeVisible(lfo1Coarse1Label);
+    lfo1Coarse1Label.attachToComponent(&lfo1Coarse1Button,false);
+    lfo1Coarse1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1Coarse1Button.setClickingTogglesState(true);
+    lfo1Coarse1Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1Fine1Button);
+    lfo1Fine1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Fine1",lfo1Fine1Button);
+    addAndMakeVisible(lfo1Fine1Label);
+    lfo1Fine1Label.attachToComponent(&lfo1Fine1Button,false);
+    lfo1Fine1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1Fine1Button.setClickingTogglesState(true);
+    lfo1Fine1Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1Level2Button);
+    lfo1Level2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Level2",lfo1Level2Button);
+    addAndMakeVisible(lfo1Level2Label);
+    lfo1Level2Label.attachToComponent(&lfo1Level2Button,false);
+    lfo1Level2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1Level2Button.setClickingTogglesState(true);
+    lfo1Level2Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1Coarse2Button);
+    lfo1Coarse2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Coarse2",lfo1Coarse2Button);
+    addAndMakeVisible(lfo1Coarse2Label);
+    lfo1Coarse2Label.attachToComponent(&lfo1Coarse2Button,false);
+    lfo1Coarse2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1Coarse2Button.setClickingTogglesState(true);
+    lfo1Coarse2Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1Fine2Button);
+    lfo1Fine2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Fine2",lfo1Fine2Button);
+    addAndMakeVisible(lfo1Fine2Label);
+    lfo1Fine2Label.attachToComponent(&lfo1Fine2Button,false);
+    lfo1Fine2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1Fine2Button.setClickingTogglesState(true);
+    lfo1Fine2Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1InPos1Button);
+    lfo1InPos1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 InPos1",lfo1InPos1Button);
+    addAndMakeVisible(lfo1InPos1Label);
+    lfo1InPos1Label.attachToComponent(&lfo1InPos1Button,false);
+    lfo1InPos1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1InPos1Button.setClickingTogglesState(true);
+    lfo1InPos1Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1OutPos1Button);
+    lfo1OutPos1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 OutPos1",lfo1OutPos1Button);
+    addAndMakeVisible(lfo1OutPos1Label);
+    lfo1OutPos1Label.attachToComponent(&lfo1OutPos1Button,false);
+    lfo1OutPos1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1OutPos1Button.setClickingTogglesState(true);
+    lfo1OutPos1Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1InPos2Button);
+    lfo1InPos2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 InPos2",lfo1InPos2Button);
+    addAndMakeVisible(lfo1InPos2Label);
+    lfo1InPos2Label.attachToComponent(&lfo1InPos2Button,false);
+    lfo1InPos2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1InPos2Button.setClickingTogglesState(true);
+    lfo1InPos2Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1OutPos2Button);
+    lfo1OutPos2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 OutPos2",lfo1OutPos2Button);
+    addAndMakeVisible(lfo1OutPos2Label);
+    lfo1OutPos2Label.attachToComponent(&lfo1OutPos2Button,false);
+    lfo1OutPos2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1OutPos2Button.setClickingTogglesState(true);
+    lfo1OutPos2Button.setColour(0,LFO1COLOR);
+
+    // LFO 2
+    addKnob(lfo2Amp, lfo2AmpLabel, LFO2COLOR,juce::Colours::black);
+    lfo2AmpAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO2 Amp",lfo2Amp);
+    addKnob(lfo2Freq, lfo2FreqLabel, LFO2COLOR,juce::Colours::black);
+    lfo2FreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO2 Freq",lfo2Freq);
+
+    addAndMakeVisible(lfo2Level1Button);
+    lfo2Level1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Level1",lfo2Level1Button);
+    addAndMakeVisible(lfo2Level1Label);
+    lfo2Level1Label.attachToComponent(&lfo2Level1Button,false);
+    lfo2Level1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2Level1Button.setClickingTogglesState(true);
+    lfo2Level1Button.setColour(0,LFO2COLOR);
+    
+    addAndMakeVisible(lfo2Coarse1Button);
+    lfo2Coarse1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Coarse1",lfo2Coarse1Button);
+    addAndMakeVisible(lfo2Coarse1Label);
+    lfo2Coarse1Label.attachToComponent(&lfo2Coarse1Button,false);
+    lfo2Coarse1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2Coarse1Button.setClickingTogglesState(true);
+    lfo2Coarse1Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2Fine1Button);
+    lfo2Fine1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Fine1",lfo2Fine1Button);
+    addAndMakeVisible(lfo2Fine1Label);
+    lfo2Fine1Label.attachToComponent(&lfo2Fine1Button,false);
+    lfo2Fine1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2Fine1Button.setClickingTogglesState(true);
+    lfo2Fine1Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2Level2Button);
+    lfo2Level2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Level2",lfo2Level2Button);
+    addAndMakeVisible(lfo2Level2Label);
+    lfo2Level2Label.attachToComponent(&lfo2Level2Button,false);
+    lfo2Level2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2Level2Button.setClickingTogglesState(true);
+    lfo2Level2Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2Coarse2Button);
+    lfo2Coarse2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Coarse2",lfo2Coarse2Button);
+    addAndMakeVisible(lfo2Coarse2Label);
+    lfo2Coarse2Label.attachToComponent(&lfo2Coarse2Button,false);
+    lfo2Coarse2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2Coarse2Button.setClickingTogglesState(true);
+    lfo2Coarse2Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2Fine2Button);
+    lfo2Fine2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Fine2",lfo2Fine2Button);
+    addAndMakeVisible(lfo2Fine2Label);
+    lfo2Fine2Label.attachToComponent(&lfo2Fine2Button,false);
+    lfo2Fine2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2Fine2Button.setClickingTogglesState(true);
+    lfo2Fine2Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2InPos1Button);
+    lfo2InPos1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 InPos1",lfo2InPos1Button);
+    addAndMakeVisible(lfo2InPos1Label);
+    lfo2InPos1Label.attachToComponent(&lfo2InPos1Button,false);
+    lfo2InPos1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2InPos1Button.setClickingTogglesState(true);
+    lfo2InPos1Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2OutPos1Button);
+    lfo2OutPos1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 OutPos1",lfo2OutPos1Button);
+    addAndMakeVisible(lfo2OutPos1Label);
+    lfo2OutPos1Label.attachToComponent(&lfo2OutPos1Button,false);
+    lfo2OutPos1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2OutPos1Button.setClickingTogglesState(true);
+    lfo2OutPos1Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2InPos2Button);
+    lfo2InPos2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 InPos2",lfo2InPos2Button);
+    addAndMakeVisible(lfo2InPos2Label);
+    lfo2InPos2Label.attachToComponent(&lfo2InPos2Button,false);
+    lfo2InPos2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2InPos2Button.setClickingTogglesState(true);
+    lfo2InPos2Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2OutPos2Button);
+    lfo2OutPos2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 OutPos2",lfo2OutPos2Button);
+    addAndMakeVisible(lfo2OutPos2Label);
+    lfo2OutPos2Label.attachToComponent(&lfo2OutPos2Button,false);
+    lfo2OutPos2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2OutPos2Button.setClickingTogglesState(true);
+    lfo2OutPos2Button.setColour(0,LFO2COLOR);
+
+    setSize (1000, 800);
     setResizable(true,true);
 }
 
@@ -167,7 +339,7 @@ MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor()
 }
 
 #define NX 12.5
-#define NY 6.5
+#define NY 8
 #define SX 0.8
 #define SY 0.8
 #define DELTAX 0.1f
@@ -213,7 +385,11 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     drawBoxWithTitleOnTop(g,"Midi",MASTERCOLOR,uxb+10.5*ux,uyb,2*ux,1.25*uy,0.25*uy);
     drawBoxWithTitleOnTop(g,"Master",MASTERCOLOR,uxb+10.5*ux,uyb+1.25*uy,2*ux,5.25*uy,0.25*uy);
 
-    g.drawText("StrinGO v0.0.1", juce::Rectangle<float>(uxb+10.50*ux,uyb+4.6*uy,2*ux,uy),juce::Justification::centred);
+    drawBoxWithTitleOnLeft(g," Lfos",TITLECOLOR,uxb,uyb+6.75*uy,0.5*ux,1*uy,0.5*ux);
+    drawBoxWithTitleOnLeft(g,"  1",LFO1COLOR,uxb+0.5*ux,uyb+6.75*uy,3*ux,1*uy,0.5*ux);
+    drawBoxWithTitleOnLeft(g,"  2",LFO2COLOR,uxb+4.5*ux,uyb+6.75*uy,3*ux,1*uy,0.5*ux);
+
+    g.drawText("StrinGO v0.0.2", juce::Rectangle<float>(uxb+10.50*ux,uyb+4.6*uy,2*ux,uy),juce::Justification::centred);
     auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+6.75*uy-2*ux,2*ux,2*ux*227/269).reduced(10);
     g.drawImage(logo, r);
 }
@@ -258,6 +434,15 @@ void MySynthAudioProcessorEditor::resized()
     ey = uyb+3.75*uy;
     stringsInPos.setBounds(ex,ey+0*uy,3.5*ux,0.5*uy);
     stringsOutPos.setBounds(ex,ey+0.75*uy,3.5*ux,0.5*uy);
+    lfo1InPos1Button.setBounds(juce::Rectangle<int>(ex+1.5*ux,ey,0.2f*ux,0.1f*uy));
+    lfo2InPos1Button.setBounds(juce::Rectangle<int>(ex+2*ux,ey,0.2f*ux,0.1f*uy));
+    lfo1InPos2Button.setBounds(juce::Rectangle<int>(ex+2.5*ux,ey,0.2f*ux,0.1f*uy));
+    lfo2InPos2Button.setBounds(juce::Rectangle<int>(ex+3*ux,ey,0.2f*ux,0.1f*uy));
+    lfo1OutPos1Button.setBounds(juce::Rectangle<int>(ex+1.5*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+    lfo2OutPos1Button.setBounds(juce::Rectangle<int>(ex+2*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+    lfo1OutPos2Button.setBounds(juce::Rectangle<int>(ex+2.5*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+    lfo2OutPos2Button.setBounds(juce::Rectangle<int>(ex+3*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+
 
     ex = uxb+ux;
     ey = uyb+4.6*uy;
@@ -268,12 +453,24 @@ void MySynthAudioProcessorEditor::resized()
     string1Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string1FreqCoarse.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string1FreqFine.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    lfo1Level1Button.setBounds(juce::Rectangle<int>(ex+0.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Coarse1Button.setBounds(juce::Rectangle<int>(ex+1.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Fine1Button.setBounds(juce::Rectangle<int>(ex+2.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Level1Button.setBounds(juce::Rectangle<int>(ex+0.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Coarse1Button.setBounds(juce::Rectangle<int>(ex+1.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Fine1Button.setBounds(juce::Rectangle<int>(ex+2.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+3.5*ux;
     ey = uyb+3.5*uy;
     string2Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string2FreqCoarse.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string2FreqFine.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    lfo1Level2Button.setBounds(juce::Rectangle<int>(ex+0.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Coarse2Button.setBounds(juce::Rectangle<int>(ex+1.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Fine2Button.setBounds(juce::Rectangle<int>(ex+2.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Level2Button.setBounds(juce::Rectangle<int>(ex+0.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Coarse2Button.setBounds(juce::Rectangle<int>(ex+1.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Fine2Button.setBounds(juce::Rectangle<int>(ex+2.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
 
     ex = uxb+0.5*ux;
@@ -325,6 +522,17 @@ void MySynthAudioProcessorEditor::resized()
     crackDensity.setBounds(juce::Rectangle<int>(ex+4*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackLPFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+
+    ex = uxb+ux;
+    ey = uyb+6.75*uy;
+    lfo1Amp.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    lfo1Freq.setBounds(juce::Rectangle<int>(ex+1*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+
+    ex = uxb+5*ux;
+    ey = uyb+6.75*uy;
+    lfo2Amp.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    lfo2Freq.setBounds(juce::Rectangle<int>(ex+1*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+
 }
 
 // -------------------------------------------------------------------------

@@ -27,6 +27,13 @@ std::string makeStringResoLfoParam(std::string param, int numlfo, int string)
     return s;
 }
 
+std::string makeStringResoParam(std::string param, int string)
+{
+    std::string s = param;
+    if (string>-1) s.append(std::to_string(string));
+    return s;
+}
+
 StringReso::StringReso()
     {
         // std::cout << "begin StringReso initialization   ";
@@ -162,8 +169,11 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
                         || params.lfoParams[l].inPos[string]
                         || params.lfoParams[l].outPos[string];
                 }
-                if  (sample%LFOSAMPLESUPDATE==0 & needsupdate) setDelaySamples(string);
-
+                if  (sample%LFOSAMPLESUPDATE==0 & needsupdate)
+                {
+                    // std::cout << "Update Delay samples... \n";
+                    setDelaySamples(string);
+                }
                 input[string] = inChannelData[sample] + sampler[string].processNextSample();
                 float coupling = smoothCoupling[string].getNextValue();
                 float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
@@ -358,6 +368,9 @@ void StringReso::setFreqFineFactor(int string, float fac, bool force)
         fineFreqDistToBoundary[string]=juce::jmin<float>(fac-FINEMIN,FINEMAX-fac);        
         setDelaySamples(string,force);
         setSamplerFreq(string);
+
+        std::cout << "fineFreqDistToBoundary " << string << " : " << fineFreqDistToBoundary[string] << "\n";
+
     }
 }
 
@@ -432,6 +445,10 @@ void StringReso::setDelaySamples(int string, bool force)
     float inP = params.inPos[string] - inPosDistToBoundary[string] * (1.f-inlfofac);
     float outP = params.outPos[string] - outPosDistToBoundary[string] * (1.f-outlfofac);
 
+    // std::cout << "fineFreqDistToBoundary " << string << " : " << fineFreqDistToBoundary[string] << "\n";
+    // std::cout << "flfofac : " << flfofac << "\n";
+    // std::cout << "fff : " << fff << "\n";
+
     float basePeriod = params.stringPeriodInSamples / powf(SEMITONE,params.freqCoarseFactor[string]+fff);
     float delaySamples[4];
     delaySamples[0] = inP*basePeriod;
@@ -476,7 +493,7 @@ void StringReso::setLfoFreq(int num, float freq)
 void StringReso::setLfoAmp(int num, float val)
 {
     params.lfoParams[num].amp = val;
-    //std::cout << "lfo Amp " << num << " : " << params.lfoParams[num].amp << "\n";
+    // std::cout << "lfo Amp " << num << " : " << params.lfoParams[num].amp << "\n";
 }
 
 void StringReso::setLfoFine(int num, int string, bool onoff)

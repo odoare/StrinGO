@@ -30,12 +30,13 @@
 
 #define MAXCOUPLING 0.5f
 
-#define NUMLFO 1
+#define NUMLFO 2
 
 
 int suivant(int N, int i);
 
 std::string makeStringResoLfoParam(std::string param, int num, int string);
+std::string makeStringResoParam(std::string param, int string);
 
 class StringReso
 {
