@@ -272,11 +272,11 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         adsrp.release = apvts.getRawParameterValue("RN")->load();
         voice->stringReso.setADSRN(adsrp);
 
-        voice->adsrCParams.attack = apvts.getRawParameterValue("AC")->load();
-        voice->adsrCParams.decay = apvts.getRawParameterValue("DC")->load();
-        voice->adsrCParams.sustain = apvts.getRawParameterValue("SC")->load();
-        voice->adsrCParams.release = apvts.getRawParameterValue("RC")->load();
-        voice->adsrC.setParameters(voice->adsrCParams);
+        adsrp.attack = apvts.getRawParameterValue("AC")->load();
+        adsrp.decay = apvts.getRawParameterValue("DC")->load();
+        adsrp.sustain = apvts.getRawParameterValue("SC")->load();
+        adsrp.release = apvts.getRawParameterValue("RC")->load();
+        voice->stringReso.setADSRC(adsrp);
 
         adsrp.attack = apvts.getRawParameterValue("A")->load();
         adsrp.decay = apvts.getRawParameterValue("D")->load();
@@ -287,14 +287,14 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         voice->stringReso.setNoiseLPFilterFreq(apvts.getRawParameterValue("Noise LP Freq")->load());
         voice->stringReso.setNoiseHPFilterFreq(apvts.getRawParameterValue("Noise HP Freq")->load());
         voice->stringReso.setNoiseLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Noise Level")->load()));
-        voice->setCrackDensity(int(apvts.getRawParameterValue("Crack Density")->load()));
-        voice->setCrackLPFilterFreq(apvts.getRawParameterValue("Crack LP Freq")->load());
-        voice->setCrackLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Crack Level")->load()));
+        voice->stringReso.setCrackDensity(int(apvts.getRawParameterValue("Crack Density")->load()));
+        voice->stringReso.setCrackLPFilterFreq(apvts.getRawParameterValue("Crack LP Freq")->load());
+        voice->stringReso.setCrackLevel(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Crack Level")->load()));
 
         voice->stringReso.setNoiseLPFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Noise Freq")->load());
-        voice->setCrackLPFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Crack Freq")->load());
+        voice->stringReso.setCrackLPFilterFreqVelocityInfluence(apvts.getRawParameterValue("Velocity Crack Freq")->load());
         voice->stringReso.setNoiseLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Noise Level")->load());
-        voice->setCrackLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Crack Level")->load());
+        voice->stringReso.setCrackLevelVelocityInfluence(apvts.getRawParameterValue("Velocity Crack Level")->load());
 
         voice->smoothInputGain.setTargetValue(juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Input Gain")->load()));
        } 

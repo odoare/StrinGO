@@ -13,7 +13,6 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "StringReso.h"
-#include "../lib/dsp/CracksGenerator.h"
 
 #define INVPI 0.318309886183791
 
@@ -40,34 +39,14 @@ public:
   void renderNextBlock (juce::AudioBuffer< float > &buffer, int startSample, int numSamples) override;
 
   void setVelocity(float vel);
-  void setCrackDensity(int d);
-  void setCrackLPFilterFreq(float freq);
-  void setCrackLPFilterFreqVelocityInfluence(float val);
-  void setCrackLevel(float lvl);
-  void setCrackLevelVelocityInfluence(float val);
 
   StringReso stringReso;
-
-  juce::ADSR adsrC;
-  juce::ADSR::Parameters adsrCParams;
-
   juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothInputGain;
 
 private:
 
   juce::dsp::ProcessSpec processSpec;
-
-  CracksGenerator cracksGenerator;
-  juce::dsp::IIR::Filter<float> crackLPFilter;
-  float crackLPFilterFreq  { 1000.f };
-  float crackLevel { 1.0 };
-  float crackLPFilterFreqVelocityInfluence {0.f};
-  float crackLPFilterFreqVelocityFactor {1.f};
-  float crackLevelVelocityInfluence {0.f};
-  float crackLevelVelocityFactor {1.f};
-
   juce::AudioBuffer<float> inBuffer, synthBuffer;
   juce::AudioBuffer<float> *sharedBuffer;
-
   bool isPrepared { false };
 };

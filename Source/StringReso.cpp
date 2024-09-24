@@ -121,6 +121,9 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
     noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(spec.sampleRate,params.noiseLPFilterFreq);
     noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(spec.sampleRate,params.noiseLPFilterFreq);
 
+    adsrC.setSampleRate (spec.sampleRate);
+    cracksGenerator.prepare(processSpec);
+ 
     for (int string=0; string<NUMSTRINGS; string++)
     {
         float delaySamples[4];
@@ -206,7 +209,8 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
 
                 input[string] = inChannelData[sample]
                                 + sampler[string].processNextSample()*vallfosamplerlevel
-                                + adsrN.getNextSample() * params.noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(params.noiseLevel*(randomNoise.nextFloat()-0.5f)));
+                                + adsrN.getNextSample() * params.noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(params.noiseLevel*(randomNoise.nextFloat()-0.5f)))
+                                + adsrC.getNextSample() * params.crackLevelVelocityFactor * crackLPFilter.processSample(params.crackLevel*cracksGenerator.nextSample());
                 float coupling = smoothCoupling[string].getNextValue();
                 float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
                 float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
@@ -255,6 +259,12 @@ void StringReso::setADSRN(juce::ADSR::Parameters adsrParams)
 {
     params.adsrParamsN = adsrParams;
     adsrN.setParameters(adsrParams);
+}
+
+void StringReso::setADSRC(juce::ADSR::Parameters adsrParams)
+{
+    params.adsrParamsC = adsrParams;
+    adsrC.setParameters(adsrParams);
 }
 
 void StringReso::setParams(StringReso::StringResoParams newParams, bool force)
@@ -326,6 +336,7 @@ void StringReso::setIsOn(bool on, bool force)
             // std::cout << "     set note on params    " << std::endl;
             adsr1.noteOn();
             adsrN.noteOn();
+            adsrC.noteOn();  
             for (int string=0; string<NUMSTRINGS; string++)
             {
                 sampler[string].start();
@@ -336,6 +347,7 @@ void StringReso::setIsOn(bool on, bool force)
             // std::cout << "     set note off params   " << std::endl;
             adsr1.noteOff();
             adsr1.noteOff();
+            adsrC.noteOff();  
             for (int string=0; string<NUMSTRINGS; string++)
             {
                 sampler[string].stop();
@@ -527,6 +539,10 @@ void StringReso::setVelocity(float vel)
     params.noiseLevelVelocityFactor = juce::jmap<float>(float(vel), 1-params.noiseLevelVelocityInfluence, 1) ;
     // std::cout << "Noise Level Velocity Factor : " << noiseLevelVelocityInfluence << std::endl;
 
+    params.crackLPFilterFreqVelocityFactor = juce::jmap<float>(float(vel), 1-params.crackLPFilterFreqVelocityInfluence, 1) ;
+    crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.crackLPFilterFreq*params.crackLPFilterFreqVelocityFactor);
+    params.crackLevelVelocityFactor = juce::jmap<float>(float(vel), 1-params.crackLevelVelocityInfluence, 1) ;
+
 }
 
 void StringReso::setLfoFreq(int num, float freq)
@@ -615,4 +631,34 @@ void StringReso::setNoiseLevel(float lvl)
 void StringReso::setNoiseLevelVelocityInfluence(float val)
 {
   params.noiseLevelVelocityInfluence = val;
+}
+
+
+void StringReso::setCrackDensity(int d)
+{
+  cracksGenerator.setDensity(d);
+}
+
+void StringReso::setCrackLPFilterFreq(float freq)
+{
+  if (freq!=params.crackLPFilterFreq)
+  {
+    params.crackLPFilterFreq = freq;
+    crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.crackLPFilterFreq*params.crackLPFilterFreqVelocityFactor);
+  }
+}
+
+void StringReso::setCrackLPFilterFreqVelocityInfluence(float val)
+{
+  params.crackLPFilterFreqVelocityInfluence = val;
+}
+
+void StringReso::setCrackLevel(float lvl)
+{
+  params.crackLevel = lvl;
+}
+
+void StringReso::setCrackLevelVelocityInfluence(float val)
+{
+  params.crackLevelVelocityInfluence = val;
 }

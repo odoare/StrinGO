@@ -12,6 +12,7 @@
 
 #include "JuceHeader.h"
 #include "../lib/dsp/SimpleSampler.h"
+#include "../lib/dsp/CracksGenerator.h"
 #include <iostream>
 
 #define NUMSTRINGS 2
@@ -58,7 +59,7 @@ public:
 
   typedef struct
   {
-    juce::ADSR::Parameters adsrParams1, adsrParamsN;
+    juce::ADSR::Parameters adsrParams1, adsrParamsN, adsrParamsC;
     float portamento;
     float stringPeriodInSamples;
     float level[NUMSTRINGS];
@@ -85,6 +86,13 @@ public:
     float noiseLevelVelocityInfluence {0.f};
     float noiseLevelVelocityFactor {1.f};
 
+    float crackLPFilterFreq  { 1000.f };
+    float crackLevel { 1.0 };
+    float crackLPFilterFreqVelocityInfluence {0.f};
+    float crackLPFilterFreqVelocityFactor {1.f};
+    float crackLevelVelocityInfluence {0.f};
+    float crackLevelVelocityFactor {1.f};
+    
     bool isOn;
     LfoParams lfoParams[NUMLFO];    
   } StringResoParams;
@@ -150,18 +158,26 @@ public:
   juce::dsp::ProcessSpec processSpec;
 
   void setADSR1(juce::ADSR::Parameters adsrParams);
-  void setADSRN(juce::ADSR::Parameters adsrParams);
 
   SimpleSampler sampler[NUMSTRINGS];
 
   // Noise generator
   // juce::ADSR::Parameters adsrNParams;
+  void setADSRN(juce::ADSR::Parameters adsrParams);
   void setNoiseLPFilterFreq(float freq);
   void setNoiseLPFilterFreqVelocityInfluence(float factor);
   void setNoiseHPFilterFreq(float freq);
   //void setNoiseHPFilterFreqVelocityInfluence(float factor);
   void setNoiseLevel(float lvl);
   void setNoiseLevelVelocityInfluence(float val);
+
+  // Crack generator
+  void setADSRC(juce::ADSR::Parameters adsrParams);
+  void setCrackDensity(int d);
+  void setCrackLPFilterFreq(float freq);
+  void setCrackLPFilterFreqVelocityInfluence(float val);
+  void setCrackLevel(float lvl);
+  void setCrackLevelVelocityInfluence(float val);
 
 private:
 
@@ -194,22 +210,17 @@ private:
   float previousOutput[NUMSTRINGS];
 
   juce::ADSR adsr1;
-  juce::ADSR adsrN;
 
   // Noise generator
   juce::Random randomNoise;
   juce::dsp::IIR::Filter<float> noiseLPFilter;
   juce::dsp::IIR::Filter<float> noiseHPFilter;
-  // float noiseLPFilterFreq  { 1000.f };
-  // float noiseHPFilterFreq  { 1000.f };
-  // float noiseLevel { 1.0f };
-  // float noiseLPFilterFreqVelocityInfluence {0.f};
-  // float noiseLPFilterFreqVelocityFactor {1.f};
-  // float noiseHPFilterFreqVelocityInfluence {0.f};
-  // float noiseHPFilterFreqVelocityFactor {1.f};  
-  // float noiseLevelVelocityInfluence {0.f};
-  // float noiseLevelVelocityFactor {1.f};
+  juce::ADSR adsrN;
 
+  // Cracks generator
+  CracksGenerator cracksGenerator;
+  juce::dsp::IIR::Filter<float> crackLPFilter;
+  juce::ADSR adsrC;  
 
   // LFOs
   float lfoVal[NUMLFO];
