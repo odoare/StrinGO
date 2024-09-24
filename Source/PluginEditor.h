@@ -232,6 +232,14 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> lfo1FreqAttachment;
     juce::Label lfo1FreqLabel{"lfo1FreqLabel", "Freq"};
 
+    juce::ToggleButton lfo1SamplerLevelButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1SamplerLevelButtonAttachment;
+    juce::Label lfo1SamplerLevelLabel{"lfo1SamplerLevelLabel", ""};
+
+    juce::ToggleButton lfo1SamplerLPFreqButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1SamplerLPFreqButtonAttachment;
+    juce::Label lfo1SamplerLPFreqLabel{"lfo1SamplerLPFreqLabel", ""};
+
     juce::ToggleButton lfo1Level1Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1Level1ButtonAttachment;
     juce::Label lfo1Level1Label{"lfo1Level1Label", ""};
@@ -272,6 +280,7 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1OutPos2ButtonAttachment;
     juce::Label lfo1OutPos2Label{"lfo1OutPos2Label", ""};
 
+
     // LFO2
 
     juce::Slider lfo2Amp;
@@ -281,6 +290,15 @@ private:
     juce::Slider lfo2Freq;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> lfo2FreqAttachment;
     juce::Label lfo2FreqLabel{"lfo2FreqLabel", "Freq"};
+
+    juce::ToggleButton lfo2SamplerLevelButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2SamplerLevelButtonAttachment;
+    juce::Label lfo2SamplerLevelLabel{"lfo2SamplerLevelLabel", ""};
+
+    juce::ToggleButton lfo2SamplerLPFreqButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2SamplerLPFreqButtonAttachment;
+    juce::Label lfo2SamplerLPFreqLabel{"lfo2SamplerLPFreqLabel", ""};
+
 
     juce::ToggleButton lfo2Level1Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2Level1ButtonAttachment;

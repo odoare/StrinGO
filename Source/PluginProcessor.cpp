@@ -225,6 +225,10 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         {
             voice->stringReso.setLfoFreq(l,apvts.getRawParameterValue(makeStringResoLfoParam("Freq",l+1,-1))->load());
             voice->stringReso.setLfoAmp(l,apvts.getRawParameterValue(makeStringResoLfoParam("Amp",l+1,-1))->load());
+
+            voice->stringReso.setLfoSamplerLevel(l,apvts.getRawParameterValue(makeStringResoLfoParam("SamplerLevel",l+1,-1))->load());
+            voice->stringReso.setLfoSamplerLPFreq(l,apvts.getRawParameterValue(makeStringResoLfoParam("SamplerLPFreq",l+1,-1))->load());
+
             for (int string=0; string<NUMSTRINGS; string++)
             {
                 // std::cout << makeLfoParam("Fine",l+1,string+1) << "\n";
@@ -445,6 +449,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 InPos2","LFO1 InPos2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 OutPos2","LFO1 OutPos2", false));
 
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 SamplerLevel","LFO1 SamplerLevel", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 SamplerLPFreq","LFO1 SamplerLPFreq", false));
+
     // LFO2 Parameters
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("LFO2 Freq","LFO2 Freq",juce::NormalisableRange<float>(0.01f,20.f,1e-2f,0.5f),1.f));
@@ -461,6 +468,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Coarse2","LFO2 Coarse2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 InPos2","LFO2 InPos2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 OutPos2","LFO2 OutPos2", false));
+
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 SamplerLevel","LFO2 SamplerLevel", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 SamplerLPFreq","LFO2 SamplerLPFreq", false));
 
     return layout;
 }

@@ -545,7 +545,7 @@ void StringReso::setLfoOutPos(int num, int string, bool onoff)
     params.lfoParams[num].outPos[string] = onoff;
 }
 
-void StringReso::setLfoSamplerFreq(int num, bool onoff)
+void StringReso::setLfoSamplerLPFreq(int num, bool onoff)
 {
     params.lfoParams[num].samplerFreq = onoff;
 }

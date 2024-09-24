@@ -164,6 +164,22 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     addKnob(lfo1Freq, lfo1FreqLabel, LFO1COLOR,juce::Colours::black);
     lfo1FreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO1 Freq",lfo1Freq);
 
+    addAndMakeVisible(lfo1SamplerLevelButton);
+    lfo1SamplerLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 SamplerLevel",lfo1SamplerLevelButton);
+    addAndMakeVisible(lfo1SamplerLevelLabel);
+    lfo1SamplerLevelLabel.attachToComponent(&lfo1SamplerLevelButton,false);
+    lfo1SamplerLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo1SamplerLevelButton.setClickingTogglesState(true);
+    lfo1SamplerLevelButton.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1SamplerLPFreqButton);
+    lfo1SamplerLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 SamplerLPFreq",lfo1SamplerLPFreqButton);
+    addAndMakeVisible(lfo1SamplerLPFreqLabel);
+    lfo1SamplerLPFreqLabel.attachToComponent(&lfo1SamplerLPFreqButton,false);
+    lfo1SamplerLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo1SamplerLPFreqButton.setClickingTogglesState(true);
+    lfo1SamplerLPFreqButton.setColour(0,LFO1COLOR);
+
     addAndMakeVisible(lfo1Level1Button);
     lfo1Level1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Level1",lfo1Level1Button);
     addAndMakeVisible(lfo1Level1Label);
@@ -249,6 +265,22 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo2AmpAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO2 Amp",lfo2Amp);
     addKnob(lfo2Freq, lfo2FreqLabel, LFO2COLOR,juce::Colours::black);
     lfo2FreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO2 Freq",lfo2Freq);
+
+    addAndMakeVisible(lfo2SamplerLevelButton);
+    lfo2SamplerLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 SamplerLevel",lfo2SamplerLevelButton);
+    addAndMakeVisible(lfo2SamplerLevelLabel);
+    lfo2SamplerLevelLabel.attachToComponent(&lfo2SamplerLevelButton,false);
+    lfo2SamplerLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo2SamplerLevelButton.setClickingTogglesState(true);
+    lfo2SamplerLevelButton.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2SamplerLPFreqButton);
+    lfo2SamplerLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 SamplerLPFreq",lfo2SamplerLPFreqButton);
+    addAndMakeVisible(lfo2SamplerLPFreqLabel);
+    lfo2SamplerLPFreqLabel.attachToComponent(&lfo2SamplerLPFreqButton,false);
+    lfo2SamplerLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo2SamplerLPFreqButton.setClickingTogglesState(true);
+    lfo2SamplerLPFreqButton.setColour(0,LFO2COLOR);
 
     addAndMakeVisible(lfo2Level1Button);
     lfo2Level1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Level1",lfo2Level1Button);
@@ -502,6 +534,10 @@ void MySynthAudioProcessorEditor::resized()
     samplerLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     waveComboBox.setBounds(ex+4*ux,ey+0.25*uy,ux,0.25*uy);
     loopButton.setBounds(ex+4.75*ux,ey+0.6*uy,size*ux,0.25*uy);
+    lfo1SamplerLevelButton.setBounds(juce::Rectangle<int>(ex+6.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1SamplerLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2SamplerLevelButton.setBounds(juce::Rectangle<int>(ex+6.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2SamplerLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+ux;
     ey = uyb+uy;

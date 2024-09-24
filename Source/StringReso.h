@@ -137,7 +137,7 @@ public:
   void setLfoInPos(int num, int string, bool onoff);
   void setLfoOutPos(int num, int string, bool onoff);
 
-  void setLfoSamplerFreq(int num, bool onoff);
+  void setLfoSamplerLPFreq(int num, bool onoff);
   void setLfoSamplerLevel(int num, bool onoff);
 
   juce::dsp::ProcessSpec processSpec;
