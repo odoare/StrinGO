@@ -264,11 +264,13 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
             voice->stringReso.setCoupling(1,0);
         }
 
-        voice->stringReso.adsrNParams.attack = apvts.getRawParameterValue("AN")->load();
-        voice->stringReso.adsrNParams.decay = apvts.getRawParameterValue("DN")->load();
-        voice->stringReso.adsrNParams.sustain = apvts.getRawParameterValue("SN")->load();
-        voice->stringReso.adsrNParams.release = apvts.getRawParameterValue("RN")->load();
-        voice->stringReso.adsrN.setParameters(voice->stringReso.adsrNParams);
+        juce::ADSR::Parameters adsrp;
+
+        adsrp.attack = apvts.getRawParameterValue("AN")->load();
+        adsrp.decay = apvts.getRawParameterValue("DN")->load();
+        adsrp.sustain = apvts.getRawParameterValue("SN")->load();
+        adsrp.release = apvts.getRawParameterValue("RN")->load();
+        voice->stringReso.setADSRN(adsrp);
 
         voice->adsrCParams.attack = apvts.getRawParameterValue("AC")->load();
         voice->adsrCParams.decay = apvts.getRawParameterValue("DC")->load();
@@ -276,11 +278,11 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         voice->adsrCParams.release = apvts.getRawParameterValue("RC")->load();
         voice->adsrC.setParameters(voice->adsrCParams);
 
-        voice->stringReso.adsr1Params.attack = apvts.getRawParameterValue("A")->load();
-        voice->stringReso.adsr1Params.decay = apvts.getRawParameterValue("D")->load();
-        voice->stringReso.adsr1Params.sustain = apvts.getRawParameterValue("S")->load();
-        voice->stringReso.adsr1Params.release = apvts.getRawParameterValue("R")->load();
-        voice->stringReso.adsr1.setParameters(voice->stringReso.adsr1Params);
+        adsrp.attack = apvts.getRawParameterValue("A")->load();
+        adsrp.decay = apvts.getRawParameterValue("D")->load();
+        adsrp.sustain = apvts.getRawParameterValue("S")->load();
+        adsrp.release = apvts.getRawParameterValue("R")->load();
+        voice->stringReso.setADSR1(adsrp);
 
         voice->stringReso.setNoiseLPFilterFreq(apvts.getRawParameterValue("Noise LP Freq")->load());
         voice->stringReso.setNoiseHPFilterFreq(apvts.getRawParameterValue("Noise HP Freq")->load());

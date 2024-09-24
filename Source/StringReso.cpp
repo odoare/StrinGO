@@ -42,6 +42,7 @@ StringReso::StringReso()
         params.adsrParams1.decay = 0.1f;
         params.adsrParams1.sustain = 1.f;
         params.adsrParams1.release = 1.f;
+        params.adsrParamsN = params.adsrParams1;
         params.portamento = SMOOTH_TIME;
         params.stringPeriodInSamples = 100.f;
         params.isOn=false;
@@ -246,7 +247,14 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
 
 void StringReso::setADSR1(juce::ADSR::Parameters adsrParams)
 {
+    params.adsrParams1 = adsrParams;
     adsr1.setParameters(adsrParams);
+}
+
+void StringReso::setADSRN(juce::ADSR::Parameters adsrParams)
+{
+    params.adsrParamsN = adsrParams;
+    adsrN.setParameters(adsrParams);
 }
 
 void StringReso::setParams(StringReso::StringResoParams newParams, bool force)

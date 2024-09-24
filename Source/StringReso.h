@@ -58,11 +58,7 @@ public:
 
   typedef struct
   {
-    juce::ADSR::Parameters adsrParams1;
-    float attack1;
-    float decay1;
-    float sustain1;
-    float release1;
+    juce::ADSR::Parameters adsrParams1, adsrParamsN;
     float portamento;
     float stringPeriodInSamples;
     float level[NUMSTRINGS];
@@ -94,7 +90,7 @@ public:
 
   //-----------------------------------------
   void setPortamentoTime(float time);
-  void setADSR1(juce::ADSR::Parameters adsrParams);
+  // void setADSR1(juce::ADSR::Parameters adsrParams);
 
   //--------------------------
   StringResoParams getParams();
@@ -142,14 +138,13 @@ public:
 
   juce::dsp::ProcessSpec processSpec;
 
-  juce::ADSR adsr1;
-  juce::ADSR::Parameters adsr1Params;
+  void setADSR1(juce::ADSR::Parameters adsrParams);
+  void setADSRN(juce::ADSR::Parameters adsrParams);
 
   SimpleSampler sampler[NUMSTRINGS];
 
   // Noise generator
-  juce::ADSR adsrN;
-  juce::ADSR::Parameters adsrNParams;
+  // juce::ADSR::Parameters adsrNParams;
   void setNoiseLPFilterFreq(float freq);
   void setNoiseLPFilterFreqVelocityInfluence(float factor);
   void setNoiseHPFilterFreq(float freq);
@@ -186,6 +181,9 @@ private:
         currentCoupling[NUMSTRINGS];
 
   float previousOutput[NUMSTRINGS];
+
+  juce::ADSR adsr1;
+  juce::ADSR adsrN;
 
   // Noise generator
   juce::Random randomNoise;
