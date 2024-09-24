@@ -55,6 +55,12 @@ public:
     bool outPos[NUMSTRINGS];
     bool samplerLevel;
     bool samplerFreq;
+    bool noiseLevel;
+    bool noiseLPFreq;
+    bool noiseHPFreq;
+    bool cracksLevel;
+    bool cracksDensity;
+    bool cracksLPFreq;
   } LfoParams;
 
   typedef struct

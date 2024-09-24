@@ -79,6 +79,14 @@ StringReso::StringReso()
             }
             params.lfoParams[l].samplerFreq = false;
             params.lfoParams[l].samplerLevel = false;                
+
+            params.lfoParams[l].noiseLevel = false;
+            params.lfoParams[l].noiseLPFreq = false;
+            params.lfoParams[l].noiseHPFreq = false;
+
+            params.lfoParams[l].cracksLevel = false;
+            params.lfoParams[l].cracksLPFreq = false;                
+            params.lfoParams[l].cracksDensity = false;                
         }
 
     // std::cout << "end StringReso initialization   " << std::endl;
@@ -159,7 +167,7 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
         auto* inChannelData = inBuffer.getReadPointer (channel);
         auto* outChannelData = outBuffer.getWritePointer (channel);
         float adsr1val;
-        float vallfolevel, vallfosamplerlevel, vallfosamplerfreq;
+        float vallfolevel, vallfosamplerlevel, vallfosamplerfreq, vallfonoiselevel, vallfocrackslevel;
         bool needsStringUpdate, needsSamplerFreqUpdate;
 
         for (int sample=startSample; sample<inBuffer.getNumSamples()-startSample; ++sample)
@@ -169,6 +177,8 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
                 adsr1val = adsr1.getNextSample();
                 vallfosamplerlevel = 1.f;
                 vallfosamplerfreq = 1.f;
+                vallfonoiselevel = 1.f;
+                vallfocrackslevel = 1.f;
                 for (int l=0;l<NUMLFO;l++)
                 {
                     lfoVal[l] = lfo[l].processSample(0.f);
@@ -176,6 +186,8 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
                     //std::cout << "lfo " << i << "  value : " << lfoVal[i] << "\n";
                     vallfosamplerlevel *= params.lfoParams[l].samplerLevel ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
                     vallfosamplerfreq *= params.lfoParams[l].samplerFreq ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
+                    vallfonoiselevel *= params.lfoParams[l].noiseLevel ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
+                    vallfocrackslevel *= params.lfoParams[l].cracksLevel ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
                 }
 
                 needsSamplerFreqUpdate=false;
@@ -207,6 +219,7 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
                     if (needsSamplerFreqUpdate) sampler[string].setFilterFreqLfoFactor(vallfosamplerfreq);
                 }
 
+                // TODO : LFO action on noise and crack level
                 input[string] = inChannelData[sample]
                                 + sampler[string].processNextSample()*vallfosamplerlevel
                                 + adsrN.getNextSample() * params.noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(params.noiseLevel*(randomNoise.nextFloat()-0.5f)))
