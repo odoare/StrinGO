@@ -27,11 +27,12 @@
 
 #define FINEMIN -1.f
 #define FINEMAX 1.f
+#define COARSEMIN -12.f
+#define COARSEMAX 12.f
 
 #define MAXCOUPLING 0.5f
 
 #define NUMLFO 2
-
 
 int suivant(int N, int i);
 
@@ -48,8 +49,11 @@ public:
     float amp;
     bool level[NUMSTRINGS];
     bool fine[NUMSTRINGS];
+    bool coarse[NUMSTRINGS];
     bool inPos[NUMSTRINGS];
     bool outPos[NUMSTRINGS];
+    bool samplerLevel;
+    bool samplerFreq;
   } LfoParams;
 
   typedef struct
@@ -128,9 +132,13 @@ public:
   void setLfoFreq(int num, float freq);
   void setLfoAmp(int num, float val);
   void setLfoFine(int num, int string, bool onoff);
+  void setLfoCoarse(int num, int string, bool onoff);
   void setLfoLevel(int num, int string, bool onoff);
   void setLfoInPos(int num, int string, bool onoff);
   void setLfoOutPos(int num, int string, bool onoff);
+
+  void setLfoSamplerFreq(int num, bool onoff);
+  void setLfoSamplerLevel(int num, bool onoff);
 
   juce::dsp::ProcessSpec processSpec;
 
@@ -172,6 +180,6 @@ private:
   float lfoVal[NUMLFO];
 
   float inPosDistToBoundary[NUMSTRINGS]={0.}, outPosDistToBoundary[NUMSTRINGS]={0.};
-  float fineFreqDistToBoundary[NUMSTRINGS]={0.};
+  float fineFreqDistToBoundary[NUMSTRINGS]={0.}, coarseFreqDistToBoundary[NUMSTRINGS]={0.};
 
 };

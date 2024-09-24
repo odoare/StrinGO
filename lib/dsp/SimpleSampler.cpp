@@ -85,9 +85,15 @@ void SimpleSampler::stop()
   #endif
 }
 
-void SimpleSampler::setFilterFreqFactor(float freqFactor)
+void SimpleSampler::setFilterFreqFactor(float fac)
 {
-  filterFreqFactor = freqFactor;
+  filterFreqFactor = fac;
+  updateFilter();
+}
+
+void SimpleSampler::setFilterFreqLfoFactor(float fac)
+{
+  filterFreqLfoFactor = fac;
   updateFilter();
 }
 
@@ -150,7 +156,7 @@ void SimpleSampler::setRelease(float r)
 
 void SimpleSampler::updateFilter()
 {
-  filter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,playingFrequency * filterFreqFactor * filterFreqVelocityFactor);
+  filter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate,playingFrequency * filterFreqFactor * filterFreqLfoFactor * filterFreqVelocityFactor);
 }
 
 float SimpleSampler::getSampleAtPos(float pos)
