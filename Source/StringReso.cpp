@@ -116,6 +116,10 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
 
     adsr1.setSampleRate(spec.sampleRate);
 
+    adsrN.setSampleRate(spec.sampleRate);
+    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(spec.sampleRate,noiseLPFilterFreq);
+    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(spec.sampleRate,noiseLPFilterFreq);
+
     for (int string=0; string<NUMSTRINGS; string++)
     {
         float delaySamples[4];
@@ -199,7 +203,9 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
                     if (needsSamplerFreqUpdate) sampler[string].setFilterFreqLfoFactor(vallfosamplerfreq);
                 }
 
-                input[string] = inChannelData[sample] + sampler[string].processNextSample()*vallfosamplerlevel;
+                input[string] = inChannelData[sample]
+                                + sampler[string].processNextSample()*vallfosamplerlevel
+                                + adsrN.getNextSample() * noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f)));
                 float coupling = smoothCoupling[string].getNextValue();
                 float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
                 float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
@@ -311,6 +317,7 @@ void StringReso::setIsOn(bool on, bool force)
         {
             // std::cout << "     set note on params    " << std::endl;
             adsr1.noteOn();
+            adsrN.noteOn();
             for (int string=0; string<NUMSTRINGS; string++)
             {
                 sampler[string].start();
@@ -319,6 +326,7 @@ void StringReso::setIsOn(bool on, bool force)
         else
         {
             // std::cout << "     set note off params   " << std::endl;
+            adsr1.noteOff();
             adsr1.noteOff();
             for (int string=0; string<NUMSTRINGS; string++)
             {
@@ -505,6 +513,12 @@ void StringReso::setVelocity(float vel)
     velocityLevelFactor = juce::jmap<float>(float(vel), 1-params.velocityLevel, 1) ;
     for (int string=0;string<NUMSTRINGS;string++)
         sampler[string].setVelocity(vel);
+
+    noiseLPFilterFreqVelocityFactor = juce::jmap<float>(float(vel), 1-noiseLPFilterFreqVelocityInfluence, 1) ;
+    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseLPFilterFreq*noiseLPFilterFreqVelocityFactor);
+    noiseLevelVelocityFactor = juce::jmap<float>(float(vel), 1-noiseLevelVelocityInfluence, 1) ;
+    // std::cout << "Noise Level Velocity Factor : " << noiseLevelVelocityInfluence << std::endl;
+
 }
 
 void StringReso::setLfoFreq(int num, float freq)
@@ -560,4 +574,37 @@ void StringReso::setSamplerFreq(int string)
     float freq = processSpec.sampleRate * powf(SEMITONE,params.freqCoarseFactor[string]+params.freqFineFactor[string])/params.stringPeriodInSamples;
     // std::cout << "StringReso::setSamplerFreq : Setting frequency of string " << string << " to  " << freq << std::endl;
     sampler[string].setPlayingFrequency(processSpec.sampleRate * powf(SEMITONE,params.freqCoarseFactor[string]+params.freqFineFactor[string])/params.stringPeriodInSamples);
+}
+
+void StringReso::setNoiseLPFilterFreq(float freq)
+{
+  if (freq!=noiseLPFilterFreq)
+  {
+    noiseLPFilterFreq = freq;
+    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseLPFilterFreq*noiseLPFilterFreqVelocityFactor);
+  }
+}
+
+void StringReso::setNoiseLPFilterFreqVelocityInfluence(float factor)
+{
+  noiseLPFilterFreqVelocityInfluence = factor;
+}
+
+void StringReso::setNoiseHPFilterFreq(float freq)
+{
+  if (freq!=noiseHPFilterFreq)
+  {
+    noiseHPFilterFreq = freq;
+    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(processSpec.sampleRate,noiseHPFilterFreq);
+  }
+}
+
+void StringReso::setNoiseLevel(float lvl)
+{
+  noiseLevel = lvl;
+}
+
+void StringReso::setNoiseLevelVelocityInfluence(float val)
+{
+  noiseLevelVelocityInfluence = val;
 }
