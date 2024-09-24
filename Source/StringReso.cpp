@@ -118,8 +118,8 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
     adsr1.setSampleRate(spec.sampleRate);
 
     adsrN.setSampleRate(spec.sampleRate);
-    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(spec.sampleRate,noiseLPFilterFreq);
-    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(spec.sampleRate,noiseLPFilterFreq);
+    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(spec.sampleRate,params.noiseLPFilterFreq);
+    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(spec.sampleRate,params.noiseLPFilterFreq);
 
     for (int string=0; string<NUMSTRINGS; string++)
     {
@@ -206,7 +206,7 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
 
                 input[string] = inChannelData[sample]
                                 + sampler[string].processNextSample()*vallfosamplerlevel
-                                + adsrN.getNextSample() * noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(noiseLevel*(randomNoise.nextFloat()-0.5f)));
+                                + adsrN.getNextSample() * params.noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(params.noiseLevel*(randomNoise.nextFloat()-0.5f)));
                 float coupling = smoothCoupling[string].getNextValue();
                 float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
                 float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
@@ -522,9 +522,9 @@ void StringReso::setVelocity(float vel)
     for (int string=0;string<NUMSTRINGS;string++)
         sampler[string].setVelocity(vel);
 
-    noiseLPFilterFreqVelocityFactor = juce::jmap<float>(float(vel), 1-noiseLPFilterFreqVelocityInfluence, 1) ;
-    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseLPFilterFreq*noiseLPFilterFreqVelocityFactor);
-    noiseLevelVelocityFactor = juce::jmap<float>(float(vel), 1-noiseLevelVelocityInfluence, 1) ;
+    params.noiseLPFilterFreqVelocityFactor = juce::jmap<float>(float(vel), 1-params.noiseLPFilterFreqVelocityInfluence, 1) ;
+    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.noiseLPFilterFreq*params.noiseLPFilterFreqVelocityFactor);
+    params.noiseLevelVelocityFactor = juce::jmap<float>(float(vel), 1-params.noiseLevelVelocityInfluence, 1) ;
     // std::cout << "Noise Level Velocity Factor : " << noiseLevelVelocityInfluence << std::endl;
 
 }
@@ -586,33 +586,33 @@ void StringReso::setSamplerFreq(int string)
 
 void StringReso::setNoiseLPFilterFreq(float freq)
 {
-  if (freq!=noiseLPFilterFreq)
+  if (freq!=params.noiseLPFilterFreq)
   {
-    noiseLPFilterFreq = freq;
-    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,noiseLPFilterFreq*noiseLPFilterFreqVelocityFactor);
+    params.noiseLPFilterFreq = freq;
+    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.noiseLPFilterFreq*params.noiseLPFilterFreqVelocityFactor);
   }
 }
 
 void StringReso::setNoiseLPFilterFreqVelocityInfluence(float factor)
 {
-  noiseLPFilterFreqVelocityInfluence = factor;
+  params.noiseLPFilterFreqVelocityInfluence = factor;
 }
 
 void StringReso::setNoiseHPFilterFreq(float freq)
 {
-  if (freq!=noiseHPFilterFreq)
+  if (freq!=params.noiseHPFilterFreq)
   {
-    noiseHPFilterFreq = freq;
-    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(processSpec.sampleRate,noiseHPFilterFreq);
+    params.noiseHPFilterFreq = freq;
+    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(processSpec.sampleRate,params.noiseHPFilterFreq);
   }
 }
 
 void StringReso::setNoiseLevel(float lvl)
 {
-  noiseLevel = lvl;
+  params.noiseLevel = lvl;
 }
 
 void StringReso::setNoiseLevelVelocityInfluence(float val)
 {
-  noiseLevelVelocityInfluence = val;
+  params.noiseLevelVelocityInfluence = val;
 }

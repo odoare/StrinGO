@@ -74,6 +74,17 @@ public:
     float levelOff[NUMSTRINGS];
     float coupling[NUMSTRINGS];
     float velocityLevel;
+
+    float noiseLPFilterFreq  { 1000.f };
+    float noiseHPFilterFreq  { 1000.f };
+    float noiseLevel { 1.0f };
+    float noiseLPFilterFreqVelocityInfluence {0.f};
+    float noiseLPFilterFreqVelocityFactor {1.f};
+    float noiseHPFilterFreqVelocityInfluence {0.f};
+    float noiseHPFilterFreqVelocityFactor {1.f};  
+    float noiseLevelVelocityInfluence {0.f};
+    float noiseLevelVelocityFactor {1.f};
+
     bool isOn;
     LfoParams lfoParams[NUMLFO];    
   } StringResoParams;
@@ -189,15 +200,15 @@ private:
   juce::Random randomNoise;
   juce::dsp::IIR::Filter<float> noiseLPFilter;
   juce::dsp::IIR::Filter<float> noiseHPFilter;
-  float noiseLPFilterFreq  { 1000.f };
-  float noiseHPFilterFreq  { 1000.f };
-  float noiseLevel { 1.0f };
-  float noiseLPFilterFreqVelocityInfluence {0.f};
-  float noiseLPFilterFreqVelocityFactor {1.f};
-  float noiseHPFilterFreqVelocityInfluence {0.f};
-  float noiseHPFilterFreqVelocityFactor {1.f};  
-  float noiseLevelVelocityInfluence {0.f};
-  float noiseLevelVelocityFactor {1.f};
+  // float noiseLPFilterFreq  { 1000.f };
+  // float noiseHPFilterFreq  { 1000.f };
+  // float noiseLevel { 1.0f };
+  // float noiseLPFilterFreqVelocityInfluence {0.f};
+  // float noiseLPFilterFreqVelocityFactor {1.f};
+  // float noiseHPFilterFreqVelocityInfluence {0.f};
+  // float noiseHPFilterFreqVelocityFactor {1.f};  
+  // float noiseLevelVelocityInfluence {0.f};
+  // float noiseLevelVelocityFactor {1.f};
 
 
   // LFOs
