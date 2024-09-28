@@ -168,62 +168,95 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
         auto* outChannelData = outBuffer.getWritePointer (channel);
         float adsr1val;
         float vallfolevel, vallfosamplerlevel, vallfosamplerfreq, vallfonoiselevel, vallfocrackslevel;
-        bool needsStringUpdate, needsSamplerFreqUpdate;
+        float vallfonoiselpfreq, vallfonoisehpfreq, vallfocracklpfreq,vallfocrackdensity;
+        bool needsStringUpdate, needsSamplerFreqUpdate, needsnoiselpfupdate, needsnoisehpfupdate, needscracklpfupdate, needscrackdensityupdate;
 
         for (int sample=startSample; sample<inBuffer.getNumSamples()-startSample; ++sample)
         {
             if (channel==0)
             {
                 adsr1val = adsr1.getNextSample();
-                vallfosamplerlevel = 1.f;
-                vallfosamplerfreq = 1.f;
-                vallfonoiselevel = 1.f;
-                vallfocrackslevel = 1.f;
-                for (int l=0;l<NUMLFO;l++)
-                {
-                    lfoVal[l] = lfo[l].processSample(0.f);
-                    //std::cout << "lfo " << i << "  freq : " << lfo[i].getFrequency() << "\n";
-                    //std::cout << "lfo " << i << "  value : " << lfoVal[i] << "\n";
-                    vallfosamplerlevel *= params.lfoParams[l].samplerLevel ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
-                    vallfosamplerfreq *= params.lfoParams[l].samplerFreq ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
-                    vallfonoiselevel *= params.lfoParams[l].noiseLevel ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
-                    vallfocrackslevel *= params.lfoParams[l].cracksLevel ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
-                }
-
-                needsSamplerFreqUpdate=false;
-                for (int l=0;l<NUMLFO;l++) needsSamplerFreqUpdate = needsSamplerFreqUpdate || params.lfoParams[l].samplerFreq;             
+                for (int l=0;l<NUMLFO;l++) lfoVal[l] = lfo[l].processSample(0.f);
+                if  (sample%LFOSAMPLESUPDATE==0) updateLfos();
             }
+
+            //     vallfosamplerlevel = 1.f;
+            //     vallfosamplerfreq = 1.f;
+            //     vallfonoiselevel = 1.f;
+            //     vallfocrackslevel = 1.f;
+            //     vallfonoiselpfreq = 1.f;
+            //     vallfonoisehpfreq = 1.f;
+            //     vallfocracklpfreq = 1.f;
+            //     vallfocrackdensity = 1.f;
+            //     needsSamplerFreqUpdate=false;
+            //     needsnoiselpfupdate=false;
+            //     needsnoisehpfupdate=false;
+            //     needscracklpfupdate=false;
+            //     needscrackdensityupdate=false;
+
+            //     // !!!!!!!!!!!!!!!!!!!!!!!
+            //     // Do this at LFO rate ? !  
+            //     // !!!!!!!!!!!!!!!!!!!!!!!
+            //     for (int l=0;l<NUMLFO;l++)
+            //     {
+            //         lfoVal[l] = lfo[l].processSample(0.f);
+            //         float lfomult = 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp;
+            //         float lfomult10 = 1.f-(.05f+.05f*lfoVal[l])*params.lfoParams[l].amp;
+            //         //std::cout << "lfo " << i << "  freq : " << lfo[i].getFrequency() << "\n";
+            //         //std::cout << "lfo " << i << "  value : " << lfoVal[i] << "\n";
+            //         vallfosamplerlevel *= params.lfoParams[l].samplerLevel ? lfomult : 1.f ;
+            //         vallfosamplerfreq *= params.lfoParams[l].samplerFreq ? lfomult : 1.f ;
+            //         vallfonoiselevel *= params.lfoParams[l].noiseLevel ? lfomult : 1.f ;
+            //         vallfocrackslevel *= params.lfoParams[l].cracksLevel ? lfomult : 1.f ;
+            //         vallfonoiselpfreq *= params.lfoParams[l].noiseLPFreq ? lfomult10 : 1.f ;
+            //         vallfonoisehpfreq *= params.lfoParams[l].noiseHPFreq ? lfomult10 : 1.f ;
+            //         vallfocracklpfreq *= params.lfoParams[l].cracksLPFreq ? lfomult10 : 1.f ;
+            //         vallfocrackdensity *= params.lfoParams[l].cracksDensity ? lfomult : 1.f ;
+            //         needsSamplerFreqUpdate = needsSamplerFreqUpdate || params.lfoParams[l].samplerFreq;
+            //         needsnoiselpfupdate = needsnoiselpfupdate || params.lfoParams[l].noiseLPFreq;
+            //         needsnoisehpfupdate = needsnoisehpfupdate || params.lfoParams[l].noiseHPFreq;
+            //         needscracklpfupdate = needscracklpfupdate || params.lfoParams[l].cracksLPFreq;
+            //         needscrackdensityupdate = needscrackdensityupdate || params.lfoParams[l].cracksDensity;
+            //     }
+            //     if (needsnoiselpfupdate) setNoiseLPFilterFreq(params.noiseLPFilterFreq*vallfonoiselpfreq);
+            //     if (needsnoisehpfupdate) setNoiseHPFilterFreq(params.noiseHPFilterFreq*vallfonoisehpfreq);
+            //     if (needscracklpfupdate) setCrackLPFilterFreq(params.crackLPFilterFreq*vallfocracklpfreq);
+            //     // if (needscrackdensityupdate) setCrackDensity(params.)
+
+            // }
 
             for (int string=0; string<NUMSTRINGS; string++)
             {
-                if (channel==0)
-                {
-                    vallfolevel = 1.f;
-                    for (int l=0; l<NUMLFO; l++)
-                        vallfolevel *= params.lfoParams[l].level[string] ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
-                }
+            //     if (channel==0)
+            //     {
+            //         vallfolevel = 1.f;
+            //         for (int l=0; l<NUMLFO; l++)
+            //             vallfolevel *= params.lfoParams[l].level[string] ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
+            //     }
 
-                needsStringUpdate = false;                
-                for (int l=0;l<NUMLFO;l++)
-                {
-                    needsStringUpdate = needsStringUpdate
-                        || params.lfoParams[l].fine[string]
-                        || params.lfoParams[l].coarse[string]
-                        || params.lfoParams[l].inPos[string]
-                        || params.lfoParams[l].outPos[string];
-                }
-                if  (sample%LFOSAMPLESUPDATE==0)
-                {
-                    if (needsStringUpdate) setDelaySamples(string);
-                    // std::cout << "Update Delay samples... \n";
-                    if (needsSamplerFreqUpdate) sampler[string].setFilterFreqLfoFactor(vallfosamplerfreq);
-                }
+            //     if  (sample%LFOSAMPLESUPDATE==0)
+            //     {
+            //         needsStringUpdate = false;                
+            //         for (int l=0;l<NUMLFO;l++)
+            //         {
+            //             needsStringUpdate = needsStringUpdate
+            //                 || params.lfoParams[l].fine[string]
+            //                 || params.lfoParams[l].coarse[string]
+            //                 || params.lfoParams[l].inPos[string]
+            //                 || params.lfoParams[l].outPos[string];
+            //         }
+            //         if (needsStringUpdate) setDelaySamples(string);
+            //         // std::cout << "Update Delay samples... \n";
 
-                // TODO : LFO action on noise and crack level
+            //         if (needsSamplerFreqUpdate) sampler[string].setFilterFreqLfoFactor(vallfosamplerfreq);
+
+            //     }
+
+                
                 input[string] = inChannelData[sample]
-                                + sampler[string].processNextSample()*vallfosamplerlevel
-                                + adsrN.getNextSample() * params.noiseLevelVelocityFactor * noiseHPFilter.processSample(noiseLPFilter.processSample(params.noiseLevel*(randomNoise.nextFloat()-0.5f)))
-                                + adsrC.getNextSample() * params.crackLevelVelocityFactor * crackLPFilter.processSample(params.crackLevel*cracksGenerator.nextSample());
+                                + sampler[string].processNextSample()*lfoFacSampleLevel
+                                + adsrN.getNextSample() * params.noiseLevelVelocityFactor * params.noiseLevel * lfoFacNoiseLevel * noiseHPFilter.processSample(noiseLPFilter.processSample(randomNoise.nextFloat()-0.5f))
+                                + adsrC.getNextSample() * params.crackLevelVelocityFactor * params.crackLevel * lfoFacCrackevel * crackLPFilter.processSample(cracksGenerator.nextSample());
                 float coupling = smoothCoupling[string].getNextValue();
                 float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
                 float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
@@ -256,7 +289,7 @@ void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<f
                 outChannelData[sample] += velocityLevelFactor
                                             *level[string]
                                             *(in1+in2)
-                                            *vallfolevel;
+                                            *lfoFacLevel[string];
             }
         }
     }
@@ -359,7 +392,7 @@ void StringReso::setIsOn(bool on, bool force)
         {
             // std::cout << "     set note off params   " << std::endl;
             adsr1.noteOff();
-            adsr1.noteOff();
+            adsrN.noteOff();
             adsrC.noteOff();  
             for (int string=0; string<NUMSTRINGS; string++)
             {
@@ -455,6 +488,7 @@ void StringReso::setStringPeriodInSamples(float period, bool force)
 {
     if (period!=params.stringPeriodInSamples)
     {
+        params.stringPeriodInSamples = period;
         for (int string=0; string<NUMSTRINGS; string++)
         {
             setDelaySamples(string, force);
@@ -495,20 +529,20 @@ void StringReso::setOutPos(int string, float pos, bool force)
 
 void StringReso::setDelaySamples(int string, bool force)
 {
-    float flfofac=1.f, clfofac=1.f, inlfofac=1.f, outlfofac=1.f;
+    // float flfofac=1.f, clfofac=1.f, inlfofac=1.f, outlfofac=1.f;
 
-    for (int l=0;l<NUMLFO;l++)
-    {
-        float vv = 1.f + params.lfoParams[l].amp*lfoVal[l] ;
-        flfofac *= params.lfoParams[l].fine[string] ?  vv : 1.f; 
-        clfofac *= params.lfoParams[l].coarse[string] ?  vv : 1.f; 
-        inlfofac *= params.lfoParams[l].inPos[string] ? vv : 1.f;
-        outlfofac *= params.lfoParams[l].outPos[string] ? vv : 1.f;
-    }
-    float fff = params.freqFineFactor[string] - fineFreqDistToBoundary[string] * (1.f-flfofac);
-    float fcf = params.freqCoarseFactor[string] - coarseFreqDistToBoundary[string] * (1.f-clfofac);
-    float inP = params.inPos[string] - inPosDistToBoundary[string] * (1.f-inlfofac);
-    float outP = params.outPos[string] - outPosDistToBoundary[string] * (1.f-outlfofac);
+    // for (int l=0;l<NUMLFO;l++)
+    // {
+        // float vv = 1.f + params.lfoParams[l].amp*lfoVal[l] ;
+        // flfofac *= params.lfoParams[l].fine[string] ?  vv : 1.f; 
+        // clfofac *= params.lfoParams[l].coarse[string] ?  vv : 1.f; 
+        // inlfofac *= params.lfoParams[l].inPos[string] ? vv : 1.f;
+        // outlfofac *= params.lfoParams[l].outPos[string] ? vv : 1.f;
+    // }
+    float fff = params.freqFineFactor[string] - fineFreqDistToBoundary[string] * (1.f-lfoFacFineFreq[string]);
+    float fcf = params.freqCoarseFactor[string] - coarseFreqDistToBoundary[string] * (1.f-lfoFacCoarseFreq[string]);
+    float inP = params.inPos[string] - inPosDistToBoundary[string] * (1.f-lfoFacInPos[string]);
+    float outP = params.outPos[string] - outPosDistToBoundary[string] * (1.f-lfoFacOutPos[string]);
 
     // std::cout << "fineFreqDistToBoundary " << string << " : " << fineFreqDistToBoundary[string] << "\n";
     // std::cout << "flfofac : " << flfofac << "\n";
@@ -555,7 +589,6 @@ void StringReso::setVelocity(float vel)
     params.crackLPFilterFreqVelocityFactor = juce::jmap<float>(float(vel), 1-params.crackLPFilterFreqVelocityInfluence, 1) ;
     crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.crackLPFilterFreq*params.crackLPFilterFreqVelocityFactor);
     params.crackLevelVelocityFactor = juce::jmap<float>(float(vel), 1-params.crackLevelVelocityInfluence, 1) ;
-
 }
 
 void StringReso::setLfoFreq(int num, float freq)
@@ -618,7 +651,9 @@ void StringReso::setNoiseLPFilterFreq(float freq)
   if (freq!=params.noiseLPFilterFreq)
   {
     params.noiseLPFilterFreq = freq;
-    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.noiseLPFilterFreq*params.noiseLPFilterFreqVelocityFactor);
+    noiseLPFDistToBoundary = juce::jmin<float>(freq-NOISELPFMIN,NOISELPFMAX-freq);        
+    setNoiseLPFilterCoeffs();
+    // noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.noiseLPFilterFreq*params.noiseLPFilterFreqVelocityFactor);
   }
 }
 
@@ -632,7 +667,9 @@ void StringReso::setNoiseHPFilterFreq(float freq)
   if (freq!=params.noiseHPFilterFreq)
   {
     params.noiseHPFilterFreq = freq;
-    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(processSpec.sampleRate,params.noiseHPFilterFreq);
+    noiseHPFDistToBoundary = juce::jmin<float>(freq-NOISEHPFMIN,NOISEHPFMAX-freq);        
+    setNoiseHPFilterCoeffs();
+    // noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(processSpec.sampleRate,params.noiseHPFilterFreq);
   }
 }
 
@@ -646,10 +683,20 @@ void StringReso::setNoiseLevelVelocityInfluence(float val)
   params.noiseLevelVelocityInfluence = val;
 }
 
+void StringReso::setNoiseLPFilterCoeffs()
+{
+    noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.noiseLPFilterFreq*params.noiseLPFilterFreqVelocityFactor);
+}
+
+void StringReso::setNoiseHPFilterCoeffs()
+{
+    noiseHPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass(processSpec.sampleRate,params.noiseHPFilterFreq);
+}
 
 void StringReso::setCrackDensity(int d)
 {
-  cracksGenerator.setDensity(d);
+    params.crackDensity = d;
+    cracksGenerator.setDensity(d);
 }
 
 void StringReso::setCrackLPFilterFreq(float freq)
@@ -657,7 +704,9 @@ void StringReso::setCrackLPFilterFreq(float freq)
   if (freq!=params.crackLPFilterFreq)
   {
     params.crackLPFilterFreq = freq;
-    crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.crackLPFilterFreq*params.crackLPFilterFreqVelocityFactor);
+    noiseLPFDistToBoundary = juce::jmin<float>(freq-CRACKSLPFMIN,CRACKSLPFMAX-freq);
+    setCrackLPFilterCoeffs();
+    // crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.crackLPFilterFreq*params.crackLPFilterFreqVelocityFactor);
   }
 }
 
@@ -673,5 +722,118 @@ void StringReso::setCrackLevel(float lvl)
 
 void StringReso::setCrackLevelVelocityInfluence(float val)
 {
-  params.crackLevelVelocityInfluence = val;
+    params.crackLevelVelocityInfluence = val;
+}
+
+void StringReso::setCrackLPFilterCoeffs()
+{
+    crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.crackLPFilterFreq*params.crackLPFilterFreqVelocityFactor);
+}
+
+void StringReso::setLfoCrackLevel(int num, bool onoff)
+{
+    params.lfoParams[num].cracksLevel = onoff;
+}
+
+void StringReso::setLfoCrackLPFreq(int num, bool onoff)
+{
+    params.lfoParams[num].cracksLPFreq = onoff;
+}
+
+void StringReso::setLfoCrackDensity(int num, bool onoff)
+{
+    params.lfoParams[num].cracksDensity = onoff;
+}
+
+void StringReso::setLfoNoiseLevel(int num, bool onoff)
+{
+    params.lfoParams[num].noiseLevel = onoff;
+}
+void StringReso::setLfoNoiseLPFreq(int num, bool onoff)
+{
+    params.lfoParams[num].noiseLPFreq = onoff;
+}
+void StringReso::setLfoNoiseHPFreq(int num, bool onoff)
+{
+    params.lfoParams[num].noiseHPFreq = onoff;
+}
+
+void StringReso::updateLfos()
+{
+
+    lfoFacSampleLevel = 1.f;
+    lfoFacSampleLPF = 1.f;
+    lfoFacNoiseLevel = 1.f;
+    lfoFacNoiseLPF = 1.f;
+    lfoFacNoiseHPF = 1.f;
+    lfoFacCrackevel = 1.f;
+    lfoFacCrackLPF = 1.f;
+    lfoFacCrackDensity = 1.f;
+
+    bool needsSamplerFreqUpdate=false;
+    // needsnoiselpfupdate=false;
+    // needsnoisehpfupdate=false;
+    // needscracklpfupdate=false;
+    // needscrackdensityupdate=false;
+
+    // !!!!!!!!!!!!!!!!!!!!!!!
+    // Do this at LFO rate ? !  
+    // !!!!!!!!!!!!!!!!!!!!!!!
+    for (int l=0;l<NUMLFO;l++)
+    {
+        float lfomult = 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp;
+        float lfomult10 = 1.f-(.05f+.05f*lfoVal[l])*params.lfoParams[l].amp;
+
+        lfoFacSampleLevel *= params.lfoParams[l].samplerLevel ? lfomult : 1.f ;
+        lfoFacSampleLPF *= params.lfoParams[l].samplerFreq ? lfomult : 1.f ;
+        lfoFacNoiseLevel *= params.lfoParams[l].noiseLevel ? lfomult : 1.f ;
+        lfoFacCrackevel *= params.lfoParams[l].cracksLevel ? lfomult : 1.f ;
+        lfoFacNoiseLPF *= params.lfoParams[l].noiseLPFreq ? lfomult10 : 1.f ;
+        lfoFacNoiseHPF *= params.lfoParams[l].noiseHPFreq ? lfomult10 : 1.f ;
+        lfoFacCrackLPF *= params.lfoParams[l].cracksLPFreq ? lfomult10 : 1.f ;
+        lfoFacCrackDensity *= params.lfoParams[l].cracksDensity ? lfomult : 1.f ;
+        needsSamplerFreqUpdate = needsSamplerFreqUpdate || params.lfoParams[l].samplerFreq;
+        // needsnoiselpfupdate = needsnoiselpfupdate || params.lfoParams[l].noiseLPFreq;
+        // needsnoisehpfupdate = needsnoisehpfupdate || params.lfoParams[l].noiseHPFreq;
+        // needscracklpfupdate = needscracklpfupdate || params.lfoParams[l].cracksLPFreq;
+        // needscrackdensityupdate = needscrackdensityupdate || params.lfoParams[l].cracksDensity;
+    }
+    setNoiseLPFilterFreq(params.noiseLPFilterFreq*lfoFacNoiseLPF);
+    setNoiseHPFilterFreq(params.noiseHPFilterFreq*lfoFacNoiseHPF);
+    setCrackLPFilterFreq(params.crackLPFilterFreq*lfoFacCrackLPF);
+    // if (needscrackdensityupdate) setCrackDensity(params.)
+
+    for (int string=0; string<NUMSTRINGS; string++)
+    {
+        lfoFacLevel[string] = 1.f;
+        lfoFacInPos[string] = 1.f;
+        lfoFacOutPos[string] = 1.f;
+        lfoFacFineFreq[string] = 1.f;
+        lfoFacCoarseFreq[string] = 1.f;
+
+        bool needsStringUpdate = false;                
+        for (int l=0; l<NUMLFO; l++)
+        {
+            lfoFacLevel[string] *= params.lfoParams[l].level[string] ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
+
+            needsStringUpdate = needsStringUpdate
+                || params.lfoParams[l].fine[string]
+                || params.lfoParams[l].coarse[string]
+                || params.lfoParams[l].inPos[string]
+                || params.lfoParams[l].outPos[string];
+            float vv = 1.f + params.lfoParams[l].amp*lfoVal[l] ;
+            lfoFacFineFreq[string] *= params.lfoParams[l].fine[string] ?  vv : 1.f; 
+            lfoFacCoarseFreq[string] *= params.lfoParams[l].coarse[string] ?  vv : 1.f; 
+            lfoFacInPos[string] *= params.lfoParams[l].inPos[string] ? vv : 1.f;
+            lfoFacOutPos[string] *= params.lfoParams[l].outPos[string] ? vv : 1.f;
+        }
+        if (needsStringUpdate)
+        {
+            setDelaySamples(string);
+        }
+            // std::cout << "Update Delay samples... \n";
+
+        if (needsSamplerFreqUpdate) sampler[string].setFilterFreqLfoFactor(lfoFacSampleLPF);
+
+    }
 }

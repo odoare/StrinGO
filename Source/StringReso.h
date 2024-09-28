@@ -31,6 +31,15 @@
 #define COARSEMIN -12.f
 #define COARSEMAX 12.f
 
+#define NOISELPFMIN 20.f
+#define NOISELPFMAX 20000.f
+#define NOISEHPFMIN 20.f
+#define NOISEHPFMAX 20000.F
+#define CRACKSLPFMIN 20.f
+#define CRACKSLPFMAX 20000.f
+#define CRACKDENSITYFMIN 0
+#define CRACKSDENSITYMAX 1000
+
 #define MAXCOUPLING 0.5f
 
 #define NUMLFO 2
@@ -98,9 +107,11 @@ public:
     float crackLPFilterFreqVelocityFactor {1.f};
     float crackLevelVelocityInfluence {0.f};
     float crackLevelVelocityFactor {1.f};
+    float crackDensity {10};
     
     bool isOn;
-    LfoParams lfoParams[NUMLFO];    
+    LfoParams lfoParams[NUMLFO];
+
   } StringResoParams;
 
   StringReso();
@@ -150,6 +161,8 @@ public:
   void setVelocityLevel(float lvl);
   void setVelocity(float vel);
 
+
+  // LFO parameters
   void setLfoFreq(int num, float freq);
   void setLfoAmp(int num, float val);
   void setLfoFine(int num, int string, bool onoff);
@@ -160,6 +173,16 @@ public:
 
   void setLfoSamplerLPFreq(int num, bool onoff);
   void setLfoSamplerLevel(int num, bool onoff);
+
+  void setLfoCrackLevel(int num, bool onoff);
+  void setLfoCrackLPFreq(int num, bool onoff);
+  void setLfoCrackDensity(int num, bool onoff);
+  
+  void setLfoNoiseLevel(int num, bool onoff);
+  void setLfoNoiseLPFreq(int num, bool onoff);
+  void setLfoNoiseHPFreq(int num, bool onoff);
+
+  void updateLfos();
 
   juce::dsp::ProcessSpec processSpec;
 
@@ -176,6 +199,8 @@ public:
   //void setNoiseHPFilterFreqVelocityInfluence(float factor);
   void setNoiseLevel(float lvl);
   void setNoiseLevelVelocityInfluence(float val);
+  void setNoiseLPFilterCoeffs();
+  void setNoiseHPFilterCoeffs();
 
   // Crack generator
   void setADSRC(juce::ADSR::Parameters adsrParams);
@@ -184,6 +209,7 @@ public:
   void setCrackLPFilterFreqVelocityInfluence(float val);
   void setCrackLevel(float lvl);
   void setCrackLevelVelocityInfluence(float val);
+  void setCrackLPFilterCoeffs();
 
 private:
 
@@ -233,5 +259,19 @@ private:
 
   float inPosDistToBoundary[NUMSTRINGS]={0.}, outPosDistToBoundary[NUMSTRINGS]={0.};
   float fineFreqDistToBoundary[NUMSTRINGS]={0.}, coarseFreqDistToBoundary[NUMSTRINGS]={0.};
+  float noiseLPFDistToBoundary, noiseHPFDistToBoundary, cracksLPFDistToBoundary;
 
+  float lfoFacLevel[NUMSTRINGS]={1.f};
+  float lfoFacInPos[NUMSTRINGS]={1.f};
+  float lfoFacOutPos[NUMSTRINGS]={1.f};
+  float lfoFacFineFreq[NUMSTRINGS]={1.f};
+  float lfoFacCoarseFreq[NUMSTRINGS]={1.f};
+  float lfoFacSampleLevel{1.f};
+  float lfoFacSampleLPF{1.f};
+  float lfoFacNoiseLevel{1.f};
+  float lfoFacNoiseLPF{1.f};
+  float lfoFacNoiseHPF{1.f};
+  float lfoFacCrackevel{1.f};
+  float lfoFacCrackLPF{1.f};
+  float lfoFacCrackDensity{1.f};
 };
