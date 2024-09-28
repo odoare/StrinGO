@@ -506,21 +506,22 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     drawBoxWithTitleOnTop(g,"Properties when note on",STRINGCOLOR,uxb+3.5*ux,uyb+5.25*uy,3*ux,1.25*uy,0.25*uy);
     drawBoxWithTitleOnTop(g,"Enveloppe -> Properties",STRINGCOLOR,uxb+6.5*ux,uyb+5.25*uy,4*ux,1.25*uy,0.25*uy);
     
-    drawBoxWithTitleOnTop(g,"",STRINGCOLOR,uxb+0.5*ux,uyb+3.25*uy,6*ux,1.85*uy,0.f);
-    drawBoxWithTitleOnTop(g,"Waveguide 1",STRINGCOLOR,uxb+0.5*ux,uyb+3.25*uy,3*ux,1.25*uy,0.25*uy);
-    drawBoxWithTitleOnTop(g,"Waveguide 2",STRINGCOLOR,uxb+3.5*ux,uyb+3.25*uy,3*ux,1.25*uy,0.25*uy);
-    drawBoxWithTitleOnTop(g,"In/Out Positions",STRINGCOLOR,uxb+6.5*ux,uyb+3.25*uy,4*ux,1.85*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"",STRINGCOLOR,uxb+0.5*ux,uyb+3.25*uy,8*ux,1.85*uy,0.f);
+    drawBoxWithTitleOnTop(g,"Waveguide 1",STRINGCOLOR,uxb+0.5*ux,uyb+3.25*uy,4*ux,1.25*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"Waveguide 2",STRINGCOLOR,uxb+4.5*ux,uyb+3.25*uy,4*ux,1.25*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"In/Out Positions",STRINGCOLOR,uxb+8.5*ux,uyb+3.25*uy,4*ux,1.85*uy,0.25*uy);
 
     drawBoxWithTitleOnLeft(g,"Velocity sensitivity",TITLECOLOR,uxb+8*ux,uyb,2.5*ux,3*uy,0.5*ux);
-    drawBoxWithTitleOnTop(g,"Midi",MASTERCOLOR,uxb+10.5*ux,uyb,2*ux,1.25*uy,0.25*uy);
-    drawBoxWithTitleOnTop(g,"Master",MASTERCOLOR,uxb+10.5*ux,uyb+1.25*uy,2*ux,5.25*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"Midi",MASTERCOLOR,uxb+10.5*ux,uyb+1.5*uy,2*ux,1.25*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"Master",MASTERCOLOR,uxb+10.5*ux,uyb+5.25*uy,2*ux,3.25*uy,0.25*uy);
 
     drawBoxWithTitleOnLeft(g," Lfos",TITLECOLOR,uxb,uyb+6.75*uy,0.5*ux,1*uy,0.5*ux);
     drawBoxWithTitleOnLeft(g,"  1",LFO1COLOR,uxb+0.5*ux,uyb+6.75*uy,3*ux,1*uy,0.5*ux);
     drawBoxWithTitleOnLeft(g,"  2",LFO2COLOR,uxb+4.5*ux,uyb+6.75*uy,3*ux,1*uy,0.5*ux);
 
-    g.drawText("StrinGO v0.0.2", juce::Rectangle<float>(uxb+10.50*ux,uyb+4.6*uy,2*ux,uy),juce::Justification::centred);
-    auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+6.75*uy-2*ux,2*ux,2*ux*227/269).reduced(10);
+    drawBoxWithTitleOnTop(g,"StrinGO v0.0.2",MASTERCOLOR,uxb+10.5*ux,uyb,2*ux,1.5*uy,0.25*uy);
+    // g.drawText("StrinGO v0.0.2", juce::Rectangle<float>(uxb+10.50*ux,0,2*ux,uy),juce::Justification::centred);
+    auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+0.2*uy,2*ux,2*ux*227/269).reduced(10);
     g.drawImage(logo, r);
 }
 
@@ -537,19 +538,19 @@ void MySynthAudioProcessorEditor::resized()
     const float size = 0.8f;
 
     float ex = uxb+10.5*ux;
-    float ey = uyb+0.25*uy;
+    float ey = uyb+1.75*uy;
     porta.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     voices.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
     ex = uxb+10.5*ux;
-    ey = uyb+1.65*uy;
+    ey = uyb+5.65*uy;
     inGain.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     directOut.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
     ex = uxb+10.5*ux;
-    ey = uyb+2.85*uy;
-    gain.setBounds(juce::Rectangle<int>(ex,ey,ux,2*uy).reduced(DELTAX*ux,DELTAY*uy));
-    level.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,2*uy).reduced(DELTAX*ux,DELTAY*uy));
+    ey = uyb+6.75*uy;
+    gain.setBounds(juce::Rectangle<int>(ex,ey,ux,1.5*uy).reduced(DELTAX*ux,DELTAY*uy));
+    level.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,1.5*uy).reduced(DELTAX*ux,DELTAY*uy));
 
     ex = uxb+8.5*ux;
     ey = uyb;
@@ -560,7 +561,7 @@ void MySynthAudioProcessorEditor::resized()
     velocityCrackFreq.setBounds(juce::Rectangle<int>(ex,ey+2*uy,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     velocityCrackLevel.setBounds(juce::Rectangle<int>(ex+ux,ey+2*uy,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
-    ex = uxb+6.75*ux;
+    ex = uxb+8.75*ux;
     ey = uyb+3.75*uy;
     stringsInPos.setBounds(ex,ey+0*uy,3.5*ux,0.5*uy);
     stringsOutPos.setBounds(ex,ey+0.75*uy,3.5*ux,0.5*uy);
@@ -573,35 +574,33 @@ void MySynthAudioProcessorEditor::resized()
     lfo1OutPos2Button.setBounds(juce::Rectangle<int>(ex+2.5*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
     lfo2OutPos2Button.setBounds(juce::Rectangle<int>(ex+3*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
 
-
     ex = uxb+ux;
     ey = uyb+4.6*uy;
-    stringsCoupling.setBounds(ex,ey,5*ux,0.5*uy);
+    stringsCoupling.setBounds(ex,ey,7*ux,0.5*uy);
 
     ex = uxb+0.5*ux;
     ey = uyb+3.5*uy;
     string1Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    string1FreqCoarse.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    string1FreqFine.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string1FreqCoarse.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string1FreqFine.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     lfo1Level1Button.setBounds(juce::Rectangle<int>(ex+0.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1Coarse1Button.setBounds(juce::Rectangle<int>(ex+1.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1Fine1Button.setBounds(juce::Rectangle<int>(ex+2.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Coarse1Button.setBounds(juce::Rectangle<int>(ex+2.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Fine1Button.setBounds(juce::Rectangle<int>(ex+3.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo2Level1Button.setBounds(juce::Rectangle<int>(ex+0.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Coarse1Button.setBounds(juce::Rectangle<int>(ex+1.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Fine1Button.setBounds(juce::Rectangle<int>(ex+2.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Coarse1Button.setBounds(juce::Rectangle<int>(ex+2.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Fine1Button.setBounds(juce::Rectangle<int>(ex+3.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
-    ex = uxb+3.5*ux;
+    ex = uxb+4.5*ux;
     ey = uyb+3.5*uy;
     string2Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    string2FreqCoarse.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    string2FreqFine.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string2FreqCoarse.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string2FreqFine.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     lfo1Level2Button.setBounds(juce::Rectangle<int>(ex+0.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1Coarse2Button.setBounds(juce::Rectangle<int>(ex+1.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1Fine2Button.setBounds(juce::Rectangle<int>(ex+2.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Coarse2Button.setBounds(juce::Rectangle<int>(ex+2.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Fine2Button.setBounds(juce::Rectangle<int>(ex+3.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo2Level2Button.setBounds(juce::Rectangle<int>(ex+0.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Coarse2Button.setBounds(juce::Rectangle<int>(ex+1.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Fine2Button.setBounds(juce::Rectangle<int>(ex+2.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-
+    lfo2Coarse2Button.setBounds(juce::Rectangle<int>(ex+2.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Fine2Button.setBounds(juce::Rectangle<int>(ex+3.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+0.5*ux;
     ey = uyb+5.5*uy;
