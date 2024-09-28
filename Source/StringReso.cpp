@@ -782,7 +782,7 @@ void StringReso::updateLfos()
     for (int l=0;l<NUMLFO;l++)
     {
         float lfomult = 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp;
-        float lfomult10 = 1.f-(.05f+.05f*lfoVal[l])*params.lfoParams[l].amp;
+        float lfomult10 = 1.f-(.2f+.2f*lfoVal[l])*params.lfoParams[l].amp;
 
         lfoFacSampleLevel *= params.lfoParams[l].samplerLevel ? lfomult : 1.f ;
         lfoFacSampleLPF *= params.lfoParams[l].samplerFreq ? lfomult : 1.f ;
