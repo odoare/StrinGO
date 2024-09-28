@@ -260,6 +260,55 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo1OutPos2Button.setClickingTogglesState(true);
     lfo1OutPos2Button.setColour(0,LFO1COLOR);
 
+    addAndMakeVisible(lfo1NoiseLevelButton);
+    lfo1NoiseLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 NoiseLevel",lfo1NoiseLevelButton);
+    addAndMakeVisible(lfo1NoiseLevelLabel);
+    lfo1NoiseLevelLabel.attachToComponent(&lfo1NoiseLevelButton,false);
+    lfo1NoiseLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo1NoiseLevelButton.setClickingTogglesState(true);
+    lfo1NoiseLevelButton.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1NoiseLPFreqButton);
+    lfo1NoiseLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 NoiseLPFreq",lfo1NoiseLPFreqButton);
+    addAndMakeVisible(lfo1NoiseLPFreqLabel);
+    lfo1NoiseLPFreqLabel.attachToComponent(&lfo1NoiseLPFreqButton,false);
+    lfo1NoiseLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo1NoiseLPFreqButton.setClickingTogglesState(true);
+    lfo1NoiseLPFreqButton.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1NoiseHPFreqButton);
+    lfo1NoiseHPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 NoiseHPFreq",lfo1NoiseHPFreqButton);
+    addAndMakeVisible(lfo1NoiseHPFreqLabel);
+    lfo1NoiseHPFreqLabel.attachToComponent(&lfo1NoiseHPFreqButton,false);
+    lfo1NoiseHPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo1NoiseHPFreqButton.setClickingTogglesState(true);
+    lfo1NoiseHPFreqButton.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1CrackLevelButton);
+    lfo1CrackLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 CrackLevel",lfo1CrackLevelButton);
+    addAndMakeVisible(lfo1CrackLevelLabel);
+    lfo1CrackLevelLabel.attachToComponent(&lfo1CrackLevelButton,false);
+    lfo1CrackLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo1CrackLevelButton.setClickingTogglesState(true);
+    lfo1CrackLevelButton.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1CrackLPFreqButton);
+    lfo1CrackLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 CrackLPFreq",lfo1CrackLPFreqButton);
+    addAndMakeVisible(lfo1CrackLPFreqLabel);
+    lfo1CrackLPFreqLabel.attachToComponent(&lfo1CrackLPFreqButton,false);
+    lfo1CrackLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo1CrackLPFreqButton.setClickingTogglesState(true);
+    lfo1CrackLPFreqButton.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1CrackDensityButton);
+    lfo1CrackDensityButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 CrackDensity",lfo1CrackDensityButton);
+    addAndMakeVisible(lfo1CrackDensityLabel);
+    lfo1CrackDensityLabel.attachToComponent(&lfo1CrackDensityButton,false);
+    lfo1CrackDensityButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo1CrackDensityButton.setClickingTogglesState(true);
+    lfo1CrackDensityButton.setColour(0,LFO1COLOR);
+
+
     // LFO 2
     addKnob(lfo2Amp, lfo2AmpLabel, LFO2COLOR,juce::Colours::black);
     lfo2AmpAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO2 Amp",lfo2Amp);
@@ -361,6 +410,55 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo2OutPos2Button.setLookAndFeel(&buttonLookAndFeel);
     lfo2OutPos2Button.setClickingTogglesState(true);
     lfo2OutPos2Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2NoiseLevelButton);
+    lfo2NoiseLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 NoiseLevel",lfo2NoiseLevelButton);
+    addAndMakeVisible(lfo2NoiseLevelLabel);
+    lfo2NoiseLevelLabel.attachToComponent(&lfo2NoiseLevelButton,false);
+    lfo2NoiseLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo2NoiseLevelButton.setClickingTogglesState(true);
+    lfo2NoiseLevelButton.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2NoiseLPFreqButton);
+    lfo2NoiseLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 NoiseLPFreq",lfo2NoiseLPFreqButton);
+    addAndMakeVisible(lfo2NoiseLPFreqLabel);
+    lfo2NoiseLPFreqLabel.attachToComponent(&lfo2NoiseLPFreqButton,false);
+    lfo2NoiseLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo2NoiseLPFreqButton.setClickingTogglesState(true);
+    lfo2NoiseLPFreqButton.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2NoiseHPFreqButton);
+    lfo2NoiseHPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 NoiseHPFreq",lfo2NoiseHPFreqButton);
+    addAndMakeVisible(lfo2NoiseHPFreqLabel);
+    lfo2NoiseHPFreqLabel.attachToComponent(&lfo2NoiseHPFreqButton,false);
+    lfo2NoiseHPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo2NoiseHPFreqButton.setClickingTogglesState(true);
+    lfo2NoiseHPFreqButton.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2CrackLevelButton);
+    lfo2CrackLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 CrackLevel",lfo2CrackLevelButton);
+    addAndMakeVisible(lfo2CrackLevelLabel);
+    lfo2CrackLevelLabel.attachToComponent(&lfo2CrackLevelButton,false);
+    lfo2CrackLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo2CrackLevelButton.setClickingTogglesState(true);
+    lfo2CrackLevelButton.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2CrackLPFreqButton);
+    lfo2CrackLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 CrackLPFreq",lfo2CrackLPFreqButton);
+    addAndMakeVisible(lfo2CrackLPFreqLabel);
+    lfo2CrackLPFreqLabel.attachToComponent(&lfo2CrackLPFreqButton,false);
+    lfo2CrackLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo2CrackLPFreqButton.setClickingTogglesState(true);
+    lfo2CrackLPFreqButton.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2CrackDensityButton);
+    lfo2CrackDensityButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 CrackDensity",lfo2CrackDensityButton);
+    addAndMakeVisible(lfo2CrackDensityLabel);
+    lfo2CrackDensityLabel.attachToComponent(&lfo2CrackDensityButton,false);
+    lfo2CrackDensityButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo2CrackDensityButton.setClickingTogglesState(true);
+    lfo2CrackDensityButton.setColour(0,LFO2COLOR);
+
 
     setSize (1000, 800);
     setResizable(true,true);
@@ -548,6 +646,12 @@ void MySynthAudioProcessorEditor::resized()
     noiseHPFreq.setBounds(juce::Rectangle<int>(ex+4*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     noiseLPFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     noiseLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    lfo1NoiseLevelButton.setBounds(juce::Rectangle<int>(ex+6.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1NoiseLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1NoiseHPFreqButton.setBounds(juce::Rectangle<int>(ex+4.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2NoiseLevelButton.setBounds(juce::Rectangle<int>(ex+6.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2NoiseLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2NoiseHPFreqButton.setBounds(juce::Rectangle<int>(ex+4.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+ux;
     ey = uyb+2*uy;
@@ -558,6 +662,12 @@ void MySynthAudioProcessorEditor::resized()
     crackDensity.setBounds(juce::Rectangle<int>(ex+4*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackLPFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    lfo1CrackLevelButton.setBounds(juce::Rectangle<int>(ex+6.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1CrackLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1CrackDensityButton.setBounds(juce::Rectangle<int>(ex+4.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2CrackLevelButton.setBounds(juce::Rectangle<int>(ex+6.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2CrackLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2CrackDensityButton.setBounds(juce::Rectangle<int>(ex+4.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+ux;
     ey = uyb+6.75*uy;
