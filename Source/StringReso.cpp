@@ -512,13 +512,10 @@ void StringReso::setVelocity(float vel)
         sampler[string].setVelocity(vel);
 
     velFacNoiseLPF = juce::jmap<float>(float(vel), 1-params.noiseLPFilterFreqVelocityInfluence, 1) ;
-    //noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.noiseLPFilterFreq*params.noiseLPFilterFreqVelocityFactor);
     updateNoiseLPFilterCoeffs();
     velFacNoiseLevel = juce::jmap<float>(float(vel), 1-params.noiseLevelVelocityInfluence, 1) ;
-    // std::cout << "Noise Level Velocity Factor : " << noiseLevelVelocityInfluence << std::endl;
 
     velFacCrackLPF = juce::jmap<float>(float(vel), 1-params.crackLPFilterFreqVelocityInfluence, 1) ;
-    //crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,params.crackLPFilterFreq*params.crackLPFilterFreqVelocityFactor);
     updateCrackLPFilterCoeffs();
     velFacCrackLevel = juce::jmap<float>(float(vel), 1-params.crackLevelVelocityInfluence, 1) ;
 }
@@ -752,20 +749,23 @@ void StringReso::updateLfos()
         for (int l=0; l<NUMLFO; l++)
         {
             lfoFacLevel[string] *= params.lfoParams[l].level[string] ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
-
             needsStringUpdate = needsStringUpdate
                 || params.lfoParams[l].fine[string]
                 || params.lfoParams[l].coarse[string]
                 || params.lfoParams[l].inPos[string]
                 || params.lfoParams[l].outPos[string];
-            float vv = 1.f + params.lfoParams[l].amp*lfoVal[l] ;
-            lfoFacFineFreq[string] *= params.lfoParams[l].fine[string] ?  vv : 1.f; 
-            lfoFacCoarseFreq[string] *= params.lfoParams[l].coarse[string] ?  vv : 1.f; 
-            lfoFacInPos[string] *= params.lfoParams[l].inPos[string] ? vv : 1.f;
-            lfoFacOutPos[string] *= params.lfoParams[l].outPos[string] ? vv : 1.f;
         }
+
         if (needsStringUpdate)
         {
+            for (int l=0; l<NUMLFO; l++)
+            {
+                float vv = 1.f + params.lfoParams[l].amp*lfoVal[l] ;
+                lfoFacFineFreq[string] *= params.lfoParams[l].fine[string] ?  vv : 1.f; 
+                lfoFacCoarseFreq[string] *= params.lfoParams[l].coarse[string] ?  vv : 1.f; 
+                lfoFacInPos[string] *= params.lfoParams[l].inPos[string] ? vv : 1.f;
+                lfoFacOutPos[string] *= params.lfoParams[l].outPos[string] ? vv : 1.f;
+            }
             setDelaySamples(string);
         }
             // std::cout << "Update Delay samples... \n";
