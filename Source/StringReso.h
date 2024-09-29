@@ -42,7 +42,7 @@
 
 #define MAXCOUPLING 0.5f
 
-#define NUMLFO 2
+#define NUMLFO 3
 
 int suivant(int N, int i);
 
@@ -58,6 +58,7 @@ public:
     float freq;
     float amp;
     bool level[NUMSTRINGS];
+    bool pan[NUMSTRINGS];
     bool fine[NUMSTRINGS];
     bool coarse[NUMSTRINGS];
     bool inPos[NUMSTRINGS];
@@ -78,6 +79,7 @@ public:
     float portamento;
     float stringPeriodInSamples;
     float level[NUMSTRINGS];
+    float pan[NUMSTRINGS];
     float freqCoarseFactor[NUMSTRINGS];
     float freqFineFactor[NUMSTRINGS];
     float inPos[NUMSTRINGS];
@@ -144,6 +146,7 @@ public:
   void setLevelOn(int string, float freq);
   void setLevelOff(int string, float freq);
   void setLevel(int string, float lvl);
+  void setPan(int string, float lvl);
 
   void setStringPeriodInSamples(float period, bool force = false);
   void setStringFreq(float freq, bool force = false);
@@ -168,6 +171,7 @@ public:
   void setLfoFine(int num, int string, bool onoff);
   void setLfoCoarse(int num, int string, bool onoff);
   void setLfoLevel(int num, int string, bool onoff);
+  void setLfoPan(int num, int string, bool onoff);
   void setLfoInPos(int num, int string, bool onoff);
   void setLfoOutPos(int num, int string, bool onoff);
 
@@ -258,11 +262,13 @@ private:
   // LFOs
   float lfoVal[NUMLFO];
 
+  float panDistToBoundary[NUMSTRINGS];
   float inPosDistToBoundary[NUMSTRINGS]={0.}, outPosDistToBoundary[NUMSTRINGS]={0.};
   float fineFreqDistToBoundary[NUMSTRINGS]={0.}, coarseFreqDistToBoundary[NUMSTRINGS]={0.};
   float noiseLPFDistToBoundary, noiseHPFDistToBoundary, cracksLPFDistToBoundary;
 
   float lfoFacLevel[NUMSTRINGS]={1.f};
+  float lfoFacPan[NUMSTRINGS]={1.f};
   float lfoFacInPos[NUMSTRINGS]={1.f};
   float lfoFacOutPos[NUMSTRINGS]={1.f};
   float lfoFacFineFreq[NUMSTRINGS]={1.f};

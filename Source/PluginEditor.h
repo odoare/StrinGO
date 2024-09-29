@@ -15,12 +15,13 @@
 #define SAMPLERCOLOR juce::Colours::blue
 #define NOISECOLOR juce::Colours::green
 #define CRACKSCOLOR juce::Colours::red
-#define MASTERCOLOR juce::Colours::yellow
+#define MASTERCOLOR juce::Colours::cyan
 #define VELOCITYCOLOR juce::Colours::magenta
-#define STRINGCOLOR juce::Colours::cyan
+#define STRINGCOLOR juce::Colours::lightsteelblue
 #define TITLECOLOR juce::Colours::grey
-#define LFO1COLOR juce::Colours::violet
-#define LFO2COLOR juce::Colours::orange
+#define LFO1COLOR juce::Colours::limegreen
+#define LFO2COLOR juce::Colours::magenta
+#define LFO3COLOR juce::Colours::yellow
 
 //==============================================================================
 /**
@@ -304,7 +305,9 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1CrackDensityButtonAttachment;
     juce::Label lfo1CrackDensityLabel{"lfo1CrackDensityLabel", ""};
 
+    // --------------------------------------------------------------------
     // LFO2
+    // --------------------------------------------------------------------
 
     juce::Slider lfo2Amp;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> lfo2AmpAttachment;
@@ -346,7 +349,7 @@ private:
     juce::ToggleButton lfo2Fine2Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2Fine2ButtonAttachment;
     juce::Label lfo2Fine2Label{"lfo2Fine2Label", ""};
-    juce::Label emptyLabel{"emptyLabel", ""};
+    //juce::Label emptyLabel{"emptyLabel", ""};
 
     juce::ToggleButton lfo2InPos1Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2InPos1ButtonAttachment;
@@ -387,6 +390,92 @@ private:
     juce::ToggleButton lfo2CrackDensityButton;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2CrackDensityButtonAttachment;
     juce::Label lfo2CrackDensityLabel{"lfo2CrackDensityLabel", ""};
+
+    // --------------------------------------------------------------------
+    // LFO3
+    // --------------------------------------------------------------------
+
+    juce::Slider lfo3Amp;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> lfo3AmpAttachment;
+    juce::Label lfo3AmpLabel{"lfo3AmpLabel", "Amp"};
+
+    juce::Slider lfo3Freq;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> lfo3FreqAttachment;
+    juce::Label lfo3FreqLabel{"lfo3FreqLabel", "Freq"};
+
+    juce::ToggleButton lfo3SamplerLevelButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3SamplerLevelButtonAttachment;
+    juce::Label lfo3SamplerLevelLabel{"lfo3SamplerLevelLabel", ""};
+
+    juce::ToggleButton lfo3SamplerLPFreqButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3SamplerLPFreqButtonAttachment;
+    juce::Label lfo3SamplerLPFreqLabel{"lfo3SamplerLPFreqLabel", ""};
+
+
+    juce::ToggleButton lfo3Level1Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Level1ButtonAttachment;
+    juce::Label lfo3Level1Label{"lfo3Level1Label", ""};
+
+    juce::ToggleButton lfo3Coarse1Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Coarse1ButtonAttachment;
+    juce::Label lfo3Coarse1Label{"lfo3Coarse1Label", ""};
+
+    juce::ToggleButton lfo3Fine1Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Fine1ButtonAttachment;
+    juce::Label lfo3Fine1Label{"lfo3Fine1Label", ""};
+    
+    juce::ToggleButton lfo3Level2Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Level2ButtonAttachment;
+    juce::Label lfo3Level2Label{"lfo3Level2Label", ""};
+
+    juce::ToggleButton lfo3Coarse2Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Coarse2ButtonAttachment;
+    juce::Label lfo3Coarse2Label{"lfo3Coarse2Label", ""};
+
+    juce::ToggleButton lfo3Fine2Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Fine2ButtonAttachment;
+    juce::Label lfo3Fine2Label{"lfo3Fine2Label", ""};
+//    juce::Label emptyLabel{"emptyLabel", ""};
+
+    juce::ToggleButton lfo3InPos1Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3InPos1ButtonAttachment;
+    juce::Label lfo3InPos1Label{"lfo3InPos1Label", ""};
+
+    juce::ToggleButton lfo3OutPos1Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3OutPos1ButtonAttachment;
+    juce::Label lfo3OutPos1Label{"lfo3OutPos1Label", ""};
+
+    juce::ToggleButton lfo3InPos2Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3InPos2ButtonAttachment;
+    juce::Label lfo3InPos2Label{"lfo3InPos2Label", ""};
+
+    juce::ToggleButton lfo3OutPos2Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3OutPos2ButtonAttachment;
+    juce::Label lfo3OutPos2Label{"lfo3OutPos2Label", ""};
+
+    juce::ToggleButton lfo3NoiseLevelButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3NoiseLevelButtonAttachment;
+    juce::Label lfo3NoiseLevelLabel{"lfo3NoiseLevelLabel", ""};
+
+    juce::ToggleButton lfo3NoiseLPFreqButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3NoiseLPFreqButtonAttachment;
+    juce::Label lfo3NoiseLPFreqLabel{"lfo3NoiseLPFreqLabel", ""};
+
+    juce::ToggleButton lfo3NoiseHPFreqButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3NoiseHPFreqButtonAttachment;
+    juce::Label lfo3NoiseHPFreqLabel{"lfo3NoiseHPFreqLabel", ""};
+
+    juce::ToggleButton lfo3CrackLevelButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3CrackLevelButtonAttachment;
+    juce::Label lfo3CrackLevelLabel{"lfo3CrackLevelLabel", ""};
+
+    juce::ToggleButton lfo3CrackLPFreqButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3CrackLPFreqButtonAttachment;
+    juce::Label lfo3CrackLPFreqLabel{"lfo3CrackLPFreqLabel", ""};
+
+    juce::ToggleButton lfo3CrackDensityButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3CrackDensityButtonAttachment;
+    juce::Label lfo3CrackDensityLabel{"lfo3CrackDensityLabel", ""};
 
 
     void addKnob(juce::Slider &slider, juce::Label &label, juce::Colour fillCol, juce::Colour outlineCol);

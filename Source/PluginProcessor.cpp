@@ -217,6 +217,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
             voice->stringReso.sampler[string].setRelease(apvts.getRawParameterValue("RS")->load());
 
             voice->stringReso.setLevel(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue(makeStringResoParam("Level",string+1))->load()));
+            voice->stringReso.setPan(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue(makeStringResoParam("Pan",string+1))->load()));
             voice->stringReso.setFreqCoarseFactor(string,apvts.getRawParameterValue(makeStringResoParam("Coarse",string+1))->load());
             voice->stringReso.setFreqFineFactor(string,apvts.getRawParameterValue(makeStringResoParam("Fine",string+1))->load());
 
@@ -244,6 +245,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 voice->stringReso.setLfoCoarse(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("Coarse",l+1,string+1))->load());
                 // std::cout << makeLfoParam("Level",l+1,string+1) << "\n";
                 voice->stringReso.setLfoLevel(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("Level",l+1,string+1))->load());
+                voice->stringReso.setLfoPan(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("Pan",l+1,string+1))->load());
                 // std::cout << makeLfoParam("InPos",l+1,string+1) << "\n";
                 voice->stringReso.setLfoInPos(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("InPos",l+1,string+1))->load());
                 // std::cout << makeLfoParam("OutPos",l+1,string+1) << "\n";
@@ -374,10 +376,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterFloat>("Porta Time","Porta Time",juce::NormalisableRange<float>(0.0001f,1.f,1e-3f,1.f),0.01f));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>("Level1","Level1",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Pan1","Pan1",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Coarse1","Coarse1",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Fine1","Fine1",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Level2","Level2",juce::NormalisableRange<float>(-90.f,0.f,1e-2f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Pan2","Pan2",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Coarse2","Coarse2",juce::NormalisableRange<float>(-12.f,12.f,1.f,1.f),0.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Fine2","Fine2",juce::NormalisableRange<float>(-1.f,1.f,1e-2f,1.f),0.f));
 
@@ -448,12 +452,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterFloat>("LFO1 Amp","LFO1 Amp",juce::NormalisableRange<float>(0.f,1.f,1e-2f,1.f),0.f));
 
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Level1","LFO1 Level1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Pan1","LFO1 Pan1", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Fine1","LFO1 Fine1", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Coarse1","LFO1 Coarse1", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 InPos1","LFO1 InPos1", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 OutPos1","LFO1 OutPos1", false));
 
-    layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Level2","LFO1 Level1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Level2","LFO1 Level2", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Pan2","LFO1 Pan2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Fine2","LFO1 Fine2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 Coarse2","LFO1 Coarse2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO1 InPos2","LFO1 InPos2", false));
@@ -476,12 +482,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterFloat>("LFO2 Amp","LFO2 Amp",juce::NormalisableRange<float>(0.f,1.f,1e-2f,1.f),0.f));
 
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Level1","LFO2 Level1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Pan1","LFO2 Pan1", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Fine1","LFO2 Fine1", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Coarse1","LFO2 Coarse1", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 InPos1","LFO2 InPos1", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 OutPos1","LFO2 OutPos1", false));
 
-    layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Level2","LFO2 Level1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Level2","LFO2 Level2", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Pan2","LFO1 Pan2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Fine2","LFO2 Fine2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 Coarse2","LFO2 Coarse2", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 InPos2","LFO2 InPos2", false));
@@ -497,6 +505,36 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 CrackLevel","LFO2 CrackLevel", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 CrackLPFreq","LFO2 CrackLPFreq", false));
     layout.add(std::make_unique<juce::AudioParameterBool>("LFO2 CrackDensity","LFO2 CrackDensity", false));
+
+    // LFO3 Parameters
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("LFO3 Freq","LFO3 Freq",juce::NormalisableRange<float>(0.01f,20.f,1e-2f,0.5f),1.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("LFO3 Amp","LFO3 Amp",juce::NormalisableRange<float>(0.f,1.f,1e-2f,1.f),0.f));
+
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 Level1","LFO3 Level1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 Pan1","LFO3 Pan1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 Fine1","LFO3 Fine1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 Coarse1","LFO3 Coarse1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 InPos1","LFO3 InPos1", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 OutPos1","LFO3 OutPos1", false));
+
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 Level2","LFO3 Level2", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 Pan2","LFO3 Pan2", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 Fine2","LFO3 Fine2", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 Coarse2","LFO3 Coarse2", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 InPos2","LFO3 InPos2", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 OutPos2","LFO3 OutPos2", false));
+
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 SamplerLevel","LFO3 SamplerLevel", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 SamplerLPFreq","LFO3 SamplerLPFreq", false));
+
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 NoiseLevel","LFO3 NoiseLevel", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 NoiseLPFreq","LFO3 NoiseLPFreq", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 NoiseHPFreq","LFO3 NoiseHPFreq", false));
+
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 CrackLevel","LFO3 CrackLevel", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 CrackLPFreq","LFO3 CrackLPFreq", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>("LFO3 CrackDensity","LFO3 CrackDensity", false));
 
     return layout;
 }

@@ -309,7 +309,10 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo1CrackDensityButton.setColour(0,LFO1COLOR);
 
 
+    // --------------------------------------------------------------------
     // LFO 2
+    // --------------------------------------------------------------------
+
     addKnob(lfo2Amp, lfo2AmpLabel, LFO2COLOR,juce::Colours::black);
     lfo2AmpAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO2 Amp",lfo2Amp);
     addKnob(lfo2Freq, lfo2FreqLabel, LFO2COLOR,juce::Colours::black);
@@ -459,6 +462,160 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo2CrackDensityButton.setClickingTogglesState(true);
     lfo2CrackDensityButton.setColour(0,LFO2COLOR);
 
+    // --------------------------------------------------------------------
+    // LFO 3
+    // --------------------------------------------------------------------
+    
+    addKnob(lfo3Amp, lfo3AmpLabel, LFO3COLOR,juce::Colours::black);
+    lfo3AmpAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO3 Amp",lfo3Amp);
+    addKnob(lfo3Freq, lfo3FreqLabel, LFO3COLOR,juce::Colours::black);
+    lfo3FreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"LFO3 Freq",lfo3Freq);
+
+    addAndMakeVisible(lfo3SamplerLevelButton);
+    lfo3SamplerLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 SamplerLevel",lfo3SamplerLevelButton);
+    addAndMakeVisible(lfo3SamplerLevelLabel);
+    lfo3SamplerLevelLabel.attachToComponent(&lfo3SamplerLevelButton,false);
+    lfo3SamplerLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo3SamplerLevelButton.setClickingTogglesState(true);
+    lfo3SamplerLevelButton.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3SamplerLPFreqButton);
+    lfo3SamplerLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 SamplerLPFreq",lfo3SamplerLPFreqButton);
+    addAndMakeVisible(lfo3SamplerLPFreqLabel);
+    lfo3SamplerLPFreqLabel.attachToComponent(&lfo3SamplerLPFreqButton,false);
+    lfo3SamplerLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo3SamplerLPFreqButton.setClickingTogglesState(true);
+    lfo3SamplerLPFreqButton.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3Level1Button);
+    lfo3Level1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Level1",lfo3Level1Button);
+    addAndMakeVisible(lfo3Level1Label);
+    lfo3Level1Label.attachToComponent(&lfo3Level1Button,false);
+    lfo3Level1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3Level1Button.setClickingTogglesState(true);
+    lfo3Level1Button.setColour(0,LFO3COLOR);
+    
+    addAndMakeVisible(lfo3Coarse1Button);
+    lfo3Coarse1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Coarse1",lfo3Coarse1Button);
+    addAndMakeVisible(lfo3Coarse1Label);
+    lfo3Coarse1Label.attachToComponent(&lfo3Coarse1Button,false);
+    lfo3Coarse1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3Coarse1Button.setClickingTogglesState(true);
+    lfo3Coarse1Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3Fine1Button);
+    lfo3Fine1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Fine1",lfo3Fine1Button);
+    addAndMakeVisible(lfo3Fine1Label);
+    lfo3Fine1Label.attachToComponent(&lfo3Fine1Button,false);
+    lfo3Fine1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3Fine1Button.setClickingTogglesState(true);
+    lfo3Fine1Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3Level2Button);
+    lfo3Level2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Level2",lfo3Level2Button);
+    addAndMakeVisible(lfo3Level2Label);
+    lfo3Level2Label.attachToComponent(&lfo3Level2Button,false);
+    lfo3Level2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3Level2Button.setClickingTogglesState(true);
+    lfo3Level2Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3Coarse2Button);
+    lfo3Coarse2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Coarse2",lfo3Coarse2Button);
+    addAndMakeVisible(lfo3Coarse2Label);
+    lfo3Coarse2Label.attachToComponent(&lfo3Coarse2Button,false);
+    lfo3Coarse2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3Coarse2Button.setClickingTogglesState(true);
+    lfo3Coarse2Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3Fine2Button);
+    lfo3Fine2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Fine2",lfo3Fine2Button);
+    addAndMakeVisible(lfo3Fine2Label);
+    lfo3Fine2Label.attachToComponent(&lfo3Fine2Button,false);
+    lfo3Fine2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3Fine2Button.setClickingTogglesState(true);
+    lfo3Fine2Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3InPos1Button);
+    lfo3InPos1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 InPos1",lfo3InPos1Button);
+    addAndMakeVisible(lfo3InPos1Label);
+    lfo3InPos1Label.attachToComponent(&lfo3InPos1Button,false);
+    lfo3InPos1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3InPos1Button.setClickingTogglesState(true);
+    lfo3InPos1Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3OutPos1Button);
+    lfo3OutPos1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 OutPos1",lfo3OutPos1Button);
+    addAndMakeVisible(lfo3OutPos1Label);
+    lfo3OutPos1Label.attachToComponent(&lfo3OutPos1Button,false);
+    lfo3OutPos1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3OutPos1Button.setClickingTogglesState(true);
+    lfo3OutPos1Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3InPos2Button);
+    lfo3InPos2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 InPos2",lfo3InPos2Button);
+    addAndMakeVisible(lfo3InPos2Label);
+    lfo3InPos2Label.attachToComponent(&lfo3InPos2Button,false);
+    lfo3InPos2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3InPos2Button.setClickingTogglesState(true);
+    lfo3InPos2Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3OutPos2Button);
+    lfo3OutPos2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 OutPos2",lfo3OutPos2Button);
+    addAndMakeVisible(lfo3OutPos2Label);
+    lfo3OutPos2Label.attachToComponent(&lfo3OutPos2Button,false);
+    lfo3OutPos2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3OutPos2Button.setClickingTogglesState(true);
+    lfo3OutPos2Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3NoiseLevelButton);
+    lfo3NoiseLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 NoiseLevel",lfo3NoiseLevelButton);
+    addAndMakeVisible(lfo3NoiseLevelLabel);
+    lfo3NoiseLevelLabel.attachToComponent(&lfo3NoiseLevelButton,false);
+    lfo3NoiseLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo3NoiseLevelButton.setClickingTogglesState(true);
+    lfo3NoiseLevelButton.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3NoiseLPFreqButton);
+    lfo3NoiseLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 NoiseLPFreq",lfo3NoiseLPFreqButton);
+    addAndMakeVisible(lfo3NoiseLPFreqLabel);
+    lfo3NoiseLPFreqLabel.attachToComponent(&lfo3NoiseLPFreqButton,false);
+    lfo3NoiseLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo3NoiseLPFreqButton.setClickingTogglesState(true);
+    lfo3NoiseLPFreqButton.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3NoiseHPFreqButton);
+    lfo3NoiseHPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 NoiseHPFreq",lfo3NoiseHPFreqButton);
+    addAndMakeVisible(lfo3NoiseHPFreqLabel);
+    lfo3NoiseHPFreqLabel.attachToComponent(&lfo3NoiseHPFreqButton,false);
+    lfo3NoiseHPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo3NoiseHPFreqButton.setClickingTogglesState(true);
+    lfo3NoiseHPFreqButton.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3CrackLevelButton);
+    lfo3CrackLevelButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 CrackLevel",lfo3CrackLevelButton);
+    addAndMakeVisible(lfo3CrackLevelLabel);
+    lfo3CrackLevelLabel.attachToComponent(&lfo3CrackLevelButton,false);
+    lfo3CrackLevelButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo3CrackLevelButton.setClickingTogglesState(true);
+    lfo3CrackLevelButton.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3CrackLPFreqButton);
+    lfo3CrackLPFreqButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 CrackLPFreq",lfo3CrackLPFreqButton);
+    addAndMakeVisible(lfo3CrackLPFreqLabel);
+    lfo3CrackLPFreqLabel.attachToComponent(&lfo3CrackLPFreqButton,false);
+    lfo3CrackLPFreqButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo3CrackLPFreqButton.setClickingTogglesState(true);
+    lfo3CrackLPFreqButton.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3CrackDensityButton);
+    lfo3CrackDensityButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 CrackDensity",lfo3CrackDensityButton);
+    addAndMakeVisible(lfo3CrackDensityLabel);
+    lfo3CrackDensityLabel.attachToComponent(&lfo3CrackDensityButton,false);
+    lfo3CrackDensityButton.setLookAndFeel(&buttonLookAndFeel);
+    lfo3CrackDensityButton.setClickingTogglesState(true);
+    lfo3CrackDensityButton.setColour(0,LFO3COLOR);
+
+
 
     setSize (1000, 800);
     setResizable(true,true);
@@ -512,16 +669,20 @@ void MySynthAudioProcessorEditor::paint (juce::Graphics& g)
     drawBoxWithTitleOnTop(g,"In/Out Positions",STRINGCOLOR,uxb+8.5*ux,uyb+3.25*uy,4*ux,1.85*uy,0.25*uy);
 
     drawBoxWithTitleOnLeft(g,"Velocity sensitivity",TITLECOLOR,uxb+8*ux,uyb,2.5*ux,3*uy,0.5*ux);
-    drawBoxWithTitleOnTop(g,"Midi",MASTERCOLOR,uxb+10.5*ux,uyb+1.5*uy,2*ux,1.25*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"Midi",MASTERCOLOR,uxb+10.5*ux,uyb+1.75*uy,2*ux,1.25*uy,0.25*uy);
     drawBoxWithTitleOnTop(g,"Master",MASTERCOLOR,uxb+10.5*ux,uyb+5.25*uy,2*ux,3.25*uy,0.25*uy);
 
-    drawBoxWithTitleOnLeft(g," Lfos",TITLECOLOR,uxb,uyb+6.75*uy,0.5*ux,1*uy,0.5*ux);
-    drawBoxWithTitleOnLeft(g,"  1",LFO1COLOR,uxb+0.5*ux,uyb+6.75*uy,3*ux,1*uy,0.5*ux);
-    drawBoxWithTitleOnLeft(g,"  2",LFO2COLOR,uxb+4.5*ux,uyb+6.75*uy,3*ux,1*uy,0.5*ux);
+    drawBoxWithTitleOnLeft(g," Lfos",TITLECOLOR,uxb,uyb+6.75*uy,0.5*ux,1.25*uy,0.5*ux);
+    // drawBoxWithTitleOnLeft(g,"  1",LFO1COLOR,uxb+0.5*ux,uyb+6.75*uy,3.5*ux,1*uy,0.5*ux);
+    // drawBoxWithTitleOnLeft(g,"  2",LFO2COLOR,uxb+4*ux,uyb+6.75*uy,3.5*ux,1*uy,0.5*ux);
+    // drawBoxWithTitleOnLeft(g,"  3",LFO3COLOR,uxb+7.5*ux,uyb+6.75*uy,3.5*ux,1*uy,0.5*ux);
+    drawBoxWithTitleOnTop(g,"  1",LFO1COLOR,uxb+0.5*ux,uyb+6.75*uy,3*ux,1.25*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"  2",LFO2COLOR,uxb+3.5*ux,uyb+6.75*uy,3*ux,1.25*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"  3",LFO3COLOR,uxb+6.5*ux,uyb+6.75*uy,3*ux,1.25*uy,0.25*uy);
 
-    drawBoxWithTitleOnTop(g,"StrinGO v0.0.2",MASTERCOLOR,uxb+10.5*ux,uyb,2*ux,1.5*uy,0.25*uy);
+    drawBoxWithTitleOnTop(g,"StrinGO v0.0.2",MASTERCOLOR,uxb+10.5*ux,uyb,2*ux,1.75*uy,0.25*uy);
     // g.drawText("StrinGO v0.0.2", juce::Rectangle<float>(uxb+10.50*ux,0,2*ux,uy),juce::Justification::centred);
-    auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+0.2*uy,2*ux,2*ux*227/269).reduced(10);
+    auto r = juce::Rectangle<float>(uxb+10.5*ux,uyb+0.3*uy,2*ux,2*ux*227/269).reduced(10);
     g.drawImage(logo, r);
 }
 
@@ -538,17 +699,17 @@ void MySynthAudioProcessorEditor::resized()
     const float size = 0.8f;
 
     float ex = uxb+10.5*ux;
-    float ey = uyb+1.75*uy;
+    float ey = uyb+2*uy;
     porta.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     voices.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
     ex = uxb+10.5*ux;
-    ey = uyb+5.65*uy;
+    ey = uyb+5.5*uy;
     inGain.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     directOut.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
     ex = uxb+10.5*ux;
-    ey = uyb+6.75*uy;
+    ey = uyb+6.55*uy;
     gain.setBounds(juce::Rectangle<int>(ex,ey,ux,1.5*uy).reduced(DELTAX*ux,DELTAY*uy));
     level.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,1.5*uy).reduced(DELTAX*ux,DELTAY*uy));
 
@@ -561,46 +722,62 @@ void MySynthAudioProcessorEditor::resized()
     velocityCrackFreq.setBounds(juce::Rectangle<int>(ex,ey+2*uy,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     velocityCrackLevel.setBounds(juce::Rectangle<int>(ex+ux,ey+2*uy,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
+
     ex = uxb+8.75*ux;
     ey = uyb+3.75*uy;
     stringsInPos.setBounds(ex,ey+0*uy,3.5*ux,0.5*uy);
     stringsOutPos.setBounds(ex,ey+0.75*uy,3.5*ux,0.5*uy);
     lfo1InPos1Button.setBounds(juce::Rectangle<int>(ex+1.5*ux,ey,0.2f*ux,0.1f*uy));
-    lfo2InPos1Button.setBounds(juce::Rectangle<int>(ex+2*ux,ey,0.2f*ux,0.1f*uy));
-    lfo1InPos2Button.setBounds(juce::Rectangle<int>(ex+2.5*ux,ey,0.2f*ux,0.1f*uy));
-    lfo2InPos2Button.setBounds(juce::Rectangle<int>(ex+3*ux,ey,0.2f*ux,0.1f*uy));
     lfo1OutPos1Button.setBounds(juce::Rectangle<int>(ex+1.5*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
-    lfo2OutPos1Button.setBounds(juce::Rectangle<int>(ex+2*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+    lfo1InPos2Button.setBounds(juce::Rectangle<int>(ex+2.5*ux,ey,0.2f*ux,0.1f*uy));
     lfo1OutPos2Button.setBounds(juce::Rectangle<int>(ex+2.5*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
-    lfo2OutPos2Button.setBounds(juce::Rectangle<int>(ex+3*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+    lfo2InPos1Button.setBounds(juce::Rectangle<int>(ex+1.75*ux,ey,0.2f*ux,0.1f*uy));
+    lfo2OutPos1Button.setBounds(juce::Rectangle<int>(ex+1.75*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+    lfo2InPos2Button.setBounds(juce::Rectangle<int>(ex+2.75*ux,ey,0.2f*ux,0.1f*uy));
+    lfo2OutPos2Button.setBounds(juce::Rectangle<int>(ex+2.75*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+    lfo3InPos1Button.setBounds(juce::Rectangle<int>(ex+2*ux,ey,0.2f*ux,0.1f*uy));
+    lfo3OutPos1Button.setBounds(juce::Rectangle<int>(ex+2*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
+    lfo3InPos2Button.setBounds(juce::Rectangle<int>(ex+3*ux,ey,0.2f*ux,0.1f*uy));
+    lfo3OutPos2Button.setBounds(juce::Rectangle<int>(ex+3*ux,ey+0.75*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+ux;
     ey = uyb+4.6*uy;
     stringsCoupling.setBounds(ex,ey,7*ux,0.5*uy);
+
+    #define BLFO1POS 0.15f
+    #define BLFO2POS 0.40f
+    #define BLFO3POS 0.65f
+    #define BLFOWIDTH 0.7f
 
     ex = uxb+0.5*ux;
     ey = uyb+3.5*uy;
     string1Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string1FreqCoarse.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string1FreqFine.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    lfo1Level1Button.setBounds(juce::Rectangle<int>(ex+0.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1Coarse1Button.setBounds(juce::Rectangle<int>(ex+2.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1Fine1Button.setBounds(juce::Rectangle<int>(ex+3.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Level1Button.setBounds(juce::Rectangle<int>(ex+0.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Coarse1Button.setBounds(juce::Rectangle<int>(ex+2.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Fine1Button.setBounds(juce::Rectangle<int>(ex+3.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO1POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Coarse1Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Fine1Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO2POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Coarse1Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Fine1Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO3POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Coarse1Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Fine1Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+4.5*ux;
     ey = uyb+3.5*uy;
     string2Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string2FreqCoarse.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string2FreqFine.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    lfo1Level2Button.setBounds(juce::Rectangle<int>(ex+0.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1Coarse2Button.setBounds(juce::Rectangle<int>(ex+2.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1Fine2Button.setBounds(juce::Rectangle<int>(ex+3.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Level2Button.setBounds(juce::Rectangle<int>(ex+0.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Coarse2Button.setBounds(juce::Rectangle<int>(ex+2.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Fine2Button.setBounds(juce::Rectangle<int>(ex+3.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Level2Button.setBounds(juce::Rectangle<int>(ex+BLFO1POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Coarse2Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Fine2Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Level2Button.setBounds(juce::Rectangle<int>(ex+BLFO2POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Coarse2Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Fine2Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Level2Button.setBounds(juce::Rectangle<int>(ex+BLFO3POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Coarse2Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Fine2Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+0.5*ux;
     ey = uyb+5.5*uy;
@@ -631,10 +808,12 @@ void MySynthAudioProcessorEditor::resized()
     samplerLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     waveComboBox.setBounds(ex+4*ux,ey+0.25*uy,ux,0.25*uy);
     loopButton.setBounds(ex+4.75*ux,ey+0.6*uy,size*ux,0.25*uy);
-    lfo1SamplerLevelButton.setBounds(juce::Rectangle<int>(ex+6.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1SamplerLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2SamplerLevelButton.setBounds(juce::Rectangle<int>(ex+6.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2SamplerLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1SamplerLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1SamplerLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2SamplerLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2SamplerLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3SamplerLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3SamplerLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+ux;
     ey = uyb+uy;
@@ -645,12 +824,15 @@ void MySynthAudioProcessorEditor::resized()
     noiseHPFreq.setBounds(juce::Rectangle<int>(ex+4*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     noiseLPFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     noiseLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    lfo1NoiseLevelButton.setBounds(juce::Rectangle<int>(ex+6.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1NoiseLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1NoiseHPFreqButton.setBounds(juce::Rectangle<int>(ex+4.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2NoiseLevelButton.setBounds(juce::Rectangle<int>(ex+6.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2NoiseLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2NoiseHPFreqButton.setBounds(juce::Rectangle<int>(ex+4.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1NoiseLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1NoiseLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1NoiseHPFreqButton.setBounds(juce::Rectangle<int>(ex+(4+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2NoiseLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2NoiseLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2NoiseHPFreqButton.setBounds(juce::Rectangle<int>(ex+(4+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3NoiseLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3NoiseLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3NoiseHPFreqButton.setBounds(juce::Rectangle<int>(ex+(4+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+ux;
     ey = uyb+2*uy;
@@ -661,22 +843,30 @@ void MySynthAudioProcessorEditor::resized()
     crackDensity.setBounds(juce::Rectangle<int>(ex+4*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackLPFreq.setBounds(juce::Rectangle<int>(ex+5*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     crackLevel.setBounds(juce::Rectangle<int>(ex+6*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
-    lfo1CrackLevelButton.setBounds(juce::Rectangle<int>(ex+6.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1CrackLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo1CrackDensityButton.setBounds(juce::Rectangle<int>(ex+4.25*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2CrackLevelButton.setBounds(juce::Rectangle<int>(ex+6.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2CrackLPFreqButton.setBounds(juce::Rectangle<int>(ex+5.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2CrackDensityButton.setBounds(juce::Rectangle<int>(ex+4.55*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1CrackLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1CrackLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1CrackDensityButton.setBounds(juce::Rectangle<int>(ex+(4+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2CrackLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2CrackLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2CrackDensityButton.setBounds(juce::Rectangle<int>(ex+(4+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3CrackLevelButton.setBounds(juce::Rectangle<int>(ex+(6+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3CrackLPFreqButton.setBounds(juce::Rectangle<int>(ex+(5+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3CrackDensityButton.setBounds(juce::Rectangle<int>(ex+(4+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
-    ex = uxb+ux;
-    ey = uyb+6.75*uy;
+    ex = uxb+.5*ux;
+    ey = uyb+7*uy;
     lfo1Amp.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     lfo1Freq.setBounds(juce::Rectangle<int>(ex+1*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
-    ex = uxb+5*ux;
-    ey = uyb+6.75*uy;
+    ex = uxb+3.5*ux;
+    ey = uyb+7*uy;
     lfo2Amp.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     lfo2Freq.setBounds(juce::Rectangle<int>(ex+1*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+
+    ex = uxb+6.5*ux;
+    ey = uyb+7*uy;
+    lfo3Amp.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    lfo3Freq.setBounds(juce::Rectangle<int>(ex+1*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
 
 }
 

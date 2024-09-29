@@ -373,6 +373,10 @@ void StringReso::setLevel(int string, float lvl)
     params.level[string] = lvl;
 }
 
+void StringReso::setPan(int string, float lvl)
+{
+}
+
 void StringReso::setFreqCoarseFactor(int string, float fac, bool force)
 {
     if (fac!=params.freqCoarseFactor[string])
@@ -548,6 +552,9 @@ void StringReso::setLfoLevel(int num, int string, bool onoff)
 {
     params.lfoParams[num].level[string] = onoff;
     // std::cout << "LFO level " << num << " - string " << string << " : " << onoff << "\n"; 
+}
+void StringReso::setLfoPan(int num, int string, bool onoff)
+{
 }
 void StringReso::setLfoInPos(int num, int string, bool onoff)
 {
