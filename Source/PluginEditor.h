@@ -185,6 +185,9 @@ private:
     juce::Slider string1Level;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string1LevelAttachment;
     juce::Label string1LevelLabel{"string1LevelLabel", "Level"};
+    juce::Slider string1Pan;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string1PanAttachment;
+    juce::Label string1PanLabel{"string1PanLabel", "Pan"};
     juce::Slider string1FreqCoarse;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string1FreqCoarseAttachment;
     juce::Label string1FreqCoarseLabel{"string1FreqCoarseLabel", "Coarse"};
@@ -195,6 +198,9 @@ private:
     juce::Slider string2Level;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string2LevelAttachment;
     juce::Label string2LevelLabel{"string2LevelLabel", "Level"};
+    juce::Slider string2Pan;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string2PanAttachment;
+    juce::Label string2PanLabel{"string2PanLabel", "Pan"};
     juce::Slider string2FreqCoarse;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> string2FreqCoarseAttachment;
     juce::Label string2FreqCoarseLabel{"string2FreqCoarseLabel", "Coarse"};

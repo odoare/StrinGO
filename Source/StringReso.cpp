@@ -375,6 +375,8 @@ void StringReso::setLevel(int string, float lvl)
 
 void StringReso::setPan(int string, float lvl)
 {
+    params.pan[string] = lvl;
+    panDistToBoundary[string] = juce::jmin<float>(lvl+1.f,1.f-lvl);
 }
 
 void StringReso::setFreqCoarseFactor(int string, float fac, bool force)
@@ -555,6 +557,7 @@ void StringReso::setLfoLevel(int num, int string, bool onoff)
 }
 void StringReso::setLfoPan(int num, int string, bool onoff)
 {
+    params.lfoParams[num].pan[string] = onoff;
 }
 void StringReso::setLfoInPos(int num, int string, bool onoff)
 {
@@ -747,15 +750,17 @@ void StringReso::updateLfos()
     for (int string=0; string<NUMSTRINGS; string++)
     {
         lfoFacLevel[string] = 1.f;
+        lfoFacPan[string] = 1.f;
         lfoFacInPos[string] = 1.f;
         lfoFacOutPos[string] = 1.f;
         lfoFacFineFreq[string] = 1.f;
         lfoFacCoarseFreq[string] = 1.f;
 
-        bool needsStringUpdate = false;                
+        bool needsStringUpdate = false;           
         for (int l=0; l<NUMLFO; l++)
         {
             lfoFacLevel[string] *= params.lfoParams[l].level[string] ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
+            lfoFacPan[string] *= params.lfoParams[l].pan[string] ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
             needsStringUpdate = needsStringUpdate
                 || params.lfoParams[l].fine[string]
                 || params.lfoParams[l].coarse[string]

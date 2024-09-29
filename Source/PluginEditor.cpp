@@ -61,6 +61,8 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
 
     addKnob(string1Level, string1LevelLabel, STRINGCOLOR,juce::Colours::black);
     string1LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level1",string1Level);
+    addKnob(string1Pan, string1PanLabel, STRINGCOLOR,juce::Colours::black);
+    string1PanAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Pan1",string1Pan);
     addKnob(string1FreqCoarse, string1FreqCoarseLabel, STRINGCOLOR,juce::Colours::black);
     string1FreqCoarseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Coarse1",string1FreqCoarse);
     addKnob(string1FreqFine, string1FreqFineLabel, STRINGCOLOR,juce::Colours::black);
@@ -68,6 +70,8 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
        
     addKnob(string2Level, string2LevelLabel, STRINGCOLOR,juce::Colours::black);
     string2LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Level2",string2Level);
+    addKnob(string2Pan, string2PanLabel, STRINGCOLOR,juce::Colours::black);
+    string2PanAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Pan2",string2Pan);
     addKnob(string2FreqCoarse, string2FreqCoarseLabel, STRINGCOLOR,juce::Colours::black);
     string2FreqCoarseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,"Coarse2",string2FreqCoarse);
     addKnob(string2FreqFine, string2FreqFineLabel, STRINGCOLOR,juce::Colours::black);
@@ -752,6 +756,7 @@ void MySynthAudioProcessorEditor::resized()
     ex = uxb+0.5*ux;
     ey = uyb+3.5*uy;
     string1Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string1Pan.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string1FreqCoarse.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string1FreqFine.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     lfo1Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO1POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
@@ -767,6 +772,7 @@ void MySynthAudioProcessorEditor::resized()
     ex = uxb+4.5*ux;
     ey = uyb+3.5*uy;
     string2Level.setBounds(juce::Rectangle<int>(ex,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
+    string2Pan.setBounds(juce::Rectangle<int>(ex+ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string2FreqCoarse.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string2FreqFine.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     lfo1Level2Button.setBounds(juce::Rectangle<int>(ex+BLFO1POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
