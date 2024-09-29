@@ -95,18 +95,18 @@ public:
     float noiseHPFilterFreq  { 1000.f };
     float noiseLevel { 1.0f };
     float noiseLPFilterFreqVelocityInfluence {0.f};
-    float noiseLPFilterFreqVelocityFactor {1.f};
-    float noiseHPFilterFreqVelocityInfluence {0.f};
-    float noiseHPFilterFreqVelocityFactor {1.f};  
+    //float noiseLPFilterFreqVelocityFactor {1.f};
+    //float noiseHPFilterFreqVelocityInfluence {0.f};
+    //float noiseHPFilterFreqVelocityFactor {1.f};  
     float noiseLevelVelocityInfluence {0.f};
-    float noiseLevelVelocityFactor {1.f};
+    //float noiseLevelVelocityFactor {1.f};
 
     float crackLPFilterFreq  { 1000.f };
     float crackLevel { 1.0 };
     float crackLPFilterFreqVelocityInfluence {0.f};
-    float crackLPFilterFreqVelocityFactor {1.f};
+    //float crackLPFilterFreqVelocityFactor {1.f};
     float crackLevelVelocityInfluence {0.f};
-    float crackLevelVelocityFactor {1.f};
+    //float crackLevelVelocityFactor {1.f};
     float crackDensity {10};
     
     bool isOn;
@@ -199,17 +199,18 @@ public:
   //void setNoiseHPFilterFreqVelocityInfluence(float factor);
   void setNoiseLevel(float lvl);
   void setNoiseLevelVelocityInfluence(float val);
-  void setNoiseLPFilterCoeffs();
-  void setNoiseHPFilterCoeffs();
+  void updateNoiseLPFilterCoeffs();
+  void updateNoiseHPFilterCoeffs();
 
   // Crack generator
   void setADSRC(juce::ADSR::Parameters adsrParams);
   void setCrackDensity(int d);
+  void updateCrackDensity();
   void setCrackLPFilterFreq(float freq);
   void setCrackLPFilterFreqVelocityInfluence(float val);
   void setCrackLevel(float lvl);
   void setCrackLevelVelocityInfluence(float val);
-  void setCrackLPFilterCoeffs();
+  void updateCrackLPFilterCoeffs();
 
 private:
 
@@ -274,4 +275,9 @@ private:
   float lfoFacCrackevel{1.f};
   float lfoFacCrackLPF{1.f};
   float lfoFacCrackDensity{1.f};
+  float velFacNoiseLevel{1.f};
+  float velFacNoiseLPF{1.f};
+  float velFacCrackLevel{1.f};
+  float velFacCrackLPF{1.f};
+  
 };
