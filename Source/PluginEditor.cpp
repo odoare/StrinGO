@@ -192,6 +192,14 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo1Level1Button.setClickingTogglesState(true);
     lfo1Level1Button.setColour(0,LFO1COLOR);
 
+    addAndMakeVisible(lfo1Pan1Button);
+    lfo1Pan1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Pan1",lfo1Pan1Button);
+    addAndMakeVisible(lfo1Pan1Label);
+    lfo1Pan1Label.attachToComponent(&lfo1Pan1Button,false);
+    lfo1Pan1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1Pan1Button.setClickingTogglesState(true);
+    lfo1Pan1Button.setColour(0,LFO1COLOR);
+
     addAndMakeVisible(lfo1Coarse1Button);
     lfo1Coarse1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Coarse1",lfo1Coarse1Button);
     addAndMakeVisible(lfo1Coarse1Label);
@@ -215,6 +223,14 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo1Level2Button.setLookAndFeel(&buttonLookAndFeel);
     lfo1Level2Button.setClickingTogglesState(true);
     lfo1Level2Button.setColour(0,LFO1COLOR);
+
+    addAndMakeVisible(lfo1Pan2Button);
+    lfo1Pan2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Pan2",lfo1Pan2Button);
+    addAndMakeVisible(lfo1Pan2Label);
+    lfo1Pan2Label.attachToComponent(&lfo1Pan2Button,false);
+    lfo1Pan2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo1Pan2Button.setClickingTogglesState(true);
+    lfo1Pan2Button.setColour(0,LFO1COLOR);
 
     addAndMakeVisible(lfo1Coarse2Button);
     lfo1Coarse2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO1 Coarse2",lfo1Coarse2Button);
@@ -345,7 +361,15 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo2Level1Button.setLookAndFeel(&buttonLookAndFeel);
     lfo2Level1Button.setClickingTogglesState(true);
     lfo2Level1Button.setColour(0,LFO2COLOR);
-    
+
+    addAndMakeVisible(lfo2Pan1Button);
+    lfo2Pan1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Pan1",lfo2Pan1Button);
+    addAndMakeVisible(lfo2Pan1Label);
+    lfo2Pan1Label.attachToComponent(&lfo2Pan1Button,false);
+    lfo2Pan1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2Pan1Button.setClickingTogglesState(true);
+    lfo2Pan1Button.setColour(0,LFO2COLOR);
+
     addAndMakeVisible(lfo2Coarse1Button);
     lfo2Coarse1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Coarse1",lfo2Coarse1Button);
     addAndMakeVisible(lfo2Coarse1Label);
@@ -369,6 +393,14 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo2Level2Button.setLookAndFeel(&buttonLookAndFeel);
     lfo2Level2Button.setClickingTogglesState(true);
     lfo2Level2Button.setColour(0,LFO2COLOR);
+
+    addAndMakeVisible(lfo2Pan2Button);
+    lfo2Pan2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Pan2",lfo2Pan2Button);
+    addAndMakeVisible(lfo2Pan2Label);
+    lfo2Pan2Label.attachToComponent(&lfo2Pan2Button,false);
+    lfo2Pan2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo2Pan2Button.setClickingTogglesState(true);
+    lfo2Pan2Button.setColour(0,LFO2COLOR);
 
     addAndMakeVisible(lfo2Coarse2Button);
     lfo2Coarse2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO2 Coarse2",lfo2Coarse2Button);
@@ -498,7 +530,15 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo3Level1Button.setLookAndFeel(&buttonLookAndFeel);
     lfo3Level1Button.setClickingTogglesState(true);
     lfo3Level1Button.setColour(0,LFO3COLOR);
-    
+
+    addAndMakeVisible(lfo3Pan1Button);
+    lfo3Pan1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Pan1",lfo3Pan1Button);
+    addAndMakeVisible(lfo3Pan1Label);
+    lfo3Pan1Label.attachToComponent(&lfo3Pan1Button,false);
+    lfo3Pan1Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3Pan1Button.setClickingTogglesState(true);
+    lfo3Pan1Button.setColour(0,LFO3COLOR);
+
     addAndMakeVisible(lfo3Coarse1Button);
     lfo3Coarse1ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Coarse1",lfo3Coarse1Button);
     addAndMakeVisible(lfo3Coarse1Label);
@@ -522,6 +562,14 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor (MySynthAudioProcessor&
     lfo3Level2Button.setLookAndFeel(&buttonLookAndFeel);
     lfo3Level2Button.setClickingTogglesState(true);
     lfo3Level2Button.setColour(0,LFO3COLOR);
+
+    addAndMakeVisible(lfo3Pan2Button);
+    lfo3Pan2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Pan2",lfo3Pan2Button);
+    addAndMakeVisible(lfo3Pan2Label);
+    lfo3Pan2Label.attachToComponent(&lfo3Pan2Button,false);
+    lfo3Pan2Button.setLookAndFeel(&buttonLookAndFeel);
+    lfo3Pan2Button.setClickingTogglesState(true);
+    lfo3Pan2Button.setColour(0,LFO3COLOR);
 
     addAndMakeVisible(lfo3Coarse2Button);
     lfo3Coarse2ButtonAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.apvts,"LFO3 Coarse2",lfo3Coarse2Button);
@@ -760,12 +808,15 @@ void MySynthAudioProcessorEditor::resized()
     string1FreqCoarse.setBounds(juce::Rectangle<int>(ex+2*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     string1FreqFine.setBounds(juce::Rectangle<int>(ex+3*ux,ey,ux,uy).reduced(DELTAX*ux,DELTAY*uy));
     lfo1Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO1POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO2POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO3POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Pan1Button.setBounds(juce::Rectangle<int>(ex+(1+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Pan1Button.setBounds(juce::Rectangle<int>(ex+(1+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Pan1Button.setBounds(juce::Rectangle<int>(ex+(1+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo1Coarse1Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo1Fine1Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo2Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO2POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo2Coarse1Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo2Fine1Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
-    lfo3Level1Button.setBounds(juce::Rectangle<int>(ex+BLFO3POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo3Coarse1Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo3Fine1Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
@@ -784,6 +835,9 @@ void MySynthAudioProcessorEditor::resized()
     lfo3Level2Button.setBounds(juce::Rectangle<int>(ex+BLFO3POS*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo3Coarse2Button.setBounds(juce::Rectangle<int>(ex+(2+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
     lfo3Fine2Button.setBounds(juce::Rectangle<int>(ex+(3+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo1Pan2Button.setBounds(juce::Rectangle<int>(ex+(1+BLFO1POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo2Pan2Button.setBounds(juce::Rectangle<int>(ex+(1+BLFO2POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
+    lfo3Pan2Button.setBounds(juce::Rectangle<int>(ex+(1+BLFO3POS)*ux,ey+.87f*uy,0.2f*ux,0.1f*uy));
 
     ex = uxb+0.5*ux;
     ey = uyb+5.5*uy;

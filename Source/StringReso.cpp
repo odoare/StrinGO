@@ -157,72 +157,150 @@ void StringReso::prepare(const juce::dsp::ProcessSpec spec, float minFreq)
 
 void StringReso::process(juce::AudioBuffer<float>& inBuffer, juce::AudioBuffer<float>& outBuffer, int startSample, int numSamples)
 {
+    // std::cout << "Start StringReso::process \n" ;
     // Input and output buffers should be mono
     outBuffer.clear();
 
     float fbFreq[NUMSTRINGS], fbGain[NUMSTRINGS], level[NUMSTRINGS], input[NUMSTRINGS];
 
-    for (int channel = 0; channel < inBuffer.getNumChannels(); ++channel)
+    // std::cout << "Input channel count : " << inBuffer.getNumChannels() << "\n";
+    // std::cout << "Output channel count : " << outBuffer.getNumChannels() << "\n";
+    
+    // std::cout << "Buffer pointers \n" ;
+    auto* inChannelData = inBuffer.getReadPointer (0);
+    auto* outChannelDataL = outBuffer.getWritePointer (0);
+    auto* outChannelDataR = outBuffer.getWritePointer (1);
+    float adsr1val, adsrnval, adsrcval;
+
+    // std::cout << "Start loop \n" ;
+    for (int sample=startSample; sample<inBuffer.getNumSamples()-startSample; ++sample)
     {
-        auto* inChannelData = inBuffer.getReadPointer (channel);
-        auto* outChannelData = outBuffer.getWritePointer (channel);
-        float adsr1val, adsrnval, adsrcval;
+        adsr1val = adsr1.getNextSample();
+        adsrnval = adsrN.getNextSample();
+        adsrcval = adsrC.getNextSample();
+        
+        for (int l=0;l<NUMLFO;l++) lfoVal[l] = lfo[l].processSample(0.f);
+        if  (sample%LFOSAMPLESUPDATE==0) updateLfos();
 
-        for (int sample=startSample; sample<inBuffer.getNumSamples()-startSample; ++sample)
+        for (int string=0; string<NUMSTRINGS; string++)
         {
-            if (channel==0)
-            {
-                adsr1val = adsr1.getNextSample();
-                adsrnval = adsrN.getNextSample();
-                adsrcval = adsrC.getNextSample();
-                
-                for (int l=0;l<NUMLFO;l++) lfoVal[l] = lfo[l].processSample(0.f);
-                if  (sample%LFOSAMPLESUPDATE==0) updateLfos();
-            }
 
-            for (int string=0; string<NUMSTRINGS; string++)
-            {
+            // std::cout << "Get input \n" ;
+            input[string] = inChannelData[sample]
+                            + sampler[string].processNextSample()*lfoFacSampleLevel
+                            + adsrnval * velFacNoiseLevel * params.noiseLevel * lfoFacNoiseLevel * noiseHPFilter.processSample(noiseLPFilter.processSample(randomNoise.nextFloat()-0.5f))
+                            + adsrcval * velFacCrackLevel * params.crackLevel * lfoFacCrackevel * crackLPFilter.processSample(cracksGenerator.nextSample());
+            float coupling = smoothCoupling[string].getNextValue();
+            float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
+            float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
+            fbFreq[string] = juce::jmap<float>(adsr1val,fOff, fOn);
+            fbGain[string] = juce::jmap<float>(adsr1val,params.feedbackGainOff[string], params.feedbackGainOn[string]);
+            level[string] = params.level[string]*juce::jmap<float>(adsr1val,params.levelOff[string], params.levelOn[string]);
 
-                input[string] = inChannelData[sample]
-                                + sampler[string].processNextSample()*lfoFacSampleLevel
-                                + adsrnval * velFacNoiseLevel * params.noiseLevel * lfoFacNoiseLevel * noiseHPFilter.processSample(noiseLPFilter.processSample(randomNoise.nextFloat()-0.5f))
-                                + adsrcval * velFacCrackLevel * params.crackLevel * lfoFacCrackevel * crackLPFilter.processSample(cracksGenerator.nextSample());
-                float coupling = smoothCoupling[string].getNextValue();
-                float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
-                float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
-                fbFreq[string] = juce::jmap<float>(adsr1val,fOff, fOn);
-                fbGain[string] = juce::jmap<float>(adsr1val,params.feedbackGainOff[string], params.feedbackGainOn[string]);
-                level[string] = params.level[string]*juce::jmap<float>(adsr1val,params.levelOff[string], params.levelOn[string]);
+            int dec = 4*string;
 
-                int dec = 4*string;
+            // std::cout << "Delay line part 1 \n" ;
+            fbFilter[string].coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,fbFreq[string]);
+            float loop = fbFilter[string].processSample(fbGain[string]*delayLine[3+dec].popSample(0,smoothDelaySamples[3+dec].getNextValue()));
+            float in0 = loop + 0.5*input[string] + coupling*previousOutput[string];
+            float in1 = - delayLine[0+dec].popSample(0,smoothDelaySamples[0+dec].getNextValue()) + 0.5*input[string] + coupling*previousOutput[string];
+            float in2 = delayLine[1+dec].popSample(0,smoothDelaySamples[1+dec].getNextValue());
+            float in3 = - delayLine[2+dec].popSample(0,smoothDelaySamples[2+dec].getNextValue());
 
-                fbFilter[string].coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,fbFreq[string]);
-                float loop = fbFilter[string].processSample(fbGain[string]*delayLine[3+dec].popSample(channel,smoothDelaySamples[3+dec].getNextValue()));
-                float in0 = loop + 0.5*input[string] + coupling*previousOutput[string];
-                float in1 = - delayLine[0+dec].popSample(channel,smoothDelaySamples[0+dec].getNextValue()) + 0.5*input[string] + coupling*previousOutput[string];
-                float in2 = delayLine[1+dec].popSample(channel,smoothDelaySamples[1+dec].getNextValue());
-                float in3 = - delayLine[2+dec].popSample(channel,smoothDelaySamples[2+dec].getNextValue());
+            // std::cout << "Delay line part 2 \n" ;
+            delayLine[0+dec].pushSample(0,in0);
+            delayLine[1+dec].pushSample(0,in1);
+            delayLine[2+dec].pushSample(0,in2);
+            delayLine[3+dec].pushSample(0,in3);
 
-                delayLine[0+dec].pushSample(channel,in0);
-                delayLine[1+dec].pushSample(channel,in1);
-                delayLine[2+dec].pushSample(channel,in2);
-                delayLine[3+dec].pushSample(channel,in3);
+            previousOutput[suivant(NUMSTRINGS,string+1)] = in1+in2;
 
-                previousOutput[suivant(NUMSTRINGS,string+1)] = in1+in2;
+            // if (sample%LFOSAMPLESUPDATE==0 )
+            // {
+            //     std::cout << "levellfo 0 : " << params.lfoParams[0].level[string] << "\n";
+            //     std::cout << "vallfos : " << vallfos << "\n";
+            // }
 
-                // if (sample%LFOSAMPLESUPDATE==0 )
-                // {
-                //     std::cout << "levellfo 0 : " << params.lfoParams[0].level[string] << "\n";
-                //     std::cout << "vallfos : " << vallfos << "\n";
-                // }
+            // std::cout << "Fill output buffer L \n" ;
+            float panval = juce::jmap<float>(params.pan[string]*lfoFacPan[string],1.f,0.f);
+            outChannelDataL[sample] += (in1+in2)
+                                        *velocityLevelFactor
+                                        *level[string]
+                                        *lfoFacLevel[string]
+                                        *panval;
+            // std::cout << "Fill output buffer R \n" ;
+            panval = juce::jmap<float>(params.pan[string]*lfoFacPan[string],0.f,1.f);
+            outChannelDataR[sample] += velocityLevelFactor
+                                        *level[string]
+                                        *(in1+in2)
+                                        *lfoFacLevel[string]
+                                        *panval;
+            // std::cout << "Done process \n" ;
 
-                outChannelData[sample] += velocityLevelFactor
-                                            *level[string]
-                                            *(in1+in2)
-                                            *lfoFacLevel[string];
-            }
         }
+
     }
+    // for (int channel = 0; channel < inBuffer.getNumChannels(); ++channel)
+    // {
+    //     auto* inChannelData = inBuffer.getReadPointer (channel);
+    //     auto* outChannelData = outBuffer.getWritePointer (channel);
+    //     float adsr1val, adsrnval, adsrcval;
+
+    //     for (int sample=startSample; sample<inBuffer.getNumSamples()-startSample; ++sample)
+    //     {
+    //         if (channel==0)
+    //         {
+    //             adsr1val = adsr1.getNextSample();
+    //             adsrnval = adsrN.getNextSample();
+    //             adsrcval = adsrC.getNextSample();
+                
+    //             for (int l=0;l<NUMLFO;l++) lfoVal[l] = lfo[l].processSample(0.f);
+    //             if  (sample%LFOSAMPLESUPDATE==0) updateLfos();
+    //         }
+
+    //         for (int string=0; string<NUMSTRINGS; string++)
+    //         {
+
+    //             input[string] = inChannelData[sample]
+    //                             + sampler[string].processNextSample()*lfoFacSampleLevel
+    //                             + adsrnval * velFacNoiseLevel * params.noiseLevel * lfoFacNoiseLevel * noiseHPFilter.processSample(noiseLPFilter.processSample(randomNoise.nextFloat()-0.5f))
+    //                             + adsrcval * velFacCrackLevel * params.crackLevel * lfoFacCrackevel * crackLPFilter.processSample(cracksGenerator.nextSample());
+    //             float coupling = smoothCoupling[string].getNextValue();
+    //             float fOff = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOff[string]/params.stringPeriodInSamples);
+    //             float fOn = juce::jmin<float>(processSpec.sampleRate/2,processSpec.sampleRate*params.feedbackFreqOn[string]/params.stringPeriodInSamples);
+    //             fbFreq[string] = juce::jmap<float>(adsr1val,fOff, fOn);
+    //             fbGain[string] = juce::jmap<float>(adsr1val,params.feedbackGainOff[string], params.feedbackGainOn[string]);
+    //             level[string] = params.level[string]*juce::jmap<float>(adsr1val,params.levelOff[string], params.levelOn[string]);
+
+    //             int dec = 4*string;
+
+    //             fbFilter[string].coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(processSpec.sampleRate,fbFreq[string]);
+    //             float loop = fbFilter[string].processSample(fbGain[string]*delayLine[3+dec].popSample(channel,smoothDelaySamples[3+dec].getNextValue()));
+    //             float in0 = loop + 0.5*input[string] + coupling*previousOutput[string];
+    //             float in1 = - delayLine[0+dec].popSample(channel,smoothDelaySamples[0+dec].getNextValue()) + 0.5*input[string] + coupling*previousOutput[string];
+    //             float in2 = delayLine[1+dec].popSample(channel,smoothDelaySamples[1+dec].getNextValue());
+    //             float in3 = - delayLine[2+dec].popSample(channel,smoothDelaySamples[2+dec].getNextValue());
+
+    //             delayLine[0+dec].pushSample(channel,in0);
+    //             delayLine[1+dec].pushSample(channel,in1);
+    //             delayLine[2+dec].pushSample(channel,in2);
+    //             delayLine[3+dec].pushSample(channel,in3);
+
+    //             previousOutput[suivant(NUMSTRINGS,string+1)] = in1+in2;
+
+    //             // if (sample%LFOSAMPLESUPDATE==0 )
+    //             // {
+    //             //     std::cout << "levellfo 0 : " << params.lfoParams[0].level[string] << "\n";
+    //             //     std::cout << "vallfos : " << vallfos << "\n";
+    //             // }
+
+    //             outChannelData[sample] += velocityLevelFactor
+    //                                         *level[string]
+    //                                         *(in1+in2)
+    //                                         *lfoFacLevel[string];
+    //         }
+    //     }
+    // }
 }
 
 void StringReso::setADSR1(juce::ADSR::Parameters adsrParams)
@@ -375,8 +453,10 @@ void StringReso::setLevel(int string, float lvl)
 
 void StringReso::setPan(int string, float lvl)
 {
-    params.pan[string] = lvl;
-    panDistToBoundary[string] = juce::jmin<float>(lvl+1.f,1.f-lvl);
+    // We convert the range -1..1 to 0..1
+    params.pan[string] = 0.5f*lvl+0.5f;
+    panDistToBoundary[string] = juce::jmin<float>(lvl,1.f-lvl);
+    //std::cout << "Pan : " << lvl << "\n";
 }
 
 void StringReso::setFreqCoarseFactor(int string, float fac, bool force)

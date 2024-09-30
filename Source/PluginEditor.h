@@ -251,6 +251,10 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1Level1ButtonAttachment;
     juce::Label lfo1Level1Label{"lfo1Level1Label", ""};
 
+    juce::ToggleButton lfo1Pan1Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1Pan1ButtonAttachment;
+    juce::Label lfo1Pan1Label{"lfo1Pan1Label", ""};
+
     juce::ToggleButton lfo1Coarse1Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1Coarse1ButtonAttachment;
     juce::Label lfo1Coarse1Label{"lfo1Coarse1Label", ""};
@@ -262,6 +266,10 @@ private:
     juce::ToggleButton lfo1Level2Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1Level2ButtonAttachment;
     juce::Label lfo1Level2Label{"lfo1Level2Label", ""};
+
+    juce::ToggleButton lfo1Pan2Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1Pan2ButtonAttachment;
+    juce::Label lfo1Pan2Label{"lfo1Pan2Label", ""};
 
     juce::ToggleButton lfo1Coarse2Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo1Coarse2ButtonAttachment;
@@ -331,10 +339,13 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2SamplerLPFreqButtonAttachment;
     juce::Label lfo2SamplerLPFreqLabel{"lfo2SamplerLPFreqLabel", ""};
 
-
     juce::ToggleButton lfo2Level1Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2Level1ButtonAttachment;
     juce::Label lfo2Level1Label{"lfo2Level1Label", ""};
+
+    juce::ToggleButton lfo2Pan1Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2Pan1ButtonAttachment;
+    juce::Label lfo2Pan1Label{"lfo2Pan1Label", ""};
 
     juce::ToggleButton lfo2Coarse1Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2Coarse1ButtonAttachment;
@@ -347,6 +358,10 @@ private:
     juce::ToggleButton lfo2Level2Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2Level2ButtonAttachment;
     juce::Label lfo2Level2Label{"lfo2Level2Label", ""};
+
+    juce::ToggleButton lfo2Pan2Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2Pan2ButtonAttachment;
+    juce::Label lfo2Pan2Label{"lfo2Pan2Label", ""};
 
     juce::ToggleButton lfo2Coarse2Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo2Coarse2ButtonAttachment;
@@ -417,10 +432,13 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3SamplerLPFreqButtonAttachment;
     juce::Label lfo3SamplerLPFreqLabel{"lfo3SamplerLPFreqLabel", ""};
 
-
     juce::ToggleButton lfo3Level1Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Level1ButtonAttachment;
     juce::Label lfo3Level1Label{"lfo3Level1Label", ""};
+
+    juce::ToggleButton lfo3Pan1Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Pan1ButtonAttachment;
+    juce::Label lfo3Pan1Label{"lfo2Pan1Label", ""};
 
     juce::ToggleButton lfo3Coarse1Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Coarse1ButtonAttachment;
@@ -433,6 +451,10 @@ private:
     juce::ToggleButton lfo3Level2Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Level2ButtonAttachment;
     juce::Label lfo3Level2Label{"lfo3Level2Label", ""};
+
+    juce::ToggleButton lfo3Pan2Button;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Pan2ButtonAttachment;
+    juce::Label lfo3Pan2Label{"lfo2Pan2Label", ""};
 
     juce::ToggleButton lfo3Coarse2Button;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> lfo3Coarse2ButtonAttachment;

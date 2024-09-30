@@ -102,11 +102,11 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startS
   //   return;
   
   inBuffer.setSize(1, numSamples, false, false, true);
-  inBuffer.clear();
+  //inBuffer.clear();
   //inBuffer.copyFrom(0,0,buffer,0,startSample,numSamples);
 
-  synthBuffer.setSize(1, numSamples, false, false, true);
-  synthBuffer.clear();
+  synthBuffer.setSize(2, numSamples, false, false, true);
+  //synthBuffer.clear();
 
   for (int channel=0; channel<inBuffer.getNumChannels(); ++channel)
   {
@@ -120,8 +120,8 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &buffer, int startS
 
   for (int channel=0; channel<buffer.getNumChannels(); ++channel)
   {
-    buffer.addFrom(channel,startSample, synthBuffer, 0, 0, numSamples);
-
+    buffer.addFrom(channel,startSample, synthBuffer, channel, 0, numSamples);
+    //std::cout << "Channel " << channel << "\n";
     // if (!adsr1.isActive())
     //   clearCurrentNote();
 

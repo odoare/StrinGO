@@ -134,7 +134,7 @@ bool MySynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 //     // In this template code we only support mono or stereo.
 //     // Some plugin hosts, such as certain GarageBand versions, will only
 //     // load plugins that support stereo bus layouts.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
+    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo()
      || layouts.getMainInputChannelSet() != juce::AudioChannelSet::mono())
         return false;
 
@@ -156,8 +156,8 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    // for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    //     buffer.clear (i, 0, buffer.getNumSamples());
 
     // Voice number updating
     auto nv = apvts.getRawParameterValue("Voices")->load();
@@ -217,7 +217,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
             voice->stringReso.sampler[string].setRelease(apvts.getRawParameterValue("RS")->load());
 
             voice->stringReso.setLevel(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue(makeStringResoParam("Level",string+1))->load()));
-            voice->stringReso.setPan(string,juce::Decibels::decibelsToGain(apvts.getRawParameterValue(makeStringResoParam("Pan",string+1))->load()));
+            voice->stringReso.setPan(string,apvts.getRawParameterValue(makeStringResoParam("Pan",string+1))->load());
             voice->stringReso.setFreqCoarseFactor(string,apvts.getRawParameterValue(makeStringResoParam("Coarse",string+1))->load());
             voice->stringReso.setFreqFineFactor(string,apvts.getRawParameterValue(makeStringResoParam("Fine",string+1))->load());
 
