@@ -59,8 +59,10 @@ StringReso::StringReso()
 
         for (int s=0;s<NUMSTRINGS;s++)
         {
-            params.freqCoarseFactor[s] = 0.f;
-            params.freqFineFactor[s] = -0.05f;
+            setFreqCoarseFactor(s,1,true);
+            setFreqCoarseFactor(s,0,true);
+            setFreqFineFactor(s,0.1f,true);
+            setFreqFineFactor(s,0.f,true);
             params.inPos[s] = 0.1f;
             params.outPos[s] = 0.9f;
             params.feedbackGainOn[s] = 0.99f;
@@ -774,17 +776,17 @@ void StringReso::updateLfos()
     for (int l=0;l<NUMLFO;l++)
     {
         float lfomult = 1.f+lfoVal[l]*params.lfoParams[l].amp ;
-        float lfomultp5 = .5f+.5f*lfoVal[l]*params.lfoParams[l].amp ;
+        float lfomultp5 = 1.f-.5f*params.lfoParams[l].amp+.5f*lfoVal[l]*params.lfoParams[l].amp ;
         
         lfoFacSampleLevel *= params.lfoParams[l].samplerLevel ? lfomultp5 : 1.f ;
-        lfoFacSampleLPF *= params.lfoParams[l].samplerFreq ? lfomult : 1.f ;
+        lfoFacSampleLPF *= params.lfoParams[l].samplerFreq ? lfomultp5 : 1.f ;
         lfoFacNoiseLevel *= params.lfoParams[l].noiseLevel ? lfomultp5 : 1.f ;
         lfoFacCrackevel *= params.lfoParams[l].cracksLevel ? lfomultp5 : 1.f ;
         lfoFacNoiseLPF *= params.lfoParams[l].noiseLPFreq ? lfomultp5 : 1.f ;
         lfoFacNoiseHPF *= params.lfoParams[l].noiseHPFreq ? lfomultp5 : 1.f ;
         lfoFacCrackLPF *= params.lfoParams[l].cracksLPFreq ? lfomultp5 : 1.f ;
         lfoFacCrackDensity *= params.lfoParams[l].cracksDensity ? lfomultp5 : 1.f ;
-        needsSamplerFreqUpdate = needsSamplerFreqUpdate || params.lfoParams[l].samplerFreq;
+        // needsSamplerFreqUpdate = needsSamplerFreqUpdate || params.lfoParams[l].samplerFreq;
     }
     updateNoiseLPFilterCoeffs();
     updateNoiseHPFilterCoeffs();
@@ -803,7 +805,7 @@ void StringReso::updateLfos()
         bool needstringupdate = false;           
         for (int l=0; l<NUMLFO; l++)
         {
-            lfoFacLevel[string] *= params.lfoParams[l].level[string] ? 1.f-(.5f+.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
+            lfoFacLevel[string] *= params.lfoParams[l].level[string] ? 1.f-(.5f-.5f*lfoVal[l])*params.lfoParams[l].amp : 1.f ;
             lfoFacPan[string] *= params.lfoParams[l].pan[string] ? 1.f+lfoVal[l]*params.lfoParams[l].amp : 1.f ;
             needstringupdate = needstringupdate
                 || params.lfoParams[l].fine[string]
@@ -826,7 +828,8 @@ void StringReso::updateLfos()
         }
             // std::cout << "Update Delay samples... \n";
 
-        if (needsSamplerFreqUpdate) sampler[string].setFilterFreqLfoFactor(lfoFacSampleLPF);
+        // if (needsSamplerFreqUpdate) 
+        sampler[string].setFilterFreqLfoFactor(lfoFacSampleLPF);
 
     }
 }

@@ -100,18 +100,12 @@ public:
     float noiseHPFilterFreq  { 1000.f };
     float noiseLevel { 1.0f };
     float noiseLPFilterFreqVelocityInfluence {0.f};
-    //float noiseLPFilterFreqVelocityFactor {1.f};
-    //float noiseHPFilterFreqVelocityInfluence {0.f};
-    //float noiseHPFilterFreqVelocityFactor {1.f};  
     float noiseLevelVelocityInfluence {0.f};
-    //float noiseLevelVelocityFactor {1.f};
 
     float crackLPFilterFreq  { 1000.f };
     float crackLevel { 1.0 };
     float crackLPFilterFreqVelocityInfluence {0.f};
-    //float crackLPFilterFreqVelocityFactor {1.f};
     float crackLevelVelocityInfluence {0.f};
-    //float crackLevelVelocityFactor {1.f};
     float crackDensity {10};
     
     bool isOn;
