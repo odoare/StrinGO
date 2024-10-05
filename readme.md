@@ -7,7 +7,9 @@ _Synth based on two coupled waveguide delay lines._
 Binary downloads for Linux and Windows can be found in the release section:
 https://github.com/odoare/StrinGO/releases
 
-VST presets are found in the Presets/VST directory. This directory will be regularly updated with new presets.
+Since v0.0.2, binaries are distributed as VST3i.
+
+Presets are found in the Presets/VST3 directory. This directory will be regularly updated with new presets.
 
 ## Info
 
@@ -43,11 +45,17 @@ StrinGO relies on the C++ framework JUCE. Refer to the JUCE website for developm
 
 If you want to compile the plugin by yourself it basically consists of loading the .jucer project with Projucer, saving it and compiling with the dedicated tool depending on your platform.
 
+## History
+
+- v0.0.1 : Initial release
+
+- v0.0.2 : 3 LFO can now modulate some parameters
+
 ## Future work
 
 Here are the main improvements that are planned. This will probably end in a new plugin instead of just a version bump.
 
-- The main planned improvement will consist of a modulation matrix for LFOs, sequences, etc. This will greatly improve the sonic possibilities of the synth.
+- Synced LFOs, sequences, etc. This will greatly improve the sonic possibilities of the synth.
 
 - New waveforms for the sampler
 
