@@ -17,7 +17,7 @@ MySynthAudioProcessor::MySynthAudioProcessor()
                       #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  juce::AudioChannelSet::mono(), true)
                       #endif
-                       .withOutput ("Output", juce::AudioChannelSet::mono(), true)
+                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        )
 #endif
@@ -240,27 +240,14 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
 
             for (int string=0; string<NUMSTRINGS; string++)
             {
-                // std::cout << makeLfoParam("Fine",l+1,string+1) << "\n";
                 voice->stringReso.setLfoFine(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("Fine",l+1,string+1))->load());
                 voice->stringReso.setLfoCoarse(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("Coarse",l+1,string+1))->load());
-                // std::cout << makeLfoParam("Level",l+1,string+1) << "\n";
                 voice->stringReso.setLfoLevel(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("Level",l+1,string+1))->load());
                 voice->stringReso.setLfoPan(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("Pan",l+1,string+1))->load());
-                // std::cout << makeLfoParam("InPos",l+1,string+1) << "\n";
                 voice->stringReso.setLfoInPos(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("InPos",l+1,string+1))->load());
-                // std::cout << makeLfoParam("OutPos",l+1,string+1) << "\n";
                 voice->stringReso.setLfoOutPos(l,string,apvts.getRawParameterValue(makeStringResoLfoParam("OutPos",l+1,string+1))->load());
             }
         }
-        
-        // voice->stringReso.setFreqCoarseFactor(0,apvts.getRawParameterValue("Freq Coarse 1")->load());
-        // voice->stringReso.setFreqFineFactor(0,apvts.getRawParameterValue("Freq Fine 1")->load());
-        // voice->stringReso.setFreqCoarseFactor(1,apvts.getRawParameterValue("Freq Coarse 2")->load());
-        // voice->stringReso.setFreqFineFactor(1,apvts.getRawParameterValue("Freq Fine 2")->load());
-        // voice->stringReso.setPortamentoTime(apvts.getRawParameterValue("Porta Time")->load());
-
-        // voice->stringReso.setLevel(0,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level 1")->load()));
-        // voice->stringReso.setLevel(1,juce::Decibels::decibelsToGain(apvts.getRawParameterValue("Level 2")->load()));
         
         float c = apvts.getRawParameterValue("Coupling")->load();
         if (c>0.f)
@@ -320,7 +307,7 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
-        auto* channelDataIn = sharedInputBuffer.getWritePointer (channel);
+        auto* channelDataIn = sharedInputBuffer.getReadPointer (0);
         for (int sample=0; sample<buffer.getNumSamples(); ++sample)
         {
             channelData[sample] = smoothDirectOut.getNextValue()*channelDataIn[sample] + smoothOutputLevel.getNextValue() * tanh(smoothOutputGain.getNextValue() * channelData[sample]);
@@ -443,8 +430,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
     layout.add(std::make_unique<juce::AudioParameterFloat>("Output Gain","Output Gain",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),-3.f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("Output Level","Output Level",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),0.f));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Input Gain","Input Gain",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),0.f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Direct Out","Direct Out",juce::NormalisableRange<float>(-60.f,12.f,1e-2f,1.f),-60.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Input Gain","Input Gain",juce::NormalisableRange<float>(-90.f,12.f,1e-2f,1.f),0.f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Direct Out","Direct Out",juce::NormalisableRange<float>(-90.f,12.f,1e-2f,1.f),-60.f));
 
     // LFO1 Parameters
 

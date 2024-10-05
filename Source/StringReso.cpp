@@ -670,7 +670,7 @@ void StringReso::updateNoiseLPFilterCoeffs()
     //     params.noiseLPFilterFreq + noiseLPFDistToBoundary*(1.f-lfoFacNoiseLPF));
     noiseLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(
         processSpec.sampleRate,
-        params.noiseLPFilterFreq * lfoFacNoiseLPF);
+        params.noiseLPFilterFreq * lfoFacNoiseLPF * velFacNoiseLPF);
 }
 
 void StringReso::updateNoiseHPFilterCoeffs()
@@ -721,7 +721,7 @@ void StringReso::updateCrackLPFilterCoeffs()
 {
     crackLPFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeLowPass(
         processSpec.sampleRate,
-        params.crackLPFilterFreq * lfoFacCrackLPF);
+        params.crackLPFilterFreq * lfoFacCrackLPF * velFacCrackLPF);
 }
 
 void StringReso::setLfoCrackLevel(int num, bool onoff)
