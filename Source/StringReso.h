@@ -18,8 +18,11 @@
 #define NUMSTRINGS 2
 #define SMOOTH_TIME 0.1f
 #define SEMITONE 1.059463094359295f
+#define TWOP13 1.25992104989f
+#define TWOP13M1 0.25992104989f
 
-#define LFOSAMPLESUPDATE 100
+
+#define LFOSAMPLESUPDATE 10
 
 #define INPOSMAX 0.45f
 #define INPOSMIN 0.05f
@@ -233,6 +236,7 @@ private:
                                                                 smoothFeedbackFreq[NUMSTRINGS],
                                                                 smoothFeedbackGain[NUMSTRINGS],
                                                                 smoothLevel[NUMSTRINGS],
+                                                                smoothPan[NUMSTRINGS],
                                                                 smoothCoupling[NUMSTRINGS];
 
   StringResoParams params;
