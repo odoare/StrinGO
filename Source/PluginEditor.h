@@ -19,7 +19,7 @@
 #define VELOCITYCOLOR juce::Colours::magenta
 #define STRINGCOLOR juce::Colours::lightsteelblue
 #define TITLECOLOR juce::Colours::grey
-#define LFO1COLOR juce::Colours::orange
+#define LFO1COLOR juce::Colours::lightseagreen
 #define LFO2COLOR juce::Colours::yellow
 #define LFO3COLOR juce::Colours::magenta.brighter()
 
