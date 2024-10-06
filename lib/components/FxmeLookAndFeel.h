@@ -83,3 +83,44 @@ public:
     }
 
 };
+
+class FxmeButtonLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+  FxmeButtonLookAndFeel()
+  {
+  }
+
+  // Toggle button overrides
+  // -----------------------
+
+  void drawToggleButton(juce::Graphics &g,
+                            juce::ToggleButton &b,
+                            bool 	shouldDrawButtonAsHighlighted,
+                            bool 	shouldDrawButtonAsDown ) override
+  {
+    auto bounds = b.getLocalBounds();
+    auto isDown = b.getToggleState();
+    auto col = b.findColour(0);
+    float t;
+    float w = bounds.getWidth()*.1f;
+
+    if (isDown)
+      g.setColour(col.brighter(0.3f));
+    else
+      g.setColour(col.darker(.8f));
+    g.fillRoundedRectangle(bounds.toFloat(),w*2);
+
+    if (isDown)
+    {
+      g.setColour(juce::Colours::white);
+      t = w*.5f;
+    }
+      else
+    {
+      g.setColour(juce::Colours::black);
+      t = w;
+    }
+    g.drawRoundedRectangle(bounds.toFloat(),w*2,t);
+  }
+};

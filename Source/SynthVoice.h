@@ -13,7 +13,6 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "StringReso.h"
-#include "CracksGenerator.h"
 
 #define INVPI 0.318309886183791
 
@@ -39,55 +38,15 @@ public:
  
   void renderNextBlock (juce::AudioBuffer< float > &buffer, int startSample, int numSamples) override;
 
-  void setNoiseLPFilterFreq(float freq);
-  void setNoiseLPFilterFreqVelocityInfluence(float factor);
-  void setNoiseHPFilterFreq(float freq);
-  void setNoiseHPFilterFreqVelocityInfluence(float factor);
-  void setNoiseLevel(float lvl);
-  void setNoiseLevelVelocityInfluence(float val);
   void setVelocity(float vel);
 
-  void setCrackDensity(int d);
-  void setCrackLPFilterFreq(float freq);
-  void setCrackLPFilterFreqVelocityInfluence(float val);
-  void setCrackLevel(float lvl);
-  void setCrackLevelVelocityInfluence(float val);
-
   StringReso stringReso;
-  juce::ADSR adsrN, adsrC;
-  juce::ADSR::Parameters adsrNParams, adsrCParams;
-
   juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothInputGain;
 
 private:
 
   juce::dsp::ProcessSpec processSpec;
-
-  juce::Random randomNoise;
-
-  juce::dsp::IIR::Filter<float> noiseLPFilter;
-  juce::dsp::IIR::Filter<float> noiseHPFilter;
-  float noiseLPFilterFreq  { 1000.f };
-  float noiseHPFilterFreq  { 1000.f };
-  float noiseLevel { 1.0f };
-  float noiseLPFilterFreqVelocityInfluence {0.f};
-  float noiseLPFilterFreqVelocityFactor {1.f};
-  float noiseHPFilterFreqVelocityInfluence {0.f};
-  float noiseHPFilterFreqVelocityFactor {1.f};  
-  float noiseLevelVelocityInfluence {0.f};
-  float noiseLevelVelocityFactor {1.f};
-
-  CracksGenerator cracksGenerator;
-  juce::dsp::IIR::Filter<float> crackLPFilter;
-  float crackLPFilterFreq  { 1000.f };
-  float crackLevel { 1.0 };
-  float crackLPFilterFreqVelocityInfluence {0.f};
-  float crackLPFilterFreqVelocityFactor {1.f};
-  float crackLevelVelocityInfluence {0.f};
-  float crackLevelVelocityFactor {1.f};
-
   juce::AudioBuffer<float> inBuffer, synthBuffer;
   juce::AudioBuffer<float> *sharedBuffer;
-
   bool isPrepared { false };
 };

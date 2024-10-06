@@ -2,15 +2,31 @@
 
 <JUCERPROJECT id="fe5k40" name="StrinGO" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginFormats="buildVST,buildVST3" companyName="FX Mechanics"
-              version="0.0.1" pluginManufacturerCode="FXME" pluginCode="StGO"
-              lv2Uri="http://www.fx-mechanics.com/plugins/stringo" companyWebsite="www.fx-mechanics.com"
-              aaxIdentifier="com.fx-mechanics.stringo" pluginVST3Category="Instrument"
-              pluginCharacteristicsValue="pluginWantsMidiIn" pluginDesc="Synthesizer plugin based on coupled waveguides">
+              pluginFormats="buildVST3" companyName="FX-Mechanics" version="0.0.2"
+              pluginManufacturerCode="FXME" pluginCode="StGO" lv2Uri="http://www.fx-mechanics.com/plugins/stringo"
+              companyWebsite="fx-mechanics.com" aaxIdentifier="com.fx-mechanics.stringo"
+              pluginVST3Category="Instrument" pluginCharacteristicsValue="pluginWantsMidiIn"
+              pluginDesc="Synthesizer plugin based on coupled waveguides">
   <MAINGROUP id="dLq9WS" name="StrinGO">
+    <GROUP id="{F76DC239-A14E-0968-31AA-BD3865DD7EF2}" name="dsp">
+      <FILE id="mXiaos" name="CracksGenerator.cpp" compile="1" resource="0"
+            file="lib/dsp/CracksGenerator.cpp"/>
+      <FILE id="ihpYnB" name="CracksGenerator.h" compile="0" resource="0"
+            file="lib/dsp/CracksGenerator.h"/>
+      <FILE id="smZueq" name="SampleArrays.h" compile="0" resource="0" file="lib/dsp/SampleArrays.h"/>
+      <FILE id="YQPD5X" name="SimpleSampler.cpp" compile="1" resource="0"
+            file="lib/dsp/SimpleSampler.cpp"/>
+      <FILE id="k0BZRt" name="SimpleSampler.h" compile="0" resource="0" file="lib/dsp/SimpleSampler.h"/>
+    </GROUP>
+    <GROUP id="{189AFAB4-AE22-72A3-1F8C-F6A8CA2F2674}" name="assets">
+      <FILE id="gXvXwT" name="logo686.png" compile="0" resource="1" file="lib/assets/logo686.png"/>
+    </GROUP>
+    <GROUP id="{BE3D5663-48E2-9858-4698-F17C45FE9AA7}" name="components">
+      <FILE id="peN53r" name="FxmeLookAndFeel.h" compile="0" resource="0"
+            file="lib/components/FxmeLookAndFeel.h"/>
+    </GROUP>
     <GROUP id="{D446EAB4-C456-0D9A-B6D2-A195773853D6}" name="Source">
       <GROUP id="{52D558E0-E9AE-9F5D-94E4-2AC41697C7A0}" name="Assets">
-        <FILE id="Zs8X3J" name="logo686.png" compile="0" resource="1" file="Source/Assets/logo686.png"/>
         <FILE id="q3Tkve" name="logo686.svg" compile="0" resource="1" file="Source/Assets/logo686.svg"/>
       </GROUP>
       <FILE id="dWUuf4" name="StringReso.cpp" compile="1" resource="0" file="Source/StringReso.cpp"/>
@@ -25,16 +41,6 @@
       <FILE id="HrAB4r" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="XJiXjs" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
       <FILE id="J9MLpR" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
-      <FILE id="t0c58f" name="CracksGenerator.h" compile="0" resource="0"
-            file="Source/CracksGenerator.h"/>
-      <FILE id="veBRnW" name="CracksGenerator.cpp" compile="1" resource="0"
-            file="Source/CracksGenerator.cpp"/>
-      <FILE id="ZYDkCI" name="SampleArrays.h" compile="0" resource="0" file="Source/SampleArrays.h"/>
-      <FILE id="dIK27I" name="SimpleSampler.h" compile="0" resource="0" file="Source/SimpleSampler.h"/>
-      <FILE id="S8KWqx" name="SimpleSampler.cpp" compile="1" resource="0"
-            file="Source/SimpleSampler.cpp"/>
-      <FILE id="vqSaMO" name="FxmeLookAndFeel.h" compile="0" resource="0"
-            file="Source/FxmeLookAndFeel.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

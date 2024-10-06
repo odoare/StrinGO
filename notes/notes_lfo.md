@@ -1,0 +1,14 @@
+Parameters which should have an lfo:
+- Sampler LP Freq
+- Sampler Amp
+- Noise HP Freq
+- Noise LP Freq
+- Cracks density
+- Cracks LP Freq
+- Cracks Level
+- WG1 Level
+- WG1 Freq
+- WG2 Level
+- WG2 Freq
+- In pos
+- Out pos

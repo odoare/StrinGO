@@ -20,12 +20,12 @@ private:
   float sampleRate;
   float referenceFrequency;
   float playingFrequency;
-  float filterFreqFactor { 5.0 };
+  float filterFreqFactor { 5.f }, filterFreqLfoFactor{1.f};
   float filterFreqVelocityInfluence {0.f};
   float filterFreqVelocityFactor {1.f};
   float levelVelocityInfluence {0.f};
   float levelVelocityFactor {1.f};
-  float level { 1.0 };
+  float level { 1.f };
   bool loop { false };
   float attack{0.f}, decay{0.f}, sustain{1.f}, release{5.f};
   int currentWaveNumber;
@@ -43,7 +43,8 @@ public:
   void setWaveByNumber(int waveNumber, bool force=false);
   void start();
   void stop();
-  void setFilterFreqFactor(float freq);
+  void setFilterFreqFactor(float fac);
+  void setFilterFreqLfoFactor(float fac);
   void setFilterFreqVelocityInfluence(float val);
   void setLevelVelocityInfluence(float val);
   void setVelocity(float vel);
