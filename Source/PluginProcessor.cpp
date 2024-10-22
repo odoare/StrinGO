@@ -7,21 +7,13 @@
 */
 
 #include "PluginProcessor.h"
-#include "PluginEditor.h"
+// #include "PluginEditor.h"
 
 //==============================================================================
 MySynthAudioProcessor::MySynthAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::mono(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
-#endif
 {
+    magicState.setGuiValueTree (BinaryData::magic_xml, BinaryData::magic_xmlSize);
+    FOLEYS_SET_SOURCE_PATH("/home/od/src/Projects/StrinGO/Resources/magic.xml");
     synth.addSound(new SynthSound());
     synth.addVoice(new SynthVoice());
 }
@@ -316,32 +308,32 @@ void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
 }
 
 //==============================================================================
-bool MySynthAudioProcessor::hasEditor() const
-{
-    return true; // (change this to false if you choose to not supply an editor)
-}
+// bool MySynthAudioProcessor::hasEditor() const
+// {
+//     return true; // (change this to false if you choose to not supply an editor)
+// }
 
-juce::AudioProcessorEditor* MySynthAudioProcessor::createEditor()
-{
-    return new MySynthAudioProcessorEditor (*this);
-    // return new juce::GenericAudioProcessorEditor(*this);
-}
+// juce::AudioProcessorEditor* MySynthAudioProcessor::createEditor()
+// {
+//     return new MySynthAudioProcessorEditor (*this);
+//     // return new juce::GenericAudioProcessorEditor(*this);
+// }
 
-//==============================================================================
-void MySynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
-{
-    juce::MemoryOutputStream mos(destData, true);
-    apvts.state.writeToStream(mos);
-}
+// //==============================================================================
+// void MySynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+// {
+//     juce::MemoryOutputStream mos(destData, true);
+//     apvts.state.writeToStream(mos);
+// }
 
-void MySynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
-{
-    auto tree = juce::ValueTree::readFromData(data,sizeInBytes);
-    if (tree.isValid())
-    {
-        apvts.replaceState(tree);
-    }
-}
+// void MySynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+// {
+//     auto tree = juce::ValueTree::readFromData(data,sizeInBytes);
+//     if (tree.isValid())
+//     {
+//         apvts.replaceState(tree);
+//     }
+// }
 
 //==============================================================================
 // This creates new instances of the plugin..

@@ -16,7 +16,7 @@
 //==============================================================================
 /**
 */
-class MySynthAudioProcessor  : public juce::AudioProcessor
+class MySynthAudioProcessor  : public foleys::MagicProcessor
 {
 public:
     //==============================================================================
@@ -34,8 +34,8 @@ public:
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     //==============================================================================
-    juce::AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
+    // juce::AudioProcessorEditor* createEditor() override;
+    // bool hasEditor() const override;
 
     //==============================================================================
     const juce::String getName() const override;
@@ -53,8 +53,8 @@ public:
     void changeProgramName (int index, const juce::String& newName) override;
 
     //==============================================================================
-    void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+    // void getStateInformation (juce::MemoryBlock& destData) override;
+    // void setStateInformation (const void* data, int sizeInBytes) override;
 
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameters();  
     juce::AudioProcessorValueTreeState apvts{*this,nullptr,"Parameters",createParameters()};

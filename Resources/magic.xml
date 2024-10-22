@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<magic>
+  <Styles>
+    <Style name="default">
+      <Nodes/>
+      <Classes>
+        <plot-view border="2" background-color="black" border-color="silver" display="contents"/>
+        <nomargin margin="0" padding="0" border="0"/>
+        <group margin="5" padding="5" border="2" flex-direction="column"/>
+        <transparent background-color="transparentblack"/>
+        <LFOButton lookAndFeel="FX-Mechanics" slider-type="rotary-horizontal-vertical"
+                   slider-textbox="textbox-above" background-color="00000000">
+          <media/>
+        </LFOButton>
+        <WaveGuideKnob lookAndFeel="FX-Mechanics" slider-type="rotary-horizontal-vertical"
+                       margin="0" padding="0" background-color="00000000" rotary-fill="FF000000"
+                       slider-track="FF004951" slider-thumb="FF00FFE6" rotary-outline="FF00FFE6"
+                       caption-placement="centred-top" slider-textbox="textbox-above">
+          <media/>
+        </WaveGuideKnob>
+      </Classes>
+      <Types>
+        <Slider border="0" slider-textbox="textbox-below"/>
+        <ToggleButton border="0" max-height="50" caption-size="0" text="Active"/>
+        <TextButton border="0" max-height="50" caption-size="0"/>
+        <ComboBox border="0" max-height="50" caption-size="0"/>
+        <Plot border="0" margin="0" padding="0" background-color="00000000"
+              radius="0"/>
+        <XYDragComponent border="0" margin="0" padding="0" background-color="00000000"
+                         radius="0"/>
+      </Types>
+      <Palettes>
+        <default/>
+      </Palettes>
+    </Style>
+  </Styles>
+  <View id="root" resizable="1" resize-corner="1" flex-direction="column"
+        background-color="FF000000">
+    <View flex-direction="column" background-color="FF151D28">
+      <View background-color="00000000">
+        <View display="tabbed" caption="Exciters" background-color="FF553939"
+              pos-height="" pos-width="" pos-y="" pos-x="">
+          <View caption="Input" background-color="FF417497">
+            <Slider parameter="Input Gain" lookAndFeel="FX-Mechanics"/>
+            <Slider parameter="Output Gain" lookAndFeel="FX-Mechanics"/>
+          </View>
+          <View caption="Sampler" background-color="00582020" margin="0" padding="0">
+            <View flex-direction="column" margin="0" padding="5" id="Wave" background-color="00000000">
+              <Label caption="Wave"/>
+              <ComboBox parameter="Attack Sample" margin="0" padding="0"/>
+              <Label caption="Loop" background-color="00000000"/>
+              <View display="contents" margin="0" padding="0" id="Loop" background-color="00000000">
+                <ToggleButton parameter="Loop Sample" button-radio-group="3" background-color="00000000"/>
+                <TextButton margin="0" padding="0" parameter="Loop Sample" button-radio-group="3"
+                            button-radio-value="1" button-on-color="FFFFFFFF" button-color="FF767676"
+                            button-off-text="" caption="" background-color="00000000"/>
+              </View>
+            </View>
+            <Slider parameter="AS" lookAndFeel="FX-Mechanics" caption="A" slider-type="rotary-horizontal-vertical"
+                    background-color="00000000" slider-textbox="textbox-above" border-color="00000000"
+                    margin="0" padding="0" slider-text-outline="00000000"/>
+            <Slider slider-type="rotary-horizontal-vertical" parameter="DS" caption="D"
+                    lookAndFeel="FX-Mechanics" background-color="00000000" margin="0"
+                    padding="0" slider-textbox="textbox-above" slider-text-outline="00000000"/>
+            <Slider slider-type="rotary-horizontal-vertical" parameter="SS" caption="S"
+                    lookAndFeel="FX-Mechanics" background-color="00000000" margin="0"
+                    padding="0" slider-textbox="textbox-above" slider-text-outline="00000000"/>
+            <Slider slider-type="rotary-horizontal-vertical" parameter="RS" caption="R"
+                    lookAndFeel="FX-Mechanics" background-color="00000000" margin="0"
+                    padding="0" slider-textbox="textbox-above" slider-text-outline="00000000"/>
+            <Slider slider-type="rotary-horizontal-vertical" caption="LPF" lookAndFeel="FX-Mechanics"
+                    background-color="00000000" margin="0" padding="0" slider-textbox="textbox-above"
+                    slider-text-outline="00000000" parameter="Sample LP Freq"/>
+            <Slider slider-type="rotary-horizontal-vertical" caption="LEVEL" lookAndFeel="FX-Mechanics"
+                    background-color="00000000" margin="0" padding="0" slider-textbox="textbox-above"
+                    slider-text-outline="00000000" parameter="Sample Level"/>
+          </View>
+          <View caption="Noise" background-color="FF255F32"/>
+          <View caption="Cracks" background-color="FF0060FF"/>
+        </View>
+        <View display="contents">
+          <XYDragComponent background-color="00000000" xy-radius="10" xy-crosshair="no-crosshair"
+                           xy-drag-handle="FFBF3A00" xy-drag-handle-over="FFFF4D00"/>
+          <XYDragComponent background-color="00000000" xy-radius="10" xy-crosshair="no-crosshair"/>
+          <XYDragComponent xy-radius="10" xy-crosshair="no-crosshair" background-color="00000000"
+                           xy-drag-handle-over="" xy-drag-handle="FF0060FF"/>
+        </View>
+      </View>
+      <View>
+        <TextButton class="LFOButton"/>
+      </View>
+      <View background-color="00000000" class="transparent">
+        <View caption="Waveguide 1" class="transparent" background-color="transparentblack">
+          <View class="transparent">
+            <Slider parameter="Level1" class="LFOButton WaveGuideKnob" lookAndFeel="FX-Mechanics"
+                    slider-type="" caption="Level"/>
+          </View>
+          <Slider parameter="Pan1" class="LFOButton WaveGuideKnob" lookAndFeel="FX-Mechanics"
+                  caption="Pan"/>
+          <Slider class="LFOButton WaveGuideKnob" lookAndFeel="FX-Mechanics" parameter="Coarse1"
+                  caption="Coarse"/>
+          <Slider class="LFOButton WaveGuideKnob" lookAndFeel="FX-Mechanics" parameter="Fine1"
+                  caption="Fine"/>
+        </View>
+        <View caption="Waveguide 2" background-color="" margin="0" padding="0"
+              class="transparent">
+          <View flex-direction="column" id="Level2" background-color="00000000"
+                margin="0" padding="0">
+            <Slider lookAndFeel="FX-Mechanics" parameter="Level2" slider-type="rotary-horizontal-vertical"
+                    slider-textbox="textbox-above" caption="Level" slider-thumb="FF3DB5C2"
+                    rotary-outline="FF3DB5C2" slider-track="FF123437" background-color="00000000"
+                    class="WaveGuideKnob"/>
+            <View flex-grow=".1" display="flexbox" margin="0" padding="0" border-color="00000000"
+                  background-color="00000000" pos-width="" pos-x="" pos-y="" pos-height=""
+                  flex-align-self="stretch">
+              <View flex-grow="0.25" background-color="00000000"/>
+              <View display="contents" margin="0" padding="0" background-color="00000000"
+                    border-color="00000000" flex-grow="1">
+                <ToggleButton parameter="LFO1 Level2" button-radio-group="10" margin="0" padding="0"
+                              border-color="00000000"/>
+                <TextButton parameter="LFO1 Level2" button-radio-group="10" button-radio-value="1"
+                            button-on-color="FF2D0D00" button-color="FFFF4D00" margin="0"
+                            padding="0" background-color="00000000" border-color="00000000"
+                            pos-x="0%" pos-y="0%" pos-width="100%" pos-height="100%" class=""/>
+              </View>
+              <View flex-grow="0.5" background-color="00000000"/>
+              <View display="contents" margin="0" padding="0" border-color="00000000"
+                    background-color="00000000">
+                <ToggleButton parameter="LFO2 Level2" margin="0" padding="0" button-radio-group="11"/>
+                <TextButton parameter="LFO2 Level2" button-radio-group="11" button-radio-value="1"
+                            button-on-color="FF00FF39" margin="0" padding="0" border-color="00000000"
+                            background-color="00000000" class="LFOButton" pos-x="0%" pos-y="0%"
+                            pos-width="100%" pos-height="100%" button-color="FF005B15"/>
+              </View>
+              <View flex-grow="0.5" background-color="00000000"/>
+              <View display="contents" margin="0" padding="0" border-color="00000000"
+                    background-color="00000000">
+                <ToggleButton parameter="LFO3 Level2" margin="0" padding="0" button-radio-group="12"/>
+                <TextButton parameter="LFO3 Level2" button-radio-group="12" button-radio-value="1"
+                            button-color="FF004951" button-on-color="FF00FFE6" margin="0"
+                            padding="0" border-color="00000000" background-color="00000000"/>
+              </View>
+              <View flex-grow="0.25"/>
+            </View>
+          </View>
+          <View flex-direction="column" id="Pan2" background-color="00000000"
+                margin="0" padding="0">
+            <Slider lookAndFeel="FX-Mechanics" parameter="Pan2" slider-type="rotary-horizontal-vertical"
+                    caption="Pan" background-color="00000000" class="WaveGuideKnob"
+                    slider-textbox=""/>
+            <View flex-grow=".1" display="flexbox" margin="0" padding="0" pos-x="-9.43396%"
+                  pos-y="85.3403%" pos-width="100%" pos-height="9.42408%" border-color="00000000"
+                  background-color="00000000">
+              <View display="contents" margin="0" padding="0" background-color="00000000"
+                    border-color="00000000">
+                <ToggleButton parameter="LFO1 Pan2" button-radio-group="13" margin="0" padding="0"/>
+                <TextButton parameter="LFO1 Pan2" button-radio-group="13" button-radio-value="1"
+                            button-on-color="FF461500" button-color="FFFF4D00" margin="0"
+                            padding="0" background-color="00000000" border-color="00000000"/>
+              </View>
+              <View display="contents" margin="0" padding="0" border-color="00000000"
+                    background-color="00000000">
+                <ToggleButton parameter="LFO2 Pan2" margin="0" padding="0" button-radio-group="14"/>
+                <TextButton parameter="LFO2 Pan2" button-radio-group="14" button-radio-value="1"
+                            button-color="FF005B15" button-on-color="FF00FF39" margin="0"
+                            padding="0" border-color="00000000" background-color="00000000"/>
+              </View>
+              <View display="contents" margin="0" padding="0" border-color="00000000"
+                    background-color="00000000">
+                <ToggleButton parameter="LFO3 Pan2" margin="0" padding="0" button-radio-group="15"/>
+                <TextButton parameter="LFO3 Pan2" button-radio-group="15" button-radio-value="1"
+                            button-color="FF00FFE6" button-on-color="FF004951" margin="0"
+                            padding="0" border-color="00000000" background-color="00000000"/>
+              </View>
+            </View>
+          </View>
+          <View flex-direction="column" id="Coarse2" background-color="00000000"
+                margin="0" padding="0">
+            <Slider lookAndFeel="FX-Mechanics" parameter="Coarse2" slider-type="rotary-horizontal-vertical"
+                    caption="Coarse" background-color="00000000" class="WaveGuideKnob"
+                    slider-textbox=""/>
+            <View flex-grow=".1" display="flexbox" margin="0" padding="0" pos-x="-9.43396%"
+                  pos-y="85.3403%" pos-width="100%" pos-height="9.42408%" border-color="00000000"
+                  background-color="00000000">
+              <View display="contents" margin="0" padding="0" background-color="00000000"
+                    border-color="00000000">
+                <ToggleButton parameter="LFO1 Coarse2" button-radio-group="16" margin="0" padding="0"/>
+                <TextButton parameter="LFO1 Coarse2" button-radio-group="16" button-radio-value="1"
+                            button-on-color="FF461500" button-color="FFFF4D00" margin="0"
+                            padding="0" background-color="00000000" border-color="00000000"/>
+              </View>
+              <View display="contents" margin="0" padding="0" border-color="00000000"
+                    background-color="00000000">
+                <ToggleButton parameter="LFO2 Coarse2" margin="0" padding="0" button-radio-group="17"/>
+                <TextButton parameter="LFO2 Coarse2" button-radio-group="17" button-radio-value="1"
+                            button-color="FF005B15" button-on-color="FF00FF39" margin="0"
+                            padding="0" border-color="00000000" background-color="00000000"
+                            pos-x="0%" pos-y="0%" pos-width="100%" pos-height="100%"/>
+              </View>
+              <View display="contents" margin="0" padding="0" border-color="00000000"
+                    background-color="00000000">
+                <ToggleButton parameter="LFO3 Coarse2" margin="0" padding="0" button-radio-group="18"/>
+                <TextButton parameter="LFO3 Coarse2" button-radio-group="18" button-radio-value="1"
+                            button-color="FF00FFE6" button-on-color="FF004951" margin="0"
+                            padding="0" border-color="00000000" background-color="00000000"/>
+              </View>
+            </View>
+          </View>
+          <View flex-direction="column" id="Fine2" background-color="00000000"
+                margin="0" padding="0">
+            <Slider lookAndFeel="FX-Mechanics" parameter="Fine2" slider-type="rotary-horizontal-vertical"
+                    caption="FIne" background-color="00000000" class="WaveGuideKnob"
+                    slider-textbox=""/>
+            <View flex-grow=".1" display="flexbox" margin="0" padding="0" pos-x="-9.43396%"
+                  pos-y="85.3403%" pos-width="100%" pos-height="9.42408%" border-color="00000000"
+                  background-color="00000000">
+              <View display="contents" margin="0" padding="0" background-color="00000000"
+                    border-color="00000000">
+                <ToggleButton parameter="LFO1 Fine2" button-radio-group="19" margin="0" padding="0"/>
+                <TextButton parameter="LFO1 Fine2" button-radio-group="19" button-radio-value="1"
+                            button-on-color="FF461500" button-color="FFFF4D00" margin="0"
+                            padding="0" background-color="00000000" border-color="00000000"/>
+              </View>
+              <View display="contents" margin="0" padding="0" border-color="00000000"
+                    background-color="00000000">
+                <ToggleButton parameter="LFO2 Fine2" margin="0" padding="0" button-radio-group="20"/>
+                <TextButton parameter="LFO2 Fine2" button-radio-group="20" button-radio-value="1"
+                            button-color="FF005B15" button-on-color="FF00FF39" margin="0"
+                            padding="0" border-color="00000000" background-color="00000000"/>
+              </View>
+              <View display="contents" margin="0" padding="0" border-color="00000000"
+                    background-color="00000000">
+                <ToggleButton parameter="LFO3 Fine2" margin="0" padding="0" button-radio-group="21"/>
+                <TextButton parameter="LFO3 Fine2" button-radio-group="21" button-radio-value="1"
+                            button-color="FF00FFE6" button-on-color="FF004951" margin="0"
+                            padding="0" border-color="00000000" background-color="00000000"/>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</magic>
+ 
