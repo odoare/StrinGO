@@ -24,6 +24,7 @@ MySynthAudioProcessor::MySynthAudioProcessor()
 {
     synth.addSound(new SynthSound());
     synth.addVoice(new SynthVoice());
+    factoryPresets = FactoryPresets::getAvailablePresets();
 }
 
 MySynthAudioProcessor::~MySynthAudioProcessor()
@@ -66,21 +67,51 @@ double MySynthAudioProcessor::getTailLengthSeconds() const
 
 int MySynthAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    // Return number of factory presets, or 1 if there are none.
+    return factoryPresets.size() + 1;
 }
 
 int MySynthAudioProcessor::getCurrentProgram()
 {
-    return 0;
+    return currentProgram;
 }
 
 void MySynthAudioProcessor::setCurrentProgram (int index)
 {
+    if (! juce::isPositiveAndBelow (index, getNumPrograms()))
+        return;
+
+    currentProgram = index;
+
+    if (index < factoryPresets.size())
+    {
+        // It's a factory preset, so load it from the XML data.
+        juce::ScopedValueSetter<bool> loading (isLoadingPreset, true);
+
+        const auto& preset = factoryPresets.getReference(index);
+        auto xml = juce::XmlDocument::parse(juce::String::fromUTF8(preset.data, preset.dataSize));
+
+        if (xml != nullptr && xml->hasTagName(apvts.state.getType()))
+        {
+            apvts.replaceState(juce::ValueTree::fromXml(*xml));
+        }
+        else
+        {
+            jassertfalse; // Preset data is malformed!
+        }
+    }
+    // If the index is for the "User Preset", we do nothing, as its state
+    // is managed by the host and has already been loaded via setStateInformation.
 }
 
 const juce::String MySynthAudioProcessor::getProgramName (int index)
 {
+    if (juce::isPositiveAndBelow (index, factoryPresets.size()))
+        return factoryPresets.getUnchecked(index).name;
+
+    if (index == factoryPresets.size())
+        return "User Preset";
+
     return {};
 }
 
@@ -91,6 +122,12 @@ void MySynthAudioProcessor::changeProgramName (int index, const juce::String& ne
 //==============================================================================
 void MySynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    // Load the initial preset once everything is ready.
+    if (!isInitialPresetLoaded && factoryPresets.size() > 0)
+    {
+        setCurrentProgram(0);
+        isInitialPresetLoaded = true;
+    }
 
     synth.setCurrentPlaybackSampleRate(sampleRate);
 
@@ -330,18 +367,50 @@ juce::AudioProcessorEditor* MySynthAudioProcessor::createEditor()
 //==============================================================================
 void MySynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
+    // Create a temporary ValueTree to hold the state
+    juce::ValueTree state = apvts.copyState();
+    // Store the current program index in the state
+    state.setProperty ("currentProgram", currentProgram, nullptr);
+
+    // Convert the ValueTree to XML and write it to the memory block
     juce::MemoryOutputStream mos(destData, true);
-    apvts.state.writeToStream(mos);
+    state.writeToStream(mos);
 }
 
 void MySynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    auto tree = juce::ValueTree::readFromData(data,sizeInBytes);
+    // Create a ValueTree from the binary data
+    juce::ValueTree tree = juce::ValueTree::readFromData (data, sizeInBytes);
+
     if (tree.isValid())
     {
-        apvts.replaceState(tree);
+        // Restore the parameters
+        apvts.replaceState (tree);
+
+        // Restore the current program index
+        int programIndex = tree.getProperty ("currentProgram", 0);
+        // We call setCurrentProgram to ensure the correct preset is loaded if it's a factory one,
+        // or the index is correctly set for a user preset.
+        if (currentProgram != programIndex)
+        {
+            setCurrentProgram (programIndex);
+        }
     }
 }
+
+
+void MySynthAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    // Any parameter change makes the preset "dirty" (a user preset).
+    // We check the isLoadingPreset flag to avoid this when loading a preset.
+    if (!isLoadingPreset)
+    {
+        if (currentProgram < factoryPresets.size()) {
+            currentProgram = factoryPresets.size();
+        }
+    }
+}
+
 
 //==============================================================================
 // This creates new instances of the plugin..

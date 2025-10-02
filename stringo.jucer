@@ -2,12 +2,19 @@
 
 <JUCERPROJECT id="fe5k40" name="StrinGO" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginFormats="buildVST3" companyName="FX-Mechanics" version="0.0.2"
-              pluginManufacturerCode="FXME" pluginCode="StGO" lv2Uri="http://www.fx-mechanics.com/plugins/stringo"
-              companyWebsite="fx-mechanics.com" aaxIdentifier="com.fx-mechanics.stringo"
-              pluginVST3Category="Instrument" pluginCharacteristicsValue="pluginWantsMidiIn"
-              pluginDesc="Synthesizer plugin based on coupled waveguides">
+              pluginFormats="buildVST,buildVST3" companyName="FX-Mechanics"
+              version="0.0.2" pluginManufacturerCode="FXME" pluginCode="StGO"
+              lv2Uri="http://www.fx-mechanics.com/plugins/stringo" companyWebsite="fx-mechanics.com"
+              aaxIdentifier="com.fx-mechanics.stringo" pluginVST3Category="Instrument"
+              pluginCharacteristicsValue="pluginWantsMidiIn" pluginDesc="Synthesizer plugin based on coupled waveguides">
   <MAINGROUP id="dLq9WS" name="StrinGO">
+    <GROUP id="{38A747AA-CFCC-8DE4-0EAE-80E37B8B992D}" name="Presets">
+      <FILE id="eQzxkO" name="Percussive_Hit.xml" compile="0" resource="1"
+            file="Presets/XML/Percussive_Hit.xml"/>
+      <FILE id="kIUYmR" name="Plucked_String.xml" compile="0" resource="1"
+            file="Presets/XML/Plucked_String.xml"/>
+      <FILE id="HYvVqP" name="Warm_Pad.xml" compile="0" resource="1" file="Presets/XML/Warm_Pad.xml"/>
+    </GROUP>
     <GROUP id="{F76DC239-A14E-0968-31AA-BD3865DD7EF2}" name="dsp">
       <FILE id="mXiaos" name="CracksGenerator.cpp" compile="1" resource="0"
             file="lib/dsp/CracksGenerator.cpp"/>
@@ -26,9 +33,8 @@
             file="lib/components/FxmeLookAndFeel.h"/>
     </GROUP>
     <GROUP id="{D446EAB4-C456-0D9A-B6D2-A195773853D6}" name="Source">
-      <GROUP id="{52D558E0-E9AE-9F5D-94E4-2AC41697C7A0}" name="Assets">
-        <FILE id="q3Tkve" name="logo686.svg" compile="0" resource="1" file="Source/Assets/logo686.svg"/>
-      </GROUP>
+      <FILE id="bxhC7t" name="FactoryPresets.h" compile="0" resource="0"
+            file="Source/FactoryPresets.h"/>
       <FILE id="dWUuf4" name="StringReso.cpp" compile="1" resource="0" file="Source/StringReso.cpp"/>
       <FILE id="g6U4xZ" name="StringReso.h" compile="0" resource="0" file="Source/StringReso.h"/>
       <FILE id="wSQxJu" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -41,6 +47,9 @@
       <FILE id="HrAB4r" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="XJiXjs" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
       <FILE id="J9MLpR" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+      <GROUP id="{52D558E0-E9AE-9F5D-94E4-2AC41697C7A0}" name="Assets">
+        <FILE id="q3Tkve" name="logo686.svg" compile="0" resource="1" file="Source/Assets/logo686.svg"/>
+      </GROUP>
     </GROUP>
   </MAINGROUP>
   <MODULES>
@@ -59,10 +68,9 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"
-               JUCE_DSP_USE_STATIC_FFTW="1"/>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
-    <VS2022 targetFolder="Builds/VisualStudio2022">
+    <VS2022 targetFolder="Builds/VisualStudio2022" extraLinkerFlags="/usr/lib/x86_64-linux-gnu/libfftw3*.a&#10;">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="0" name="Release" targetName="StrinGO"/>
       </CONFIGURATIONS>
@@ -82,8 +90,7 @@
         <MODULEPATH id="juce_dsp" path="../../JUCE/JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" vstLegacyFolder="../../SDK/vstsdk2.4/public.sdk/source/vst2.x"
-                extraLinkerFlags="/usr/lib/x86_64-linux-gnu/libfftw3*.a">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" vstLegacyFolder="../vstsdk2.4">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="0" name="Release" targetName="StrinGO" optimisation="6"/>
       </CONFIGURATIONS>
@@ -91,7 +98,7 @@
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
         <MODULEPATH id="juce_audio_devices" path="../../juce"/>
         <MODULEPATH id="juce_audio_formats" path="../../juce"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../../juce"/>
         <MODULEPATH id="juce_audio_utils" path="../../juce"/>
         <MODULEPATH id="juce_core" path="../../juce"/>

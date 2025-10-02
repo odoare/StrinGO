@@ -12,11 +12,13 @@
 #include "SynthSound.h"
 #include "SynthVoice.h"
 #include <iostream>
+#include "FactoryPresets.h"
 
 //==============================================================================
 /**
 */
-class MySynthAudioProcessor  : public juce::AudioProcessor
+class MySynthAudioProcessor  : public juce::AudioProcessor,
+                              public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -55,7 +57,8 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
+    void parameterChanged (const juce::String& parameterID, float newValue) override;
+    
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameters();  
     juce::AudioProcessorValueTreeState apvts{*this,nullptr,"Parameters",createParameters()};
 
@@ -64,6 +67,11 @@ private:
     juce::Synthesiser synth;
 
     juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> smoothOutputGain, smoothOutputLevel, smoothDirectOut;
+
+    juce::Array<FactoryPresets::Preset> factoryPresets;
+    int currentProgram = 0;
+    bool isInitialPresetLoaded = false;
+    bool isLoadingPreset = false;
 
     double processSampleRate;
     int processBlockLength;

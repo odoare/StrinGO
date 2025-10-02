@@ -1,0 +1,67 @@
+<Parameters>
+  <PARAM id="A" value="1.5"/>
+  <PARAM id="D" value="2.0"/>
+  <PARAM id="S" value="1.0"/>
+  <PARAM id="R" value="3.0"/>
+  <PARAM id="Voices" value="4"/>
+  <PARAM id="Porta Time" value="0.05"/>
+  <PARAM id="Level1" value="-3.0"/>
+  <PARAM id="Pan1" value="-0.2"/>
+  <PARAM id="Coarse1" value="0.0"/>
+  <PARAM id="Fine1" value="-0.05"/>
+  <PARAM id="Level2" value="-3.0"/>
+  <PARAM id="Pan2" value="0.2"/>
+  <PARAM id="Coarse2" value="0.0"/>
+  <PARAM id="Fine2" value="0.05"/>
+  <PARAM id="In Pos" value="0.25"/>
+  <PARAM id="Out Pos" value="0.75"/>
+  <PARAM id="Fb Freq On" value="60.0"/>
+  <PARAM id="Fb Gain On" value="0.98"/>
+  <PARAM id="Level On" value="-3.0"/>
+  <PARAM id="Fb Freq Off" value="30.0"/>
+  <PARAM id="Fb Gain Off" value="0.92"/>
+  <PARAM id="Level Off" value="-6.0"/>
+  <PARAM id="Coupling" value="0.1"/>
+  <PARAM id="Attack Sample" value="0"/>
+  <PARAM id="Loop Sample" value="1"/>
+  <PARAM id="AS" value="0.1"/>
+  <PARAM id="DS" value="0.0"/>
+  <PARAM id="SS" value="1.0"/>
+  <PARAM id="RS" value="1.0"/>
+  <PARAM id="Sample LP Freq" value="5.0"/>
+  <PARAM id="Sample Level" value="-6.0"/>
+  <PARAM id="Noise LP Freq" value="5000.0"/>
+  <PARAM id="Noise HP Freq" value="100.0"/>
+  <PARAM id="Noise Level" value="-90.0"/>
+  <PARAM id="AN" value="0.0"/>
+  <PARAM id="DN" value="0.1"/>
+  <PARAM id="SN" value="1.0"/>
+  <PARAM id="RN" value="0.1"/>
+  <PARAM id="Crack Density" value="0.0"/>
+  <PARAM id="Crack LP Freq" value="20000.0"/>
+  <PARAM id="Crack Level" value="-90.0"/>
+  <PARAM id="AC" value="0.0"/>
+  <PARAM id="DC" value="0.0"/>
+  <PARAM id="SC" value="1.0"/>
+  <PARAM id="RC" value="0.1"/>
+  <PARAM id="Velocity Sample Level" value="0.2"/>
+  <PARAM id="Velocity Sample Freq" value="0.3"/>
+  <PARAM id="Velocity Noise Level" value="0.0"/>
+  <PARAM id="Velocity Noise Freq" value="0.0"/>
+  <PARAM id="Velocity Crack Level" value="0.0"/>
+  <PARAM id="Velocity Crack Freq" value="0.0"/>
+  <PARAM id="Output Gain" value="-3.0"/>
+  <PARAM id="Output Level" value="0.0"/>
+  <PARAM id="Input Gain" value="0.0"/>
+  <PARAM id="Direct Out" value="-60.0"/>
+  <PARAM id="LFO1 Freq" value="0.5"/>
+  <PARAM id="LFO1 Amp" value="0.3"/>
+  <PARAM id="LFO1 Fine1" value="1"/>
+  <PARAM id="LFO1 Fine2" value="1"/>
+  <PARAM id="LFO2 Freq" value="0.3"/>
+  <PARAM id="LFO2 Amp" value="0.2"/>
+  <PARAM id="LFO2 Pan1" value="1"/>
+  <PARAM id="LFO2 Pan2" value="1"/>
+  <PARAM id="LFO3 Freq" value="1.0"/>
+  <PARAM id="LFO3 Amp" value="0.0"/>
+</Parameters>
