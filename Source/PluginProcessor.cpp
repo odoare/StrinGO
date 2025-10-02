@@ -13,12 +13,8 @@
 MySynthAudioProcessor::MySynthAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  juce::AudioChannelSet::mono(), true)
-                      #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
                        )
 #endif
 {
@@ -171,8 +167,7 @@ bool MySynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 //     // In this template code we only support mono or stereo.
 //     // Some plugin hosts, such as certain GarageBand versions, will only
 //     // load plugins that support stereo bus layouts.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo()
-     || layouts.getMainInputChannelSet() != juce::AudioChannelSet::mono())
+    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
 //     // This checks if the input layout matches the output layout
@@ -380,21 +375,26 @@ void MySynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 void MySynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // Create a ValueTree from the binary data
-    juce::ValueTree tree = juce::ValueTree::readFromData (data, sizeInBytes);
+    auto tree = juce::ValueTree::readFromData (data, sizeInBytes);
 
     if (tree.isValid())
     {
+        // Prevent parameterChanged from marking the preset as "User"
+        juce::ScopedValueSetter<bool> loading (isLoadingPreset, true);
+
         // Restore the parameters
         apvts.replaceState (tree);
 
         // Restore the current program index
-        int programIndex = tree.getProperty ("currentProgram", 0);
+        const int programIndex = tree.getProperty ("currentProgram", 0);
         // We call setCurrentProgram to ensure the correct preset is loaded if it's a factory one,
         // or the index is correctly set for a user preset.
         if (currentProgram != programIndex)
         {
             setCurrentProgram (programIndex);
         }
+        // This is useful for creating new factory presets.
+        std::cout << (apvts.copyState().createXml()->toString()) << std::endl;
     }
 }
 

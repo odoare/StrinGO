@@ -33,9 +33,7 @@ namespace FactoryPresets
 
         for (int i = 0; i < BinaryData::namedResourceListSize; ++i)
         {
-            std::cout << BinaryData::namedResourceList[i] << std::endl;
             juce::String filename(BinaryData::originalFilenames[i]);
-            std::cout << filename << std::endl;
             // Check if the file is an XML file inside the Presets/XML directory
             if (filename.endsWithIgnoreCase(".xml"))
             {
@@ -47,7 +45,6 @@ namespace FactoryPresets
                 const char* resourceData = BinaryData::getNamedResource(BinaryData::namedResourceList[i], dataSize);
 
                 presets.add (Preset { friendlyName, resourceData, dataSize });
-                std::cout << "New preset added: " << friendlyName << std::endl;
             }
         }
         return presets;

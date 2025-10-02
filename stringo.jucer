@@ -2,18 +2,22 @@
 
 <JUCERPROJECT id="fe5k40" name="StrinGO" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginFormats="buildVST,buildVST3" companyName="FX-Mechanics"
+              pluginFormats="buildStandalone,buildVST,buildVST3" companyName="FX-Mechanics"
               version="0.0.2" pluginManufacturerCode="FXME" pluginCode="StGO"
               lv2Uri="http://www.fx-mechanics.com/plugins/stringo" companyWebsite="fx-mechanics.com"
               aaxIdentifier="com.fx-mechanics.stringo" pluginVST3Category="Instrument"
-              pluginCharacteristicsValue="pluginWantsMidiIn" pluginDesc="Synthesizer plugin based on coupled waveguides">
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              pluginDesc="Synthesizer plugin based on coupled waveguides">
   <MAINGROUP id="dLq9WS" name="StrinGO">
     <GROUP id="{38A747AA-CFCC-8DE4-0EAE-80E37B8B992D}" name="Presets">
-      <FILE id="eQzxkO" name="Percussive_Hit.xml" compile="0" resource="1"
-            file="Presets/XML/Percussive_Hit.xml"/>
-      <FILE id="kIUYmR" name="Plucked_String.xml" compile="0" resource="1"
-            file="Presets/XML/Plucked_String.xml"/>
-      <FILE id="HYvVqP" name="Warm_Pad.xml" compile="0" resource="1" file="Presets/XML/Warm_Pad.xml"/>
+      <FILE id="ui39yQ" name="Colophan.xml" compile="0" resource="1" file="Presets/XML/Colophan.xml"/>
+      <FILE id="XC3kCI" name="CrystalCavern.xml" compile="0" resource="1"
+            file="Presets/XML/CrystalCavern.xml"/>
+      <FILE id="QvQ3Nz" name="EKey.xml" compile="0" resource="1" file="Presets/XML/EKey.xml"/>
+      <FILE id="ASmEIA" name="Insects.xml" compile="0" resource="1" file="Presets/XML/Insects.xml"/>
+      <FILE id="DLuqnk" name="MetalHammer.xml" compile="0" resource="1" file="Presets/XML/MetalHammer.xml"/>
+      <FILE id="M0ZVOb" name="Reso.xml" compile="0" resource="1" file="Presets/XML/Reso.xml"/>
+      <FILE id="GAqrgF" name="Scratched.xml" compile="0" resource="1" file="Presets/XML/Scratched.xml"/>
     </GROUP>
     <GROUP id="{F76DC239-A14E-0968-31AA-BD3865DD7EF2}" name="dsp">
       <FILE id="mXiaos" name="CracksGenerator.cpp" compile="1" resource="0"

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters>
+  <PARAM id="A" value="0.0"/>
+  <PARAM id="AC" value="0.0"/>
+  <PARAM id="AN" value="0.0"/>
+  <PARAM id="AS" value="0.0"/>
+  <PARAM id="Attack Sample" value="4.0"/>
+  <PARAM id="Coupling" value="0.0"/>
+  <PARAM id="Crack Density" value="2600.0"/>
+  <PARAM id="Crack LP Freq" value="2110.0"/>
+  <PARAM id="Crack Level" value="0.0"/>
+  <PARAM id="D" value="0.001000000047497451"/>
+  <PARAM id="DC" value="0.001000000047497451"/>
+  <PARAM id="DN" value="0.001099999994039536"/>
+  <PARAM id="DS" value="0.0"/>
+  <PARAM id="Direct Out" value="-60.0"/>
+  <PARAM id="Fb Freq Off" value="14.90000057220459"/>
+  <PARAM id="Fb Freq On" value="60.0"/>
+  <PARAM id="Fb Gain Off" value="0.9980000257492065"/>
+  <PARAM id="Fb Gain On" value="0.9880000352859497"/>
+  <PARAM id="Freq Coarse 1" value="0.0"/>
+  <PARAM id="Freq Coarse 2" value="12.0"/>
+  <PARAM id="Freq Fine 1" value="0.03999996185302734"/>
+  <PARAM id="Freq Fine 2" value="-0.04000002145767212"/>
+  <PARAM id="In Pos" value="0.3540000319480896"/>
+  <PARAM id="Input Gain" value="0.0"/>
+  <PARAM id="Level 1" value="0.0"/>
+  <PARAM id="Level 2" value="-90.0"/>
+  <PARAM id="Level Off" value="-3.0"/>
+  <PARAM id="Level On" value="-3.0"/>
+  <PARAM id="Loop Sample" value="0.0"/>
+  <PARAM id="Noise HP Freq" value="20.0"/>
+  <PARAM id="Noise LP Freq" value="1236.0"/>
+  <PARAM id="Noise Level" value="-13.31999969482422"/>
+  <PARAM id="Out Pos" value="0.609000027179718"/>
+  <PARAM id="Output Gain" value="-8.0"/>
+  <PARAM id="Output Level" value="0.0"/>
+  <PARAM id="Porta Time" value="0.00009999999747378752"/>
+  <PARAM id="R" value="0.0"/>
+  <PARAM id="RC" value="0.0"/>
+  <PARAM id="RN" value="0.001099999994039536"/>
+  <PARAM id="RS" value="0.0"/>
+  <PARAM id="S" value="1.0"/>
+  <PARAM id="SC" value="1.0"/>
+  <PARAM id="SN" value="1.0"/>
+  <PARAM id="SS" value="1.0"/>
+  <PARAM id="Sample LP Freq" value="20.0"/>
+  <PARAM id="Sample Level" value="-4.680000305175781"/>
+  <PARAM id="Velocity Crack Freq" value="0.0"/>
+  <PARAM id="Velocity Crack Level" value="0.0"/>
+  <PARAM id="Velocity Noise Freq" value="0.0"/>
+  <PARAM id="Velocity Noise Level" value="0.0"/>
+  <PARAM id="Velocity Sample Freq" value="1.0"/>
+  <PARAM id="Velocity Sample Level" value="0.7599999904632568"/>
+  <PARAM id="Voices" value="1.0"/>
+  <PARAM id="Coarse1"/>
+  <PARAM id="Coarse2"/>
+  <PARAM id="Fine1"/>
+  <PARAM id="Fine2"/>
+  <PARAM id="LFO1 Amp"/>
+  <PARAM id="LFO1 Coarse1"/>
+  <PARAM id="LFO1 Coarse2"/>
+  <PARAM id="LFO1 CrackDensity"/>
+  <PARAM id="LFO1 CrackLPFreq"/>
+  <PARAM id="LFO1 CrackLevel"/>
+  <PARAM id="LFO1 Fine1"/>
+  <PARAM id="LFO1 Fine2"/>
+  <PARAM id="LFO1 Freq" value="0.9999999403953552"/>
+  <PARAM id="LFO1 InPos1"/>
+  <PARAM id="LFO1 InPos2"/>
+  <PARAM id="LFO1 Level1"/>
+  <PARAM id="LFO1 Level2"/>
+  <PARAM id="LFO1 NoiseHPFreq"/>
+  <PARAM id="LFO1 NoiseLPFreq"/>
+  <PARAM id="LFO1 NoiseLevel"/>
+  <PARAM id="LFO1 OutPos1"/>
+  <PARAM id="LFO1 OutPos2"/>
+  <PARAM id="LFO1 Pan1"/>
+  <PARAM id="LFO1 Pan2"/>
+  <PARAM id="LFO1 SamplerLPFreq"/>
+  <PARAM id="LFO1 SamplerLevel"/>
+  <PARAM id="LFO2 Amp"/>
+  <PARAM id="LFO2 Coarse1"/>
+  <PARAM id="LFO2 Coarse2"/>
+  <PARAM id="LFO2 CrackDensity"/>
+  <PARAM id="LFO2 CrackLPFreq"/>
+  <PARAM id="LFO2 CrackLevel"/>
+  <PARAM id="LFO2 Fine1"/>
+  <PARAM id="LFO2 Fine2"/>
+  <PARAM id="LFO2 Freq" value="0.9999999403953552"/>
+  <PARAM id="LFO2 InPos1"/>
+  <PARAM id="LFO2 InPos2"/>
+  <PARAM id="LFO2 Level1"/>
+  <PARAM id="LFO2 Level2"/>
+  <PARAM id="LFO2 NoiseHPFreq"/>
+  <PARAM id="LFO2 NoiseLPFreq"/>
+  <PARAM id="LFO2 NoiseLevel"/>
+  <PARAM id="LFO2 OutPos1"/>
+  <PARAM id="LFO2 OutPos2"/>
+  <PARAM id="LFO2 Pan1"/>
+  <PARAM id="LFO2 Pan2"/>
+  <PARAM id="LFO2 SamplerLPFreq"/>
+  <PARAM id="LFO2 SamplerLevel"/>
+  <PARAM id="LFO3 Amp"/>
+  <PARAM id="LFO3 Coarse1"/>
+  <PARAM id="LFO3 Coarse2"/>
+  <PARAM id="LFO3 CrackDensity"/>
+  <PARAM id="LFO3 CrackLPFreq"/>
+  <PARAM id="LFO3 CrackLevel"/>
+  <PARAM id="LFO3 Fine1"/>
+  <PARAM id="LFO3 Fine2"/>
+  <PARAM id="LFO3 Freq" value="0.9999999403953552"/>
+  <PARAM id="LFO3 InPos1"/>
+  <PARAM id="LFO3 InPos2"/>
+  <PARAM id="LFO3 Level1"/>
+  <PARAM id="LFO3 Level2"/>
+  <PARAM id="LFO3 NoiseHPFreq"/>
+  <PARAM id="LFO3 NoiseLPFreq"/>
+  <PARAM id="LFO3 NoiseLevel"/>
+  <PARAM id="LFO3 OutPos1"/>
+  <PARAM id="LFO3 OutPos2"/>
+  <PARAM id="LFO3 Pan1"/>
+  <PARAM id="LFO3 Pan2"/>
+  <PARAM id="LFO3 SamplerLPFreq"/>
+  <PARAM id="LFO3 SamplerLevel"/>
+  <PARAM id="Level1" value="0.0"/>
+  <PARAM id="Level2" value="0.0"/>
+  <PARAM id="Pan1"/>
+  <PARAM id="Pan2"/>
+</Parameters>
